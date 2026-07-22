@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Noto+Serif+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: #F6F3EC; }
+  .pg a { text-decoration: none; }
+  .pg ::selection { background: rgba(20,69,60,.16); }
+  .pg input, .pg select { font-family: inherit; width: 100%; background: #FCFBF7; border: 1px solid rgba(23,24,26,.16); border-radius: 11px; padding: 12px 14px; font-size: 14px; color: #17181A; outline: none; transition: border-color .2s, box-shadow .2s; }
+  .pg input:focus, .pg select:focus { border-color: #14453C; box-shadow: 0 0 0 3px rgba(20,69,60,.12); }
+  .pg input[type=range] { padding: 0; accent-color: #14453C; height: 6px; }
+  .pg label { display: block; font-size: 12px; font-weight: 600; color: #46433C; margin-bottom: 6px; }
+  .wrap { max-width: 1320px; margin: 0 auto; padding: 0 40px; }
+  .gallery { display: grid; grid-template-columns: 2fr 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 12px; height: 540px; }
+  .bodysplit { display: grid; grid-template-columns: 1fr 380px; gap: 48px; align-items: start; }
+  .g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .g3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
+  .g4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; }
+  .specrow { display: grid; grid-template-columns: repeat(5,1fr); }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+  .rev { animation: fadeUp .6s cubic-bezier(.2,.7,.3,1) both; }
+  .related:hover { transform: translateY(-5px); box-shadow: 0 30px 50px -34px rgba(23,24,26,.5); }
+  .related { transition: transform .35s cubic-bezier(.2,.7,.3,1), box-shadow .35s; }
+  @media (max-width: 1000px) { .bodysplit { grid-template-columns: 1fr; } .booking { position: static !important; } .gallery { grid-template-columns: 1fr 1fr; height: auto; } .gallery > :first-child { grid-column: span 2; height: 300px; } .specrow { grid-template-columns: repeat(2,1fr); } .g3 { grid-template-columns: 1fr; } .g4 { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 680px) { .wrap { padding: 0 20px; } .g2 { grid-template-columns: 1fr; } }
+</style>
+</helmet>
+<div class="pg" dir="rtl" style="font-family:'IBM Plex Sans Arabic',sans-serif;background:#F6F3EC;color:#17181A;min-height:100vh;overflow-x:hidden">
+  <dc-import name="SiteNav" active="home" hint-size="100%,74px"></dc-import>
+
+  <!-- BREADCRUMB -->
+  <div class="wrap" style="padding-top:22px;font-size:12.5px;color:#8A857A">
+    <a href="Homepage-Signature.dc.html" style="color:#8A857A">الرئيسية</a> &nbsp;/&nbsp;
+    <a href="Projects-Signature.dc.html" style="color:#8A857A">المساكن</a> &nbsp;/&nbsp;
+    <span style="color:#46433C">مساكن نلاين</span>
+  </div>
+
+  <!-- GALLERY -->
+  <section class="wrap" style="padding-top:18px">
+    <div class="rev gallery">
+      <div style="grid-row:span 2;position:relative;border-radius:16px;overflow:hidden;border:1px solid rgba(23,24,26,.1)"><img loading="lazy" decoding="async" src="https://picsum.photos/seed/pd-g1/1000/750.webp" alt="واجهة برج مساكن نلاين في العليا عند الغسق" style="width:100%;height:100%;object-fit:cover;display:block"></div>
+      <div style="position:relative;border-radius:16px;overflow:hidden"><img loading="lazy" decoding="async" src="https://picsum.photos/seed/pd-g2/1000/750.webp" alt="صالة معيشة فاخرة بإضاءة طبيعية" style="width:100%;height:100%;object-fit:cover;display:block"></div>
+      <div style="position:relative;border-radius:16px;overflow:hidden"><img loading="lazy" decoding="async" src="https://picsum.photos/seed/pd-g3/1000/750.webp" alt="مطبخ عصري فاخر" style="width:100%;height:100%;object-fit:cover;display:block"></div>
+      <div style="position:relative;border-radius:16px;overflow:hidden"><img loading="lazy" decoding="async" src="https://picsum.photos/seed/pd-g4/1000/750.webp" alt="غرفة نوم رئيسية" style="width:100%;height:100%;object-fit:cover;display:block"></div>
+      <div style="position:relative;border-radius:16px;overflow:hidden">
+        <img loading="lazy" decoding="async" src="https://picsum.photos/seed/pd-g5/1000/750.webp" alt="مسبح لا متناهٍ بإطلالة على الأفق" style="width:100%;height:100%;object-fit:cover;display:block">
+        <div style="position:absolute;inset:0;background:rgba(14,51,44,.62);display:flex;align-items:center;justify-content:center">
+          <span style="border:1px solid rgba(246,243,236,.7);color:#F6F3EC;padding:11px 20px;border-radius:10px;font-size:13px;font-weight:600;backdrop-filter:blur(4px)">عرض كل الصور (٤٢)</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TITLE BAR -->
+  <section class="wrap" style="padding-top:34px">
+    <div class="rev" style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap">
+      <div>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+          <span style="background:#14453C;color:#F6F3EC;font-size:11px;letter-spacing:.3px;font-weight:700;padding:6px 12px;border-radius:999px">مسكنٌ مميّز</span>
+          <span style="font-size:13px;color:#8A857A">◈ الرياض · حيّ العليا</span>
+        </div>
+        <h1 style="font-family:'Noto Serif Arabic',serif;font-weight:600;font-size:clamp(38px,4.6vw,64px);line-height:1.05">مساكن نلاين</h1>
+        <div style="font-size:15px;color:#6E6A61;margin-top:10px">بتطوير <a href="#developer" style="color:#14453C;font-weight:600">مجموعة فيجن العقارية</a> · التسليم الربع الرابع ٢٠٢٧</div>
+      </div>
+      <div style="display:flex;gap:10px">
+        <button onClick="{{ toggleSave }}" style="{{ saveStyle }}">{{ saveIcon }} {{ saveLabel }}</button>
+        <button style="display:inline-flex;align-items:center;gap:7px;background:none;border:1px solid rgba(23,24,26,.18);color:#17181A;font-family:inherit;font-size:13.5px;font-weight:600;padding:11px 18px;border-radius:11px;cursor:pointer" style-hover="border-color:#14453C">⇪ مشاركة</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- SPECS -->
+  <section class="wrap" style="padding-top:26px">
+    <div class="rev specrow" style="background:#FCFBF7;border:1px solid rgba(23,24,26,.1);border-radius:16px;overflow:hidden">
+      <sc-for list="{{ specs }}" as="s" hint-placeholder-count="5">
+        <div style="padding:22px 24px;border-inline-start:1px solid rgba(23,24,26,.09)">
+          <div style="font-size:12px;color:#8A857A;margin-bottom:8px">{{ s.k }}</div>
+          <div style="font-family:'Noto Serif Arabic',serif;font-size:24px;font-weight:600;line-height:1">{{ s.v }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- BODY -->
+  <section class="wrap" style="padding-top:48px;padding-bottom:80px">
+    <div class="bodysplit">
+      <!-- MAIN -->
+      <div style="display:flex;flex-direction:column;gap:56px">
+        <!-- OVERVIEW -->
+        <div class="rev">
+          <div style="font-size:12.5px;letter-spacing:1px;color:#14453C;font-weight:700;margin-bottom:16px">عن المسكن</div>
+          <p style="font-family:'Noto Serif Arabic',serif;font-size:clamp(24px,2.6vw,34px);line-height:1.5;color:#26221B;font-weight:500;margin-bottom:20px">يرتفع البرج سبعةً وأربعين طابقاً فوق العليا، بصمتٍ من الزجاج البرونزيّ والحجر يعيد رسم أفق الرياض.</p>
+          <p style="font-size:16px;line-height:1.95;color:#46433C;font-weight:300;margin-bottom:16px">كلّ مسكنٍ موجَّهٌ نحو مركز الملك عبدالله المالي، بزجاجٍ يمتدّ من الأرض إلى السقف، وشرفاتٍ خاصّة، وتشطيباتٍ من أتيليه ميلانيّ حائزٍ على جوائز. تبلغ الارتفاعات الداخلية ٣٫٤ أمتار في المجموعة المميّزة، مع أنظمة منزلٍ ذكيٍّ متكاملة.</p>
+          <p style="font-size:16px;line-height:1.95;color:#46433C;font-weight:300">يستمتع السكّان بصالةٍ خاصّةٍ في السماء، ومسبحٍ لا متناهٍ بحرارةٍ مضبوطة، وطابقٍ للعافية بحمّامٍ وسبا، وخدمة كونسيرج على مدار الساعة.</p>
+        </div>
+
+        <!-- AMENITIES -->
+        <div class="rev">
+          <div style="font-size:12.5px;letter-spacing:1px;color:#14453C;font-weight:700;margin-bottom:20px">وسائل الراحة</div>
+          <div class="g4">
+            <sc-for list="{{ amenities }}" as="a" hint-placeholder-count="8">
+              <div style="background:#FCFBF7;border:1px solid rgba(23,24,26,.09);border-radius:14px;padding:20px 18px">
+                <div style="width:38px;height:38px;border-radius:10px;background:#E6EDE9;color:#14453C;display:flex;align-items:center;justify-content:center;font-size:16px;margin-bottom:14px">{{ a.icon }}</div>
+                <div style="font-size:14px;font-weight:500;line-height:1.4">{{ a.label }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <!-- UNIT TYPES -->
+        <div class="rev">
+          <div style="font-size:12.5px;letter-spacing:1px;color:#14453C;font-weight:700;margin-bottom:20px">أنواع الوحدات</div>
+          <div style="display:flex;gap:8px;margin-bottom:22px;flex-wrap:wrap">
+            <sc-for list="{{ unitTabs }}" as="u" hint-placeholder-count="3">
+              <button onClick="{{ u.onClick }}" style="{{ u.style }}">{{ u.label }}</button>
+            </sc-for>
+          </div>
+          <div style="background:#FCFBF7;border:1px solid rgba(23,24,26,.1);border-radius:18px;overflow:hidden;display:grid;grid-template-columns:1.2fr 1fr">
+            <div style="position:relative;min-height:300px;background:#ECE6DA"><img loading="lazy" decoding="async" src="https://picsum.photos/seed/{{ activeUnit.slot }}/1000/750.webp" alt="{{ activeUnit.ph }}" style="width:100%;height:100%;object-fit:contain;display:block"></div>
+            <div style="padding:32px 34px;display:flex;flex-direction:column;justify-content:center">
+              <h3 style="font-family:'Noto Serif Arabic',serif;font-size:28px;font-weight:600;margin-bottom:6px">{{ activeUnit.name }}</h3>
+              <div style="font-size:14px;color:#6E6A61;margin-bottom:22px">{{ activeUnit.detail }}</div>
+              <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:24px">
+                <sc-for list="{{ activeUnit.rows }}" as="r" hint-placeholder-count="4">
+                  <div style="display:flex;justify-content:space-between;padding-bottom:12px;border-bottom:1px solid rgba(23,24,26,.09)">
+                    <span style="font-size:13.5px;color:#8A857A">{{ r.k }}</span>
+                    <span style="font-size:14.5px;font-weight:600">{{ r.v }}</span>
+                  </div>
+                </sc-for>
+              </div>
+              <div style="display:flex;align-items:baseline;justify-content:space-between">
+                <div><div style="font-size:12px;color:#8A857A">يبدأ من</div><div style="font-family:'Noto Serif Arabic',serif;font-size:28px;color:#14453C;font-weight:600">{{ activeUnit.price }} <svg viewBox="0 0 1124.14 1256.39" role="img" aria-label="ريال سعودي" style="height:0.82em;width:auto;fill:currentColor;display:inline-block;vertical-align:-0.05em;margin-inline:0.08em"><path d="M699.62,1113.02h0c-20.06,44.48-33.32,92.75-38.4,143.37l424.51-90.24c20.06-44.47,33.31-92.75,38.4-143.37l-424.51,90.24Z"></path><path d="M1085.73,895.8c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.33v-135.2l292.27-62.11c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.27V66.13c-50.67,28.45-95.67,66.32-132.25,110.99v403.35l-132.25,28.11V0c-50.67,28.44-95.67,66.32-132.25,110.99v525.69l-295.91,62.88c-20.06,44.47-33.33,92.75-38.42,143.37l334.33-71.05v170.26l-358.3,76.14c-20.06,44.47-33.32,92.75-38.4,143.37l375.04-79.7c30.53-6.35,56.77-24.4,73.83-49.24l68.78-101.97v-.02c7.14-10.55,11.3-23.27,11.3-36.97v-149.98l132.25-28.11v270.4l424.53-90.28Z"></path></svg></div></div>
+                <a href="#book" style="background:#14453C;color:#F6F3EC;padding:12px 22px;font-size:13.5px;font-weight:600;border-radius:11px" style-hover="background:#0E332C">اطلب هذه الوحدة</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- FLOOR PLAN -->
+        <div class="rev">
+          <div style="font-size:12.5px;letter-spacing:1px;color:#14453C;font-weight:700;margin-bottom:20px">المخطط الطابقي</div>
+          <div style="position:relative;aspect-ratio:16/9;background:#FCFBF7;border:1px solid rgba(23,24,26,.1);border-radius:18px;overflow:hidden"><img loading="lazy" decoding="async" src="https://picsum.photos/seed/pd-floor/1000/750.webp" alt="مخطط طابقي للوحدة — رسم معماري" style="width:100%;height:100%;object-fit:contain;display:block"></div>
+        </div>
+
+        <!-- FINANCING CALCULATOR -->
+        <div class="rev" style="background:#0E332C;border-radius:20px;padding:38px 36px;color:#EAF0ED">
+          <div style="font-size:12.5px;letter-spacing:1px;color:#8FBFB0;font-weight:700;margin-bottom:8px">حاسبة التمويل</div>
+          <h3 style="font-family:'Noto Serif Arabic',serif;font-size:28px;font-weight:600;margin-bottom:26px;color:#F6F3EC">احسب قسطك الشهري التقريبي</h3>
+          <div class="g2" style="gap:32px">
+            <div style="display:flex;flex-direction:column;gap:22px">
+              <div>
+                <div style="display:flex;justify-content:space-between;margin-bottom:8px"><span style="font-size:13.5px;color:#B9CEC7">سعر العقار</span><span style="font-family:'Noto Serif Arabic',serif;font-size:17px;color:#F6F3EC;font-weight:600">{{ f.priceLabel }} <svg viewBox="0 0 1124.14 1256.39" role="img" aria-label="ريال سعودي" style="height:0.82em;width:auto;fill:currentColor;display:inline-block;vertical-align:-0.05em;margin-inline:0.08em"><path d="M699.62,1113.02h0c-20.06,44.48-33.32,92.75-38.4,143.37l424.51-90.24c20.06-44.47,33.31-92.75,38.4-143.37l-424.51,90.24Z"></path><path d="M1085.73,895.8c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.33v-135.2l292.27-62.11c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.27V66.13c-50.67,28.45-95.67,66.32-132.25,110.99v403.35l-132.25,28.11V0c-50.67,28.44-95.67,66.32-132.25,110.99v525.69l-295.91,62.88c-20.06,44.47-33.33,92.75-38.42,143.37l334.33-71.05v170.26l-358.3,76.14c-20.06,44.47-33.32,92.75-38.4,143.37l375.04-79.7c30.53-6.35,56.77-24.4,73.83-49.24l68.78-101.97v-.02c7.14-10.55,11.3-23.27,11.3-36.97v-149.98l132.25-28.11v270.4l424.53-90.28Z"></path></svg></span></div>
+                <input type="range" min="2000000" max="15000000" step="100000" value="{{ f.price }}" onInput="{{ onPrice }}">
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;margin-bottom:8px"><span style="font-size:13.5px;color:#B9CEC7">الدفعة الأولى</span><span style="font-family:'Noto Serif Arabic',serif;font-size:17px;color:#F6F3EC;font-weight:600">{{ f.downPct }}٪ · {{ f.downLabel }}</span></div>
+                <input type="range" min="10" max="60" step="5" value="{{ f.downPct }}" onInput="{{ onDown }}">
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;margin-bottom:8px"><span style="font-size:13.5px;color:#B9CEC7">مدة التمويل</span><span style="font-family:'Noto Serif Arabic',serif;font-size:17px;color:#F6F3EC;font-weight:600">{{ f.years }} سنة</span></div>
+                <input type="range" min="5" max="30" step="1" value="{{ f.years }}" onInput="{{ onYears }}">
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;margin-bottom:8px"><span style="font-size:13.5px;color:#B9CEC7">نسبة الفائدة السنوية</span><span style="font-family:'Noto Serif Arabic',serif;font-size:17px;color:#F6F3EC;font-weight:600">{{ f.rate }}٪</span></div>
+                <input type="range" min="2" max="9" step="0.1" value="{{ f.rate }}" onInput="{{ onRate }}">
+              </div>
+            </div>
+            <div style="background:rgba(143,191,176,.1);border:1px solid rgba(143,191,176,.25);border-radius:16px;padding:28px;display:flex;flex-direction:column;justify-content:center">
+              <div style="font-size:13.5px;color:#8FBFB0;margin-bottom:8px">القسط الشهري التقريبي</div>
+              <div style="font-family:'Noto Serif Arabic',serif;font-size:46px;font-weight:600;color:#F6F3EC;line-height:1">{{ f.monthly }}</div>
+              <div style="font-size:13px;color:#8FBFB0;margin-top:4px"><svg viewBox="0 0 1124.14 1256.39" role="img" aria-label="ريال سعودي" style="height:0.82em;width:auto;fill:currentColor;display:inline-block;vertical-align:-0.05em;margin-inline:0.08em"><path d="M699.62,1113.02h0c-20.06,44.48-33.32,92.75-38.4,143.37l424.51-90.24c20.06-44.47,33.31-92.75,38.4-143.37l-424.51,90.24Z"></path><path d="M1085.73,895.8c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.33v-135.2l292.27-62.11c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.27V66.13c-50.67,28.45-95.67,66.32-132.25,110.99v403.35l-132.25,28.11V0c-50.67,28.44-95.67,66.32-132.25,110.99v525.69l-295.91,62.88c-20.06,44.47-33.33,92.75-38.42,143.37l334.33-71.05v170.26l-358.3,76.14c-20.06,44.47-33.32,92.75-38.4,143.37l375.04-79.7c30.53-6.35,56.77-24.4,73.83-49.24l68.78-101.97v-.02c7.14-10.55,11.3-23.27,11.3-36.97v-149.98l132.25-28.11v270.4l424.53-90.28Z"></path></svg> / شهرياً</div>
+              <div style="height:1px;background:rgba(143,191,176,.25);margin:22px 0"></div>
+              <div style="display:flex;justify-content:space-between;margin-bottom:12px"><span style="font-size:13.5px;color:#B9CEC7">مبلغ التمويل</span><span style="font-size:14.5px;color:#F6F3EC;font-weight:600">{{ f.loanLabel }} <svg viewBox="0 0 1124.14 1256.39" role="img" aria-label="ريال سعودي" style="height:0.82em;width:auto;fill:currentColor;display:inline-block;vertical-align:-0.05em;margin-inline:0.08em"><path d="M699.62,1113.02h0c-20.06,44.48-33.32,92.75-38.4,143.37l424.51-90.24c20.06-44.47,33.31-92.75,38.4-143.37l-424.51,90.24Z"></path><path d="M1085.73,895.8c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.33v-135.2l292.27-62.11c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.27V66.13c-50.67,28.45-95.67,66.32-132.25,110.99v403.35l-132.25,28.11V0c-50.67,28.44-95.67,66.32-132.25,110.99v525.69l-295.91,62.88c-20.06,44.47-33.33,92.75-38.42,143.37l334.33-71.05v170.26l-358.3,76.14c-20.06,44.47-33.32,92.75-38.4,143.37l375.04-79.7c30.53-6.35,56.77-24.4,73.83-49.24l68.78-101.97v-.02c7.14-10.55,11.3-23.27,11.3-36.97v-149.98l132.25-28.11v270.4l424.53-90.28Z"></path></svg></span></div>
+              <div style="display:flex;justify-content:space-between"><span style="font-size:13.5px;color:#B9CEC7">الدفعة الأولى</span><span style="font-size:14.5px;color:#F6F3EC;font-weight:600">{{ f.downLabel }} <svg viewBox="0 0 1124.14 1256.39" role="img" aria-label="ريال سعودي" style="height:0.82em;width:auto;fill:currentColor;display:inline-block;vertical-align:-0.05em;margin-inline:0.08em"><path d="M699.62,1113.02h0c-20.06,44.48-33.32,92.75-38.4,143.37l424.51-90.24c20.06-44.47,33.31-92.75,38.4-143.37l-424.51,90.24Z"></path><path d="M1085.73,895.8c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.33v-135.2l292.27-62.11c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.27V66.13c-50.67,28.45-95.67,66.32-132.25,110.99v403.35l-132.25,28.11V0c-50.67,28.44-95.67,66.32-132.25,110.99v525.69l-295.91,62.88c-20.06,44.47-33.33,92.75-38.42,143.37l334.33-71.05v170.26l-358.3,76.14c-20.06,44.47-33.32,92.75-38.4,143.37l375.04-79.7c30.53-6.35,56.77-24.4,73.83-49.24l68.78-101.97v-.02c7.14-10.55,11.3-23.27,11.3-36.97v-149.98l132.25-28.11v270.4l424.53-90.28Z"></path></svg></span></div>
+              <div style="font-size:11.5px;color:#8FBFB0;margin-top:18px;line-height:1.6">* تقديرٌ استرشاديٌّ فقط ولا يُعدّ عرضاً تمويلياً. تواصل مع مستشارك لعرضٍ دقيق.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- NEARBY -->
+        <div class="rev">
+          <div style="font-size:12.5px;letter-spacing:1px;color:#14453C;font-weight:700;margin-bottom:20px">المعالم القريبة</div>
+          <div style="display:grid;grid-template-columns:1.3fr 1fr;gap:20px;align-items:stretch">
+            <div style="display:flex;flex-direction:column;gap:2px">
+              <sc-for list="{{ nearby }}" as="n" hint-placeholder-count="5">
+                <div style="display:flex;align-items:center;gap:14px;padding:15px 6px;border-bottom:1px solid rgba(23,24,26,.09)">
+                  <span style="width:38px;height:38px;flex:none;border-radius:10px;background:#E6EDE9;color:#14453C;display:flex;align-items:center;justify-content:center;font-size:15px">{{ n.icon }}</span>
+                  <span style="flex:1;font-size:14.5px;font-weight:500">{{ n.name }}</span>
+                  <span style="font-size:13.5px;color:#6E6A61">{{ n.dist }}</span>
+                </div>
+              </sc-for>
+            </div>
+            <div style="position:relative;border-radius:16px;overflow:hidden;border:1px solid rgba(23,24,26,.1);min-height:260px"><img loading="lazy" decoding="async" src="https://picsum.photos/seed/pd-nearmap/1000/750.webp" alt="خريطة الموقع في حيّ العليا بالرياض" style="width:100%;height:100%;object-fit:cover;display:block"></div>
+          </div>
+        </div>
+
+        <!-- DEVELOPER -->
+        <div id="developer" class="rev" style="background:#FCFBF7;border:1px solid rgba(23,24,26,.1);border-radius:20px;padding:34px 36px">
+          <div style="font-size:12.5px;letter-spacing:1px;color:#14453C;font-weight:700;margin-bottom:20px">عن المطوّر</div>
+          <div style="display:flex;align-items:center;gap:18px;margin-bottom:20px">
+            <div style="width:66px;height:66px;border-radius:16px;overflow:hidden;flex:none;border:1px solid rgba(23,24,26,.12)"><img loading="lazy" decoding="async" src="https://picsum.photos/seed/pd-devlogo/1000/750.webp" alt="شعار مجموعة فيجن" style="width:100%;height:100%;object-fit:cover;display:block"></div>
+            <div>
+              <h3 style="font-family:'Noto Serif Arabic',serif;font-size:26px;font-weight:600">مجموعة فيجن العقارية</h3>
+              <div style="font-size:13.5px;color:#6E6A61;margin-top:3px">مطوّرٌ رائدٌ · تأسّس ٢٠١٠ · الرياض</div>
+            </div>
+          </div>
+          <p style="font-size:15px;line-height:1.9;color:#46433C;font-weight:300;margin-bottom:22px">مطوّرٌ سعوديٌّ متخصّصٌ في المشاريع السكنية الفاخرة، بسجلٍّ من العلامات المميّزة في الرياض وجدة. يجمع بين الجودة الهندسية والرؤية التصميمية والالتزام بمواعيد التسليم.</p>
+          <div class="g3">
+            <sc-for list="{{ devStats }}" as="d" hint-placeholder-count="3">
+              <div style="text-align:center;background:#F1EDE3;border-radius:12px;padding:18px">
+                <div style="font-family:'Noto Serif Arabic',serif;font-size:26px;color:#14453C;font-weight:600">{{ d.v }}</div>
+                <div style="font-size:12.5px;color:#6E6A61;margin-top:4px">{{ d.l }}</div>
+              </div>
+            </sc-for>
+          </div>
+          <a href="Projects-Signature.dc.html" style="display:inline-flex;margin-top:22px;font-size:14px;color:#14453C;font-weight:600;border-bottom:1px solid rgba(20,69,60,.4);padding-bottom:5px">عرض كل مشاريع المطوّر ←</a>
+        </div>
+
+        <!-- BOOKING FORM -->
+        <div id="book" class="rev" style="scroll-margin-top:110px">
+          <div style="font-size:12.5px;letter-spacing:1px;color:#14453C;font-weight:700;margin-bottom:16px">احجز معاينة</div>
+          <div style="background:#FCFBF7;border:1px solid rgba(23,24,26,.1);border-radius:20px;padding:34px 36px">
+            <sc-if value="{{ booked }}" hint-placeholder-val="{{ false }}">
+              <div style="text-align:center;padding:24px 8px">
+                <div style="width:60px;height:60px;border-radius:50%;background:#E6EDE9;color:#14453C;display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 18px">✓</div>
+                <h3 style="font-family:'Noto Serif Arabic',serif;font-size:28px;font-weight:600;margin-bottom:10px">تم استلام طلبك</h3>
+                <p style="font-size:15px;color:#5C5850;font-weight:300;max-width:36ch;margin:0 auto">سيتواصل معك مستشارك الخاص لتأكيد موعد المعاينة. نتطلّع للقائك.</p>
+              </div>
+            </sc-if>
+            <sc-if value="{{ notBooked }}" hint-placeholder-val="{{ true }}">
+              <div>
+                <h3 style="font-family:'Noto Serif Arabic',serif;font-size:24px;font-weight:600;margin-bottom:20px">رتّب زيارتك الخاصّة لمساكن نلاين</h3>
+                <div style="display:flex;flex-direction:column;gap:16px">
+                  <div class="g2"><div><label>الاسم الكامل *</label><input placeholder="اسمك"></div><div><label>رقم الجوال *</label><input placeholder="+966 5X XXX XXXX" style="direction:ltr;text-align:right"></div></div>
+                  <div class="g2"><div><label>التاريخ المفضّل</label><input type="date" style="direction:ltr;text-align:right"></div><div><label>الوقت</label><select><option>صباحاً</option><option>ظهراً</option><option>مساءً</option></select></div></div>
+                  <div><label>نوع الزيارة</label><select><option>معاينة حضورية</option><option>جولة افتراضية</option></select></div>
+                  <button onClick="{{ book }}" style="background:#14453C;color:#F6F3EC;border:none;font-family:inherit;padding:16px;font-size:15px;font-weight:600;border-radius:12px;cursor:pointer" style-hover="background:#0E332C">تأكيد الحجز</button>
+                </div>
+              </div>
+            </sc-if>
+          </div>
+        </div>
+      </div>
+
+      <!-- STICKY BOOKING RAIL -->
+      <aside class="booking" style="position:sticky;top:96px">
+        <div style="background:#FCFBF7;border:1px solid rgba(23,24,26,.1);border-radius:20px;overflow:hidden;box-shadow:0 30px 60px -40px rgba(23,24,26,.4)">
+          <div style="padding:26px 28px 22px;border-bottom:1px solid rgba(23,24,26,.09)">
+            <div style="font-size:12px;color:#8A857A;margin-bottom:4px">يبدأ من</div>
+            <div style="font-family:'Noto Serif Arabic',serif;font-size:38px;color:#14453C;font-weight:600;line-height:1">٤٫٨ م <svg viewBox="0 0 1124.14 1256.39" role="img" aria-label="ريال سعودي" style="height:0.82em;width:auto;fill:currentColor;display:inline-block;vertical-align:-0.05em;margin-inline:0.08em"><path d="M699.62,1113.02h0c-20.06,44.48-33.32,92.75-38.4,143.37l424.51-90.24c20.06-44.47,33.31-92.75,38.4-143.37l-424.51,90.24Z"></path><path d="M1085.73,895.8c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.33v-135.2l292.27-62.11c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.27V66.13c-50.67,28.45-95.67,66.32-132.25,110.99v403.35l-132.25,28.11V0c-50.67,28.44-95.67,66.32-132.25,110.99v525.69l-295.91,62.88c-20.06,44.47-33.33,92.75-38.42,143.37l334.33-71.05v170.26l-358.3,76.14c-20.06,44.47-33.32,92.75-38.4,143.37l375.04-79.7c30.53-6.35,56.77-24.4,73.83-49.24l68.78-101.97v-.02c7.14-10.55,11.3-23.27,11.3-36.97v-149.98l132.25-28.11v270.4l424.53-90.28Z"></path></svg></div>
+            <div style="font-size:13px;color:#8A857A;margin-top:6px">≈ ٢٠٬٠٠٠ <svg viewBox="0 0 1124.14 1256.39" role="img" aria-label="ريال سعودي" style="height:0.82em;width:auto;fill:currentColor;display:inline-block;vertical-align:-0.05em;margin-inline:0.08em"><path d="M699.62,1113.02h0c-20.06,44.48-33.32,92.75-38.4,143.37l424.51-90.24c20.06-44.47,33.31-92.75,38.4-143.37l-424.51,90.24Z"></path><path d="M1085.73,895.8c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.33v-135.2l292.27-62.11c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.27V66.13c-50.67,28.45-95.67,66.32-132.25,110.99v403.35l-132.25,28.11V0c-50.67,28.44-95.67,66.32-132.25,110.99v525.69l-295.91,62.88c-20.06,44.47-33.33,92.75-38.42,143.37l334.33-71.05v170.26l-358.3,76.14c-20.06,44.47-33.32,92.75-38.4,143.37l375.04-79.7c30.53-6.35,56.77-24.4,73.83-49.24l68.78-101.97v-.02c7.14-10.55,11.3-23.27,11.3-36.97v-149.98l132.25-28.11v270.4l424.53-90.28Z"></path></svg>/م² · خطط سدادٍ مرنة</div>
+          </div>
+          <div style="padding:24px 28px">
+            <div style="display:flex;align-items:center;gap:13px;margin-bottom:20px">
+              <div style="width:50px;height:50px;border-radius:50%;overflow:hidden;flex:none;border:1px solid rgba(23,24,26,.12)"><img loading="lazy" decoding="async" src="https://picsum.photos/seed/pd-advisor/1000/750.webp" alt="صورة المستشارة ليلى" style="width:100%;height:100%;object-fit:cover;display:block"></div>
+              <div><div style="font-size:14.5px;font-weight:600">ليلى الحربي</div><div style="font-size:12.5px;color:#8A857A">مستشارة خاصّة · الرياض</div></div>
+            </div>
+            <a href="#book" style="display:block;text-align:center;background:#14453C;color:#F6F3EC;padding:15px;font-size:14.5px;font-weight:600;border-radius:12px;margin-bottom:10px" style-hover="background:#0E332C">احجز معاينة خاصّة</a>
+            <a href="#" style="display:block;text-align:center;background:#25443C;color:#F6F3EC;padding:15px;font-size:14.5px;font-weight:600;border-radius:12px;margin-bottom:10px" style-hover="background:#1c3730"><span style="direction:ltr">✆</span> تواصل عبر واتساب</a>
+            <button onClick="{{ download }}" style="width:100%;background:none;border:1px solid rgba(23,24,26,.18);color:#17181A;font-family:inherit;padding:15px;font-size:14.5px;font-weight:600;border-radius:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px" style-hover="border-color:#14453C">{{ downloadLabel }}</button>
+            <div style="display:flex;gap:10px;margin-top:14px">
+              <a href="Contact.dc.html" style="flex:1;text-align:center;font-size:12.5px;color:#46433C;padding:11px;border:1px solid rgba(23,24,26,.12);border-radius:10px" style-hover="border-color:#14453C">✆ اتصال</a>
+              <a href="Contact.dc.html" style="flex:1;text-align:center;font-size:12.5px;color:#46433C;padding:11px;border:1px solid rgba(23,24,26,.12);border-radius:10px" style-hover="border-color:#14453C">✉ بريد</a>
+            </div>
+          </div>
+        </div>
+        <div style="text-align:center;font-size:12px;color:#8A857A;margin-top:14px">مرجع: MLM-RUH-0471 · قائمةٌ موثّقة</div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- RELATED -->
+  <section style="background:#ECE6DA;border-top:1px solid rgba(23,24,26,.1)">
+    <div class="wrap" style="padding:72px 40px">
+      <div class="rev" style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:34px">
+        <h2 style="font-family:'Noto Serif Arabic',serif;font-size:clamp(28px,3.4vw,44px);font-weight:600;line-height:1">مساكن مشابهة</h2>
+        <a href="Projects-Signature.dc.html" style="font-size:14px;color:#14453C;font-weight:600;border-bottom:1px solid rgba(20,69,60,.4);padding-bottom:5px">عرض الكل ←</a>
+      </div>
+      <div class="g3">
+        <sc-for list="{{ related }}" as="r" hint-placeholder-count="3">
+          <a href="Project-Details.dc.html" class="related" style="display:block;background:#FCFBF7;border:1px solid rgba(23,24,26,.09);border-radius:18px;overflow:hidden">
+            <div style="position:relative;aspect-ratio:16/11"><img loading="lazy" decoding="async" src="https://picsum.photos/seed/{{ r.slot }}/1000/750.webp" alt="{{ r.ph }}" style="width:100%;height:100%;object-fit:cover;display:block"></div>
+            <div style="padding:22px 24px 24px">
+              <div style="font-size:12px;color:#8A857A;font-weight:600;margin-bottom:6px">{{ r.city }}</div>
+              <h3 style="font-family:'Noto Serif Arabic',serif;font-size:22px;font-weight:600;margin-bottom:12px">{{ r.name }}</h3>
+              <div style="font-family:'Noto Serif Arabic',serif;font-size:20px;color:#14453C;font-weight:600">{{ r.price }} <svg viewBox="0 0 1124.14 1256.39" role="img" aria-label="ريال سعودي" style="height:0.82em;width:auto;fill:currentColor;display:inline-block;vertical-align:-0.05em;margin-inline:0.08em"><path d="M699.62,1113.02h0c-20.06,44.48-33.32,92.75-38.4,143.37l424.51-90.24c20.06-44.47,33.31-92.75,38.4-143.37l-424.51,90.24Z"></path><path d="M1085.73,895.8c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.33v-135.2l292.27-62.11c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.27V66.13c-50.67,28.45-95.67,66.32-132.25,110.99v403.35l-132.25,28.11V0c-50.67,28.44-95.67,66.32-132.25,110.99v525.69l-295.91,62.88c-20.06,44.47-33.33,92.75-38.42,143.37l334.33-71.05v170.26l-358.3,76.14c-20.06,44.47-33.32,92.75-38.4,143.37l375.04-79.7c30.53-6.35,56.77-24.4,73.83-49.24l68.78-101.97v-.02c7.14-10.55,11.3-23.27,11.3-36.97v-149.98l132.25-28.11v270.4l424.53-90.28Z"></path></svg></div>
+            </div>
+          </a>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <dc-import name="SiteFooter" hint-size="100%,440px"></dc-import>
+
+  <!-- WHATSAPP FLOAT -->
+  <a href="#" title="تواصل عبر واتساب" style="position:fixed;bottom:26px;left:26px;z-index:60;width:58px;height:58px;border-radius:50%;background:#14453C;color:#F6F3EC;display:flex;align-items:center;justify-content:center;font-size:24px;box-shadow:0 16px 34px -12px rgba(14,51,44,.7)" style-hover="background:#0E332C">✆</a>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1320,&quot;height&quot;:900}}">
+class Component extends DCLogic {
+  state = { unit: 0, saved: false, booked: false, downloaded: false, price: 4800000, downPct: 20, years: 20, rate: 4.5 };
+
+  fmt(n) { return Math.round(n).toLocaleString('ar-SA'); }
+
+  renderVals() {
+    const S = this.state;
+    const units = [
+      { name: 'شقّة بثلاث غرف', detail: 'المجموعة الكلاسيكية · زاوية وقياسية', price: '٤٫٨ م', slot: 'pd-u1', ph: 'مخطط شقة ٣ غرف',
+        rows: [ { k: 'المساحة', v: '٢٤٠–٢٨٠ م²' }, { k: 'غرف النوم', v: '٣' }, { k: 'الحمّامات', v: '٤' }, { k: 'الشرفات', v: '٢' } ] },
+      { name: 'مسكن سماويّ بأربع غرف', detail: 'شرفةٌ خاصّةٌ ممتدّة', price: '٦٫٩ م', slot: 'pd-u2', ph: 'مخطط مسكن ٤ غرف',
+        rows: [ { k: 'المساحة', v: '٣٦٠–٤٤٠ م²' }, { k: 'غرف النوم', v: '٤' }, { k: 'الحمّامات', v: '٥' }, { k: 'الشرفات', v: '٣' } ] },
+      { name: 'بنتهاوس بخمس غرف', detail: 'دوبلكس مع مسبحٍ خاص', price: '١٢٫٥ م', slot: 'pd-u3', ph: 'مخطط بنتهاوس دوبلكس',
+        rows: [ { k: 'المساحة', v: '٥٦٠–٦٢٠ م²' }, { k: 'غرف النوم', v: '٥' }, { k: 'الحمّامات', v: '٦' }, { k: 'مسبح خاص', v: 'نعم' } ] }
+    ];
+    const unitTabs = units.map((u, i) => {
+      const on = i === S.unit;
+      return { label: u.name, onClick: () => this.setState({ unit: i }), style: {
+        fontFamily: 'inherit', fontSize: '13.5px', fontWeight: on ? 600 : 500, padding: '11px 20px', borderRadius: '11px', cursor: 'pointer', transition: 'all .2s',
+        border: on ? '1px solid #14453C' : '1px solid rgba(23,24,26,.15)', background: on ? '#14453C' : 'transparent', color: on ? '#F6F3EC' : '#46433C'
+      }};
+    });
+
+    const dp = S.price * S.downPct / 100;
+    const loan = S.price - dp;
+    const r = S.rate / 100 / 12;
+    const n = S.years * 12;
+    const monthly = r > 0 ? loan * r / (1 - Math.pow(1 + r, -n)) : loan / n;
+
+    return {
+      unitTabs,
+      activeUnit: units[S.unit],
+      toggleSave: () => this.setState(s => ({ saved: !s.saved })),
+      saved: S.saved,
+      saveIcon: S.saved ? '♥' : '♡',
+      saveLabel: S.saved ? 'محفوظ' : 'حفظ',
+      saveStyle: {
+        display: 'inline-flex', alignItems: 'center', gap: '7px', fontFamily: 'inherit', fontSize: '13.5px', fontWeight: 600, padding: '11px 18px', borderRadius: '11px', cursor: 'pointer', transition: 'all .2s',
+        border: S.saved ? '1px solid #14453C' : '1px solid rgba(23,24,26,.18)', background: S.saved ? '#E6EDE9' : 'none', color: '#14453C'
+      },
+      specs: [
+        { k: 'غرف النوم', v: '٣–٥' }, { k: 'الحمّامات', v: '٤–٦' }, { k: 'المساحة', v: '٢٤٠–٦٢٠ م²' }, { k: 'النوع', v: 'برج' }, { k: 'التسليم', v: 'Q4 ٢٠٢٧' }
+      ],
+      amenities: [
+        { icon: '⌆', label: 'مسبح لا متناهٍ' }, { icon: '❖', label: 'صالة سماوية' }, { icon: '♨', label: 'سبا وحمّام' }, { icon: '❋', label: 'نادٍ رياضي' },
+        { icon: '⛨', label: 'كونسيرج ٢٤/٧' }, { icon: '◈', label: 'سينما خاصّة' }, { icon: '⚘', label: 'حدائق معلّقة' }, { icon: '⊞', label: 'منزل ذكي' }
+      ],
+      nearby: [
+        { icon: '◔', name: 'مركز الملك عبدالله المالي', dist: '٤ دقائق' },
+        { icon: '✈', name: 'مطار الملك خالد الدولي', dist: '٢٢ دقيقة' },
+        { icon: '☖', name: 'بوليفارد الرياض', dist: '٩ دقائق' },
+        { icon: '⚕', name: 'مستشفى المملكة', dist: '٧ دقائق' },
+        { icon: '⌂', name: 'مدارس عالمية', dist: '٦ دقائق' }
+      ],
+      devStats: [ { v: '+٤٠', l: 'مشروعاً منجزاً' }, { v: '١٦', l: 'سنة خبرة' }, { v: '٩٫٦', l: 'تقييم العملاء' } ],
+      f: {
+        price: S.price, priceLabel: this.fmt(S.price), downPct: S.downPct, downLabel: this.fmt(dp),
+        years: S.years, rate: S.rate.toFixed(1), monthly: this.fmt(monthly), loanLabel: this.fmt(loan)
+      },
+      onPrice: (e) => this.setState({ price: +e.target.value }),
+      onDown: (e) => this.setState({ downPct: +e.target.value }),
+      onYears: (e) => this.setState({ years: +e.target.value }),
+      onRate: (e) => this.setState({ rate: +e.target.value }),
+      book: () => this.setState({ booked: true }),
+      booked: S.booked, notBooked: !S.booked,
+      download: () => this.setState({ downloaded: true }),
+      downloadLabel: S.downloaded ? '✓ تم تجهيز الكتيّب' : '⬇ حمّل الكتيّب (PDF)',
+      related: [
+        { name: 'بنتهاوس المركز المالي', city: 'الرياض · المركز المالي', price: '٧٫٩ م', slot: 'pd-r1', ph: 'بنتهاوس بإطلالة على الأفق' },
+        { name: 'فلل بلاط الدرعية', city: 'الرياض · الدرعية', price: '٩٫٢ م', slot: 'pd-r2', ph: 'فناء فيلا نجدية' },
+        { name: 'شرفات الكورنيش', city: 'جدة · الكورنيش', price: '٣٫٦ م', slot: 'pd-r3', ph: 'شقة على الواجهة البحرية' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

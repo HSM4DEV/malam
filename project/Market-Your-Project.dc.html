@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Noto+Serif+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: #F6F3EC; }
+  .pg a { text-decoration: none; }
+  .pg ::selection { background: rgba(20,69,60,.16); }
+  .pg input, .pg select, .pg textarea { font-family: inherit; width: 100%; background: #FCFBF7; border: 1px solid rgba(23,24,26,.16); border-radius: 12px; padding: 13px 15px; font-size: 14.5px; color: #17181A; outline: none; transition: border-color .2s, box-shadow .2s; }
+  .pg input::placeholder, .pg textarea::placeholder { color: #A7A092; }
+  .pg input:focus, .pg select:focus, .pg textarea:focus { border-color: #14453C; box-shadow: 0 0 0 3px rgba(20,69,60,.12); }
+  .pg label { display: block; font-size: 12.5px; font-weight: 600; color: #46433C; margin-bottom: 7px; }
+  .wrap { max-width: 1320px; margin: 0 auto; padding: 0 40px; }
+  .g3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
+  .frm2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .formsplit { display: grid; grid-template-columns: 1fr 1.05fr; gap: 56px; align-items: start; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+  .rev { animation: fadeUp .7s cubic-bezier(.2,.7,.3,1) both; }
+  @media (max-width: 900px) { .g3, .frm2, .formsplit { grid-template-columns: 1fr; } .wrap { padding: 0 22px; } .formsplit { gap: 34px; } }
+</style>
+</helmet>
+<div class="pg" dir="rtl" style="font-family:'IBM Plex Sans Arabic',sans-serif;background:#F6F3EC;color:#17181A;min-height:100vh;overflow-x:hidden">
+  <dc-import name="SiteNav" active="developers" hint-size="100%,74px"></dc-import>
+
+  <!-- HERO + FORM -->
+  <header class="wrap" style="padding-top:64px;padding-bottom:80px">
+    <div class="formsplit">
+      <!-- value side -->
+      <div class="rev">
+        <div style="display:inline-flex;align-items:center;gap:10px;background:#E6EDE9;border:1px solid rgba(20,69,60,.18);padding:7px 14px;border-radius:999px;margin-bottom:24px">
+          <span style="width:6px;height:6px;border-radius:50%;background:#14453C"></span>
+          <span style="font-size:12.5px;color:#14453C;font-weight:600">سوّق مشروعك</span>
+        </div>
+        <h1 style="font-family:'Noto Serif Arabic',serif;font-weight:600;font-size:clamp(38px,4.6vw,62px);line-height:1.14;max-width:15ch">اعرض مشروعك أمام المشتري الصحيح.</h1>
+        <p style="font-size:17.5px;line-height:1.75;color:#46433C;font-weight:300;margin-top:20px;max-width:44ch">أرسل تفاصيل مشروعك، وسيتواصل معك مستشار الشراكات خلال ٢٤ ساعة بعرضٍ تقديميٍّ مخصّص — دون التزام.</p>
+
+        <div style="margin-top:36px;display:flex;flex-direction:column;gap:2px">
+          <sc-for list="{{ promises }}" as="p" hint-placeholder-count="4">
+            <div style="display:flex;align-items:flex-start;gap:14px;padding:16px 0;border-bottom:1px solid rgba(23,24,26,.1)">
+              <span style="width:26px;height:26px;flex:none;border-radius:8px;background:#E6EDE9;color:#14453C;display:flex;align-items:center;justify-content:center;font-size:13px;margin-top:2px">✓</span>
+              <div>
+                <div style="font-family:'Noto Serif Arabic',serif;font-size:19px;font-weight:600">{{ p.title }}</div>
+                <div style="font-size:14px;color:#5C5850;font-weight:300;margin-top:3px">{{ p.body }}</div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:16px;margin-top:30px;background:#F1EDE3;border-radius:14px;padding:18px 22px">
+          <div style="width:48px;height:48px;border-radius:50%;overflow:hidden;flex:none;border:1px solid rgba(23,24,26,.12)"><img loading="lazy" decoding="async" src="https://picsum.photos/seed/myp-advisor/1000/750.webp" alt="صورة مستشار الشراكات" style="width:100%;height:100%;object-fit:cover;display:block"></div>
+          <div>
+            <div style="font-size:14.5px;font-weight:600">سارة العتيبي — مستشارة الشراكات</div>
+            <div style="font-size:13px;color:#6E6A61">عادةً ما ترد خلال ساعات العمل</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- form card -->
+      <div class="rev" style="background:#FCFBF7;border:1px solid rgba(23,24,26,.1);border-radius:22px;padding:36px 34px;box-shadow:0 30px 60px -38px rgba(23,24,26,.4)">
+        <sc-if value="{{ submitted }}" hint-placeholder-val="{{ false }}">
+          <div style="text-align:center;padding:36px 8px">
+            <div style="width:64px;height:64px;border-radius:50%;background:#E6EDE9;color:#14453C;display:flex;align-items:center;justify-content:center;font-size:30px;margin:0 auto 22px">✓</div>
+            <h2 style="font-family:'Noto Serif Arabic',serif;font-size:30px;font-weight:600;margin-bottom:12px">وصلنا طلبك.</h2>
+            <p style="font-size:15px;line-height:1.8;color:#5C5850;font-weight:300;max-width:34ch;margin:0 auto">شكراً لثقتك. سيتواصل معك مستشار الشراكات خلال ٢٤ ساعة بعرضٍ مخصّص لمشروعك.</p>
+            <button onClick="{{ reset }}" style="margin-top:26px;background:none;border:1px solid rgba(23,24,26,.2);color:#17181A;font-family:inherit;padding:12px 26px;font-size:14px;font-weight:600;border-radius:11px;cursor:pointer">إرسال طلبٍ آخر</button>
+          </div>
+        </sc-if>
+        <sc-if value="{{ notSubmitted }}" hint-placeholder-val="{{ true }}">
+          <div>
+            <div style="font-family:'Noto Serif Arabic',serif;font-size:24px;font-weight:600;margin-bottom:6px">أخبِرنا عن مشروعك</div>
+            <div style="font-size:13px;color:#6E6A61;margin-bottom:24px">الحقول المعلَّمة بـ * مطلوبة</div>
+            <div style="display:flex;flex-direction:column;gap:16px">
+              <div class="frm2">
+                <div><label>الاسم الكامل *</label><input placeholder="مثال: عبدالله المطيري"></div>
+                <div><label>اسم الشركة *</label><input placeholder="مجموعة التطوير"></div>
+              </div>
+              <div class="frm2">
+                <div><label>البريد الإلكتروني *</label><input type="email" placeholder="you@company.sa" style="direction:ltr;text-align:right"></div>
+                <div><label>رقم الجوال *</label><input placeholder="+966 5X XXX XXXX" style="direction:ltr;text-align:right"></div>
+              </div>
+              <div class="frm2">
+                <div><label>المدينة</label>
+                  <select><option>الرياض</option><option>جدة</option><option>الدمام / الخبر</option><option>أخرى</option></select>
+                </div>
+                <div><label>نوع المشروع</label>
+                  <select><option>أبراج سكنية</option><option>فلل / مجمّعات</option><option>وحدات مختلطة</option><option>أخرى</option></select>
+                </div>
+              </div>
+              <div class="frm2">
+                <div><label>عدد الوحدات</label><input placeholder="مثال: ١٢٠"></div>
+                <div><label>نطاق السعر التقديري</label>
+                  <select><option>أقل من ٣ مليون</option><option>٣ – ٨ مليون</option><option>٨ – ٢٠ مليون</option><option>أكثر من ٢٠ مليون</option></select>
+                </div>
+              </div>
+              <div><label>نبذة عن المشروع</label><textarea rows="3" placeholder="الموقع، مرحلة التطوير، وأي تفاصيل تودّ مشاركتها"></textarea></div>
+              <button onClick="{{ submit }}" style="background:#14453C;color:#F6F3EC;border:none;font-family:inherit;padding:16px;font-size:15px;font-weight:600;border-radius:12px;cursor:pointer;transition:background .2s" style-hover="background:#0E332C">أرسل الطلب</button>
+              <p style="font-size:12px;color:#8A857A;text-align:center;line-height:1.6">بإرسالك الطلب فإنك توافق على <a href="#" style="color:#14453C">سياسة الخصوصية</a>. لن نشارك بياناتك مع أي طرفٍ ثالث.</p>
+            </div>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </header>
+
+  <!-- PROCESS -->
+  <section style="background:#0E332C;color:#EAF0ED">
+    <div class="wrap" style="padding:82px 40px">
+      <div class="rev" style="max-width:620px;margin-bottom:48px">
+        <div style="font-size:12.5px;letter-spacing:1px;color:#8FBFB0;font-weight:700;margin-bottom:12px">ماذا بعد الإرسال</div>
+        <h2 style="font-family:'Noto Serif Arabic',serif;font-size:clamp(28px,3.4vw,46px);line-height:1.12;color:#F6F3EC;font-weight:600">رحلةٌ واضحةٌ من أول تواصلٍ حتى الإطلاق</h2>
+      </div>
+      <div class="g3">
+        <sc-for list="{{ process }}" as="s" hint-placeholder-count="3">
+          <div class="rev" style="border-top:1px solid rgba(246,243,236,.2);padding-top:22px">
+            <div style="font-family:'Noto Serif Arabic',serif;font-size:32px;color:#8FBFB0;font-weight:600;margin-bottom:12px">{{ s.no }}</div>
+            <h3 style="font-family:'Noto Serif Arabic',serif;font-size:21px;font-weight:600;color:#F6F3EC;margin-bottom:9px">{{ s.title }}</h3>
+            <p style="font-size:14.5px;line-height:1.8;color:#B9CEC7;font-weight:300">{{ s.body }}</p>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- MINI FAQ -->
+  <section class="wrap" style="padding-top:82px;padding-bottom:90px;max-width:820px">
+    <h2 class="rev" style="font-family:'Noto Serif Arabic',serif;font-size:clamp(28px,3.2vw,42px);line-height:1.1;font-weight:600;text-align:center;margin-bottom:40px">أسئلةٌ يطرحها المطوّرون</h2>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <sc-for list="{{ faqs }}" as="f" hint-placeholder-count="4">
+        <div style="background:#FCFBF7;border:1px solid rgba(23,24,26,.1);border-radius:14px;padding:24px 26px">
+          <div style="font-family:'Noto Serif Arabic',serif;font-size:19px;font-weight:600;margin-bottom:8px">{{ f.q }}</div>
+          <div style="font-size:14.5px;line-height:1.8;color:#5C5850;font-weight:300">{{ f.a }}</div>
+        </div>
+      </sc-for>
+    </div>
+    <div style="text-align:center;margin-top:32px">
+      <a href="FAQ.dc.html" style="font-size:14px;font-weight:600;color:#14453C;border-bottom:1px solid rgba(20,69,60,.4);padding-bottom:5px">كل الأسئلة الشائعة ←</a>
+    </div>
+  </section>
+
+  <dc-import name="SiteFooter" hint-size="100%,440px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1320,&quot;height&quot;:900}}">
+class Component extends DCLogic {
+  state = { submitted: false };
+  renderVals() {
+    return {
+      submitted: this.state.submitted,
+      notSubmitted: !this.state.submitted,
+      submit: () => this.setState({ submitted: true }),
+      reset: () => this.setState({ submitted: false }),
+      promises: [
+        { title: 'ردٌّ خلال ٢٤ ساعة', body: 'مستشارٌ مخصّص يتواصل معك بعرضٍ تقديميٍّ لمشروعك.' },
+        { title: 'عرضٌ دون التزام', body: 'استكشف الفكرة والتكلفة قبل أي اتفاق.' },
+        { title: 'جمهورٌ مؤهّل', body: 'وصولٌ إلى مشترين ووسطاء مُتحقَّقين فقط.' },
+        { title: 'خصوصيةٌ تامّة', body: 'تُعامَل بياناتك ومشروعك بسريّةٍ كاملة.' }
+      ],
+      process: [
+        { no: '٠١', title: 'مكالمة تعارف', body: 'نفهم المشروع وأهدافك التسويقية ونتّفق على النطاق.' },
+        { no: '٠٢', title: 'إعداد العرض', body: 'ننتج الصفحة التحريرية والتصوير ونطلقها بعد موافقتك.' },
+        { no: '٠٣', title: 'الإطلاق والمتابعة', body: 'ننشر المشروع ونشاركك تقارير الأداء والصفقات أولاً بأول.' }
+      ],
+      faqs: [
+        { q: 'كم تستغرق عملية الإدراج؟', a: 'من تأكيد التفاصيل حتى الإطلاق عادةً ما بين ٧ و١٤ يوم عمل، حسب جاهزية المواد.' },
+        { q: 'هل أحتاج إلى تصويرٍ جاهز؟', a: 'لا. نوفّر تصويراً معمارياً احترافياً ضمن الباقتين الاحترافية والحصرية.' },
+        { q: 'كيف تُحتسب التكلفة؟', a: 'نعمل بنموذج نسبةٍ من المبيعات أو اتفاقيةٍ مخصّصة للمشاريع الكبرى — دون رسومٍ مقدّمة خفيّة.' },
+        { q: 'من يرى مشروعي؟', a: 'قاعدةٌ من المشترين المؤهّلين والوسطاء المعتمدين فقط، مع خيار الإطلاق الخاص.' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

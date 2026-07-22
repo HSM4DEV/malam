@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Noto+Serif+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #F6F3EC; }
+  .pg a { text-decoration: none; }
+  .pg ::selection { background: rgba(20,69,60,.16); }
+  .pg input, .pg select { font-family: inherit; width: 100%; background: #FCFBF7; border: 1px solid rgba(23,24,26,.16); border-radius: 12px; padding: 14px 15px; font-size: 14.5px; color: #17181A; outline: none; transition: border-color .2s, box-shadow .2s; }
+  .pg input::placeholder { color: #A7A092; }
+  .pg input:focus, .pg select:focus { border-color: #14453C; box-shadow: 0 0 0 3px rgba(20,69,60,.12); }
+  .pg label { display: block; font-size: 12.5px; font-weight: 600; color: #46433C; margin-bottom: 7px; }
+  .authwrap { display: grid; grid-template-columns: 1fr 1fr; min-height: 100vh; }
+  .frm2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .rev { animation: fadeUp .5s cubic-bezier(.2,.7,.3,1) both; }
+  .spinner { width: 18px; height: 18px; border: 2px solid rgba(246,243,236,.4); border-top-color: #F6F3EC; border-radius: 50%; animation: spin .7s linear infinite; }
+  @media (max-width: 860px) { .authwrap { grid-template-columns: 1fr; } .authaside { display: none !important; } .frm2 { grid-template-columns: 1fr; } }
+</style>
+</helmet>
+<div class="pg" dir="rtl" style="font-family:'IBM Plex Sans Arabic',sans-serif;background:#F6F3EC;color:#17181A;min-height:100vh">
+  <div class="authwrap">
+    <!-- FORM SIDE -->
+    <div style="display:flex;flex-direction:column;padding:36px 40px">
+      <a href="Homepage-Signature.dc.html" style="display:flex;align-items:center;gap:11px;color:#14453C">
+        <svg width="22" height="26" viewBox="0 0 24 28" fill="none"><path d="M2 27 V11 A10 10 0 0 1 22 11 V27" stroke="currentColor" stroke-width="2"/><path d="M2 27 H22" stroke="currentColor" stroke-width="2"/></svg>
+        <span style="font-family:'Noto Serif Arabic',serif;font-size:25px;font-weight:700;color:#17181A">مَعلم</span>
+      </a>
+
+      <div style="flex:1;display:flex;flex-direction:column;justify-content:center;max-width:440px;width:100%;margin:0 auto;padding:40px 0">
+        <div key="{{ mode }}" class="rev">
+          <h1 style="font-family:'Noto Serif Arabic',serif;font-size:clamp(30px,3.4vw,44px);line-height:1.12;font-weight:600;margin-bottom:8px">{{ title }}</h1>
+          <p style="font-size:15px;line-height:1.7;color:#5C5850;font-weight:300;margin-bottom:30px">{{ subtitle }}</p>
+
+          <!-- REGISTER role switch -->
+          <sc-if value="{{ isRegister }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;gap:8px;margin-bottom:20px;background:#ECE6DA;padding:5px;border-radius:12px">
+              <sc-for list="{{ roleTabs }}" as="r" hint-placeholder-count="2">
+                <button onClick="{{ r.onClick }}" style="{{ r.style }}">{{ r.label }}</button>
+              </sc-for>
+            </div>
+          </sc-if>
+
+          <div style="display:flex;flex-direction:column;gap:16px">
+            <sc-if value="{{ isRegister }}" hint-placeholder-val="{{ false }}">
+              <div class="frm2">
+                <div><label>الاسم الأول</label><input placeholder="محمد"></div>
+                <div><label>اسم العائلة</label><input placeholder="العتيبي"></div>
+              </div>
+            </sc-if>
+
+            <div><label>البريد الإلكتروني</label><input type="email" placeholder="you@email.com" style="direction:ltr;text-align:right"></div>
+
+            <sc-if value="{{ hasPassword }}" hint-placeholder-val="{{ true }}">
+              <div>
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:7px">
+                  <label style="margin:0">كلمة المرور</label>
+                  <sc-if value="{{ isLogin }}" hint-placeholder-val="{{ true }}"><a onClick="{{ goForgot }}" style="font-size:12.5px;color:#14453C;font-weight:600;cursor:pointer">نسيت كلمة المرور؟</a></sc-if>
+                </div>
+                <input type="password" placeholder="••••••••" style="direction:ltr;text-align:right">
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ isRegister }}" hint-placeholder-val="{{ false }}">
+              <label style="display:flex;align-items:flex-start;gap:10px;font-size:13px;color:#5C5850;font-weight:400;margin:0;cursor:pointer">
+                <input type="checkbox" style="width:auto;margin-top:2px">
+                <span>أوافق على <a href="#" style="color:#14453C;font-weight:600">شروط الاستخدام</a> و<a href="#" style="color:#14453C;font-weight:600">سياسة الخصوصية</a>.</span>
+              </label>
+            </sc-if>
+
+            <button onClick="{{ submit }}" style="{{ btnStyle }}">
+              <sc-if value="{{ isSending }}" hint-placeholder-val="{{ false }}"><span class="spinner"></span></sc-if>
+              <sc-if value="{{ notSending }}" hint-placeholder-val="{{ true }}"><span>{{ cta }}</span></sc-if>
+            </button>
+
+            <sc-if value="{{ hasPassword }}" hint-placeholder-val="{{ true }}">
+              <div style="display:flex;align-items:center;gap:14px;margin:4px 0">
+                <span style="flex:1;height:1px;background:rgba(23,24,26,.14)"></span>
+                <span style="font-size:12.5px;color:#8A857A">أو</span>
+                <span style="flex:1;height:1px;background:rgba(23,24,26,.14)"></span>
+              </div>
+              <button style="display:flex;align-items:center;justify-content:center;gap:10px;background:#FCFBF7;border:1px solid rgba(23,24,26,.16);color:#17181A;font-family:inherit;padding:14px;font-size:14px;font-weight:600;border-radius:12px;cursor:pointer" style-hover="border-color:#14453C">
+                <span style="font-weight:700;direction:ltr">G</span> المتابعة عبر Google
+              </button>
+            </sc-if>
+          </div>
+
+          <div style="margin-top:26px;text-align:center;font-size:14px;color:#5C5850">
+            <span>{{ switchText }}</span>
+            <a onClick="{{ switchMode }}" style="color:#14453C;font-weight:600;cursor:pointer">{{ switchCta }}</a>
+          </div>
+        </div>
+      </div>
+
+      <div style="font-size:12.5px;color:#8A857A;text-align:center">© ٢٠٢٦ مَعلم للاستثمار العقاري</div>
+    </div>
+
+    <!-- ASIDE (visual) -->
+    <aside class="authaside" style="position:relative;overflow:hidden">
+      <img loading="lazy" decoding="async" src="https://picsum.photos/seed/auth-bg/1000/750.webp" alt="مسكنٌ فاخرٌ في الرياض عند الغسق — إضاءةٌ دافئة" style="width:100%;height:100%;object-fit:cover;display:block">
+      <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(14,51,44,.35),rgba(14,51,44,.82));pointer-events:none"></div>
+      <div style="position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:56px;color:#EAF0ED;pointer-events:none">
+        <blockquote style="font-family:'Noto Serif Arabic',serif;font-size:clamp(26px,2.6vw,38px);line-height:1.45;font-weight:500;max-width:22ch">«العنوان الموثوق للمعيشة الفاخرة في المملكة.»</blockquote>
+        <div style="display:flex;gap:36px;margin-top:36px">
+          <div><div style="font-family:'Noto Serif Arabic',serif;font-size:34px;font-weight:600;color:#F6F3EC">+١٤٠٠</div><div style="font-size:13px;color:#8FBFB0;margin-top:4px">مسكن منسّق</div></div>
+          <div><div style="font-family:'Noto Serif Arabic',serif;font-size:34px;font-weight:600;color:#F6F3EC">+٤٠٠</div><div style="font-size:13px;color:#8FBFB0;margin-top:4px">وسيطٌ معتمد</div></div>
+          <div><div style="font-family:'Noto Serif Arabic',serif;font-size:34px;font-weight:600;color:#F6F3EC">٩٨٪</div><div style="font-size:13px;color:#8FBFB0;margin-top:4px">رضا العملاء</div></div>
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1320,&quot;height&quot;:900}}">
+class Component extends DCLogic {
+  state = { mode: 'login', role: 'buyer', sending: false };
+
+  submit() {
+    if (this.state.sending) return;
+    this.setState({ sending: true });
+    clearTimeout(this._t);
+    this._t = setTimeout(() => {
+      this.setState({ sending: false });
+      if (this.state.mode === 'forgot') this.setState({ mode: 'login' });
+    }, 1400);
+  }
+  componentWillUnmount() { clearTimeout(this._t); }
+
+  renderVals() {
+    const { mode, role, sending } = this.state;
+    const copy = {
+      login: { title: 'أهلاً بعودتك', subtitle: 'سجّل الدخول لإدارة مساكنك ومعايناتك ولوحتك.', cta: 'تسجيل الدخول', switchText: 'ليس لديك حساب؟ ', switchCta: 'أنشئ حساباً', to: 'register' },
+      register: { title: 'أنشئ حسابك', subtitle: 'انضمّ إلى مَعلم وابدأ رحلتك في العقار الفاخر.', cta: 'إنشاء الحساب', switchText: 'لديك حساب بالفعل؟ ', switchCta: 'سجّل الدخول', to: 'login' },
+      forgot: { title: 'استعادة كلمة المرور', subtitle: 'أدخل بريدك وسنرسل لك رابط إعادة التعيين.', cta: 'إرسال الرابط', switchText: 'تذكّرت كلمة المرور؟ ', switchCta: 'العودة لتسجيل الدخول', to: 'login' }
+    }[mode];
+
+    const roleTabs = [ { k: 'buyer', label: 'مشترٍ / مستثمر' }, { k: 'pro', label: 'مطوّر / وسيط' } ].map(r => {
+      const on = r.k === role;
+      return { label: r.label, onClick: () => this.setState({ role: r.k }), style: {
+        flex: 1, fontFamily: 'inherit', fontSize: '13.5px', fontWeight: on ? 600 : 500, padding: '11px', borderRadius: '9px',
+        cursor: 'pointer', border: 'none', transition: 'all .2s',
+        background: on ? '#FCFBF7' : 'transparent', color: on ? '#14453C' : '#6E6A61',
+        boxShadow: on ? '0 2px 8px -4px rgba(23,24,26,.4)' : 'none'
+      }};
+    });
+
+    return {
+      mode,
+      title: copy.title, subtitle: copy.subtitle, cta: copy.cta,
+      switchText: copy.switchText, switchCta: copy.switchCta,
+      switchMode: () => this.setState({ mode: copy.to }),
+      goForgot: () => this.setState({ mode: 'forgot' }),
+      isLogin: mode === 'login',
+      isRegister: mode === 'register',
+      hasPassword: mode !== 'forgot',
+      roleTabs,
+      submit: () => this.submit(),
+      isSending: sending,
+      notSending: !sending,
+      btnStyle: {
+        display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px',
+        background: '#14453C', color: '#F6F3EC', border: 'none', fontFamily: 'inherit',
+        padding: '15px', fontSize: '15px', fontWeight: 600, borderRadius: '12px',
+        cursor: sending ? 'default' : 'pointer', opacity: sending ? 0.85 : 1, transition: 'opacity .2s', marginTop: '4px'
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>

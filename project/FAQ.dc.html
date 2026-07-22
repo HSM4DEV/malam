@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Noto+Serif+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: #F6F3EC; }
+  .pg a { text-decoration: none; }
+  .pg ::selection { background: rgba(20,69,60,.16); }
+  .wrap { max-width: 1320px; margin: 0 auto; padding: 0 40px; }
+  .faqlayout { display: grid; grid-template-columns: 260px 1fr; gap: 48px; align-items: start; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+  .rev { animation: fadeUp .7s cubic-bezier(.2,.7,.3,1) both; }
+  @media (max-width: 900px) { .faqlayout { grid-template-columns: 1fr; gap: 26px; } .wrap { padding: 0 22px; } .faqside { position: static !important; } }
+</style>
+</helmet>
+<div class="pg" dir="rtl" style="font-family:'IBM Plex Sans Arabic',sans-serif;background:#F6F3EC;color:#17181A;min-height:100vh;overflow-x:hidden">
+  <dc-import name="SiteNav" active="faq" hint-size="100%,74px"></dc-import>
+
+  <!-- HEAD + SEARCH -->
+  <header class="wrap" style="padding-top:80px;padding-bottom:56px;text-align:center">
+    <div class="rev" style="max-width:720px;margin:0 auto">
+      <div style="font-size:12.5px;letter-spacing:1px;color:#14453C;font-weight:700;margin-bottom:14px">مركز المساعدة</div>
+      <h1 style="font-family:'Noto Serif Arabic',serif;font-weight:600;font-size:clamp(40px,5vw,68px);line-height:1.1">كيف يمكننا مساعدتك؟</h1>
+      <p style="font-size:18px;line-height:1.7;color:#46433C;font-weight:300;margin-top:18px">إجاباتٌ واضحةٌ لأكثر ما يسأل عنه المشترون والمطوّرون والوسطاء.</p>
+      <div style="position:relative;margin-top:34px;max-width:560px;margin-inline:auto">
+        <span style="position:absolute;top:50%;right:18px;transform:translateY(-50%);color:#8A857A">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.8"/><path d="M11 11 L14.5 14.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </span>
+        <input onInput="{{ onSearch }}" placeholder="ابحث عن سؤالك…" style="width:100%;font-family:inherit;background:#FCFBF7;border:1px solid rgba(23,24,26,.16);border-radius:14px;padding:16px 50px 16px 18px;font-size:15px;color:#17181A;outline:none;box-shadow:0 14px 30px -22px rgba(23,24,26,.4)">
+      </div>
+    </div>
+  </header>
+
+  <!-- LAYOUT -->
+  <section class="wrap" style="padding-bottom:80px">
+    <div class="faqlayout">
+      <!-- side categories -->
+      <aside class="faqside" style="position:sticky;top:100px">
+        <div style="font-size:11.5px;letter-spacing:1px;color:#8A857A;font-weight:700;margin-bottom:14px">التصنيفات</div>
+        <div style="display:flex;flex-direction:column;gap:4px">
+          <sc-for list="{{ cats }}" as="c" hint-placeholder-count="4">
+            <button onClick="{{ c.onClick }}" style="{{ c.style }}">{{ c.label }}</button>
+          </sc-for>
+        </div>
+        <div style="margin-top:28px;background:#FCFBF7;border:1px solid rgba(23,24,26,.1);border-radius:16px;padding:22px">
+          <div style="font-family:'Noto Serif Arabic',serif;font-size:19px;font-weight:600;margin-bottom:6px">لم تجد إجابتك؟</div>
+          <p style="font-size:13.5px;line-height:1.7;color:#5C5850;font-weight:300;margin-bottom:16px">فريقنا جاهزٌ للرد خلال ساعات العمل.</p>
+          <a href="Contact.dc.html" style="display:block;text-align:center;background:#14453C;color:#F6F3EC;padding:12px;font-size:13.5px;font-weight:600;border-radius:11px" style-hover="background:#0E332C">تواصل معنا</a>
+        </div>
+      </aside>
+
+      <!-- questions -->
+      <div>
+        <div style="font-size:13.5px;color:#6E6A61;margin-bottom:18px">{{ resultLabel }}</div>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <sc-for list="{{ visible }}" as="f" hint-placeholder-count="6">
+            <div style="background:#FCFBF7;border:1px solid rgba(23,24,26,.1);border-radius:14px;overflow:hidden">
+              <button onClick="{{ f.toggle }}" style="width:100%;background:none;border:none;font-family:inherit;text-align:right;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:22px 26px;cursor:pointer">
+                <span style="font-family:'Noto Serif Arabic',serif;font-size:19.5px;font-weight:600;color:#17181A">{{ f.q }}</span>
+                <span style="{{ f.iconStyle }}">+</span>
+              </button>
+              <div style="{{ f.answerStyle }}">
+                <p style="font-size:14.5px;line-height:1.9;color:#5C5850;font-weight:300;padding:0 26px 24px">{{ f.a }}</p>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+        <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+          <div style="text-align:center;padding:64px 20px;background:#FCFBF7;border:1px solid rgba(23,24,26,.1);border-radius:16px">
+            <div style="width:56px;height:56px;border-radius:50%;background:#E6EDE9;color:#14453C;display:flex;align-items:center;justify-content:center;font-size:24px;margin:0 auto 18px">؟</div>
+            <div style="font-family:'Noto Serif Arabic',serif;font-size:22px;font-weight:600;margin-bottom:8px">لا نتائج مطابقة</div>
+            <p style="font-size:14px;color:#6E6A61;font-weight:300;max-width:30ch;margin:0 auto">جرّب كلماتٍ أخرى، أو تواصل معنا مباشرةً وسنسعد بمساعدتك.</p>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </section>
+
+  <dc-import name="SiteFooter" hint-size="100%,440px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1320,&quot;height&quot;:900}}">
+class Component extends DCLogic {
+  state = { cat: 'الكل', q: '', open: {} };
+
+  renderVals() {
+    const data = [
+      { cat: 'عام', q: 'ما هي منصّة مَعلم؟', a: 'مَعلم منصّةٌ سعوديةٌ متخصّصة في العقار السكني الفاخر، تصل بين المطوّرين والمشترين والوسطاء عبر محفظةٍ موثّقةٍ وتجربةٍ رقميةٍ راقية.' },
+      { cat: 'عام', q: 'في أي مدنٍ تعملون؟', a: 'نغطّي حالياً الرياض وجدة والدمام والخبر، مع توسّعٍ مستمرٍّ إلى مشاريع نوعيةٍ في مناطق أخرى بالمملكة.' },
+      { cat: 'للمشترين', q: 'هل جميع المساكن موثّقة؟', a: 'نعم. كل مسكنٍ في المحفظة موثّق الملكية، ومُدقّقٌ من المطوّر، ومُصوّرٌ وفق معيارٍ تحريريٍّ واحد قبل نشره.' },
+      { cat: 'للمشترين', q: 'كيف أحجز معاينة؟', a: 'اختر المسكن ثم اضغط «احجز معاينة»، وسيتواصل معك مستشارٌ خاصٌّ لترتيب موعدٍ يناسبك — حضورياً أو افتراضياً.' },
+      { cat: 'للمشترين', q: 'هل هناك رسومٌ على المشتري؟', a: 'خدمة الاستشارة والمعاينة مجانيةٌ للمشتري. تُوضَّح أي رسومٍ متعلّقةٍ بالصفقة بشفافيةٍ تامّةٍ مسبقاً.' },
+      { cat: 'للمطوّرين', q: 'كيف أُدرج مشروعي؟', a: 'عبر صفحة «سوّق مشروعك»، أرسل تفاصيل مشروعك وسيتواصل معك مستشار الشراكات خلال ٢٤ ساعة بعرضٍ مخصّص.' },
+      { cat: 'للمطوّرين', q: 'كم تستغرق عملية الإطلاق؟', a: 'من تأكيد التفاصيل حتى الإطلاق عادةً ما بين ٧ و١٤ يوم عمل، حسب جاهزية المواد التسويقية.' },
+      { cat: 'للوسطاء', q: 'كيف أنضمّ كوسيطٍ معتمد؟', a: 'أنشئ حساباً وأرفق رخصتك ومحفظة أعمالك؛ يراجع فريقنا الطلب ويتحقّق من الاعتماد خلال أيام.' },
+      { cat: 'للوسطاء', q: 'هل أصل إلى قوائم حصرية؟', a: 'نعم، يحصل الوسطاء المعتمدون على وصولٍ مبكرٍ إلى مساكن خارج السوق وتخصيصات ما قبل الإطلاق.' }
+    ];
+    const cats = ['الكل', 'عام', 'للمشترين', 'للمطوّرين', 'للوسطاء'].map(label => {
+      const on = label === this.state.cat;
+      return { label, onClick: () => this.setState({ cat: label }), style: {
+        fontFamily: 'inherit', fontSize: '14px', fontWeight: on ? 600 : 500, textAlign: 'right', padding: '11px 16px', borderRadius: '11px',
+        cursor: 'pointer', transition: 'all .2s', border: 'none',
+        background: on ? '#E6EDE9' : 'transparent', color: on ? '#14453C' : '#46433C'
+      }};
+    });
+
+    const q = this.state.q.trim();
+    let filtered = this.state.cat === 'الكل' ? data : data.filter(d => d.cat === this.state.cat);
+    if (q) filtered = filtered.filter(d => (d.q + ' ' + d.a).includes(q));
+
+    const visible = filtered.map((f, i) => {
+      const key = f.q;
+      const isOpen = !!this.state.open[key];
+      return {
+        ...f,
+        toggle: () => this.setState(s => ({ open: { ...s.open, [key]: !s.open[key] } })),
+        iconStyle: { flex: 'none', width: '28px', height: '28px', borderRadius: '50%', background: isOpen ? '#14453C' : '#E6EDE9', color: isOpen ? '#F6F3EC' : '#14453C', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '18px', fontWeight: 400, transition: 'transform .3s, background .3s', transform: isOpen ? 'rotate(45deg)' : 'none' },
+        answerStyle: { maxHeight: isOpen ? '260px' : '0', overflow: 'hidden', transition: 'max-height .4s cubic-bezier(.2,.7,.3,1)' }
+      };
+    });
+
+    return {
+      cats, visible,
+      onSearch: (e) => this.setState({ q: e.target.value }),
+      resultLabel: `${visible.length} سؤالاً`,
+      isEmpty: visible.length === 0
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Reem+Kufi:wght@400;500;600;700&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Almarai:wght@300;400;700;800&family=Noto+Naskh+Arabic:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  .htroot ::selection { background: rgba(201,162,75,0.3); }
+  @keyframes floatCue { 0%,100% { transform: translateY(0); opacity:.5 } 50% { transform: translateY(9px); opacity:1 } }
+  @keyframes kenburns { 0% { transform: scale(1.06) } 100% { transform: scale(1.16) } }
+  @keyframes marqRTL { to { transform: translateX(50%); } }
+  @keyframes fadeUp { from { opacity:0; transform: translateY(22px) } to { opacity:1; transform:none } }
+  .rev { animation: fadeUp .9s cubic-bezier(.16,.84,.44,1) both; }
+</style>
+</helmet>
+<div class="htroot" dir="rtl" style="font-family:{{ t.body }};background:{{ t.bg }};color:{{ t.text }};min-height:100%;position:relative;overflow:hidden">
+
+  <!-- NAV -->
+  <nav style="position:absolute;top:0;left:0;right:0;z-index:50;height:82px">
+    <div style="max-width:1440px;margin:0 auto;padding:0 48px;height:100%;display:flex;align-items:center;justify-content:space-between">
+      <div style="display:flex;align-items:center;gap:52px">
+        <a href="#top" style="display:flex;flex-direction:column;line-height:.85;color:#fff;text-decoration:none">
+          <span style="font-family:'Noto Naskh Arabic',serif;font-size:30px;font-weight:600">مَعلم</span>
+          <span style="font-size:9px;letter-spacing:5px;color:{{ t.accentBright }};margin-top:5px;font-weight:600;direction:ltr">MA'LAM</span>
+        </a>
+        <div style="display:flex;gap:34px;font-size:14px;font-weight:500">
+          <sc-for list="{{ c.navLinks }}" as="l" hint-placeholder-count="4">
+            <a href="{{ l.href }}" style="color:rgba(255,255,255,.88);text-decoration:none" style-hover="color:#fff">{{ l.t }}</a>
+          </sc-for>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:22px">
+        <button onClick="{{ toggleLang }}" style="background:none;border:none;color:rgba(255,255,255,.75);font-family:inherit;font-size:12px;letter-spacing:1.5px;font-weight:600;cursor:pointer;direction:ltr">EN</button>
+        <span style="width:1px;height:18px;background:rgba(255,255,255,.25)"></span>
+        <a href="#" style="border:1px solid rgba(255,255,255,.45);color:#fff;padding:11px 22px;border-radius:{{ t.radius }};font-size:13px;font-weight:600;text-decoration:none" style-hover="background:rgba(255,255,255,.12)">احجز معاينة</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header id="top" style="position:relative;height:760px;width:100%;overflow:hidden">
+    <div style="position:absolute;inset:0;animation:kenburns 22s ease-out forwards">
+      <img loading="lazy" decoding="async" src="https://picsum.photos/seed/{{ c.hero.slot }}/1000/750.webp" alt="لقطة سينمائية عند الغسق — برج زجاجي / فيلا" style="width:100%;height:100%;object-fit:cover;display:block">
+    </div>
+    <div style="position:absolute;inset:0;background:{{ t.heroScrim }};pointer-events:none"></div>
+    <div style="position:relative;z-index:2;max-width:1440px;margin:0 auto;padding:0 48px;height:100%;display:flex;flex-direction:column;justify-content:center;pointer-events:none">
+      <div style="display:flex;align-items:center;gap:14px;margin-bottom:24px">
+        <span style="width:44px;height:1px;background:{{ t.accentBright }}"></span>
+        <span style="font-size:13px;color:rgba(255,255,255,.9);font-weight:500">{{ c.heroEyebrow }}</span>
+      </div>
+      <h1 style="font-family:{{ t.head }};font-weight:{{ t.headW }};font-size:clamp(52px,7vw,104px);line-height:1.02;color:#fff;max-width:16ch">{{ c.heroTitle1 }} <span style="color:{{ t.accentBright }}">{{ c.heroTitleEm }}</span></h1>
+      <p style="max-width:52ch;margin-top:26px;font-size:19px;line-height:1.75;color:rgba(255,255,255,.82);font-weight:300">{{ c.heroSub }}</p>
+      <div style="pointer-events:auto;margin-top:44px;display:flex;align-items:stretch;background:{{ t.searchBg }};backdrop-filter:blur(20px);border:1px solid {{ t.searchBorder }};border-radius:{{ t.radius }};max-width:840px;box-shadow:0 30px 80px -30px rgba(0,0,0,.55)">
+        <sc-for list="{{ c.searchCells }}" as="cell" hint-placeholder-count="3">
+          <div style="flex:1;padding:17px 24px;border-left:1px solid {{ t.searchDiv }}">
+            <div style="font-size:11px;color:{{ t.searchLabel }};font-weight:600;margin-bottom:6px">{{ cell.l }}</div>
+            <div style="font-size:15px;color:{{ t.searchVal }}">{{ cell.v }}</div>
+          </div>
+        </sc-for>
+        <a href="#" style="display:flex;align-items:center;gap:10px;background:{{ t.grad }};color:{{ t.onGrad }};padding:0 34px;font-weight:700;font-size:14px;margin:8px;border-radius:{{ t.radius }};text-decoration:none">{{ c.searchBtn }}</a>
+      </div>
+    </div>
+    <div style="position:absolute;bottom:30px;left:50%;transform:translateX(-50%);z-index:2;display:flex;flex-direction:column;align-items:center;gap:9px">
+      <span style="font-size:11px;color:rgba(255,255,255,.7)">{{ c.scroll }}</span>
+      <span style="width:1px;height:32px;background:linear-gradient(rgba(255,255,255,.8),transparent);animation:floatCue 2.4s ease-in-out infinite"></span>
+    </div>
+  </header>
+
+  <!-- MARQUEE -->
+  <div style="border-top:1px solid {{ t.line }};border-bottom:1px solid {{ t.line }};padding:24px 0;overflow:hidden;background:{{ t.bgAlt }}">
+    <div style="display:flex;width:max-content;gap:74px;white-space:nowrap;opacity:.6;animation:marqRTL 42s linear infinite">
+      <sc-for list="{{ c.marquee }}" as="m" hint-placeholder-count="12">
+        <span style="font-family:{{ t.head }};font-size:25px;color:{{ t.soft }}">{{ m }}</span>
+      </sc-for>
+    </div>
+  </div>
+
+  <!-- FEATURED -->
+  <section style="max-width:1440px;margin:0 auto;padding:120px 48px 100px">
+    <div class="rev" style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:48px">
+      <div>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px">
+          <span style="width:32px;height:1px;background:{{ t.accent }}"></span>
+          <span style="font-size:13px;color:{{ t.accentText }};font-weight:600">{{ c.featEyebrow }}</span>
+        </div>
+        <h2 style="font-family:{{ t.head }};font-weight:{{ t.headW }};font-size:clamp(38px,4.4vw,64px);line-height:1;color:{{ t.text }}">{{ c.featTitle }}</h2>
+      </div>
+      <a href="#" style="color:{{ t.accentText }};font-size:14px;font-weight:600;padding-bottom:6px;border-bottom:1px solid {{ t.accent }};text-decoration:none">{{ c.featView }}</a>
+    </div>
+    <div class="rev" style="display:grid;grid-template-columns:1.6fr 1fr;gap:18px;height:540px">
+      <a href="#" style="position:relative;border-radius:{{ t.radiusLg }};overflow:hidden;display:block">
+        <img loading="lazy" decoding="async" src="https://picsum.photos/seed/{{ c.feat.main }}/1000/750.webp" alt="واجهة البرج المميّز" style="width:100%;height:100%;object-fit:cover;display:block">
+        <div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 45%,rgba(8,8,9,.85));pointer-events:none"></div>
+        <div style="position:absolute;right:34px;left:34px;bottom:32px;pointer-events:none">
+          <div style="display:flex;gap:18px;font-size:13px;color:rgba(255,255,255,.88);margin-bottom:12px">
+            <sc-for list="{{ c.featMeta }}" as="mt" hint-placeholder-count="3"><span>◈ {{ mt }}</span></sc-for>
+          </div>
+          <div style="font-family:{{ t.head }};font-size:30px;color:#fff">{{ c.featPricePre }} <span style="color:{{ t.accentBright }}">{{ c.featPrice }}</span></div>
+        </div>
+      </a>
+      <div style="display:grid;grid-template-rows:1fr 1fr;gap:18px">
+        <div style="position:relative;border-radius:{{ t.radiusLg }};overflow:hidden"><img loading="lazy" decoding="async" src="https://picsum.photos/seed/{{ c.feat.i2 }}/1000/750.webp" alt="غرفة المعيشة" style="width:100%;height:100%;object-fit:cover;display:block"></div>
+        <div style="position:relative;border-radius:{{ t.radiusLg }};overflow:hidden"><img loading="lazy" decoding="async" src="https://picsum.photos/seed/{{ c.feat.i3 }}/1000/750.webp" alt="مسبح لا متناهٍ" style="width:100%;height:100%;object-fit:cover;display:block"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <section style="border-top:1px solid {{ t.line }};border-bottom:1px solid {{ t.line }}">
+    <div style="max-width:1440px;margin:0 auto;padding:0 48px;display:grid;grid-template-columns:repeat(4,1fr)">
+      <sc-for list="{{ c.stats }}" as="s" hint-placeholder-count="4">
+        <div class="rev" style="padding:60px 24px;text-align:center;border-left:1px solid {{ t.line }}">
+          <div style="font-family:{{ t.head }};font-size:60px;line-height:1;color:{{ t.accentText }};font-weight:{{ t.headW }}">{{ s.v }}</div>
+          <div style="font-size:13px;color:{{ t.muted }};margin-top:12px">{{ s.l }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- COLLECTIONS -->
+  <section id="collections" style="max-width:1440px;margin:0 auto;padding:120px 48px 40px">
+    <div class="rev" style="text-align:center;margin-bottom:56px">
+      <div style="display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:18px">
+        <span style="width:32px;height:1px;background:{{ t.accent }}"></span>
+        <span style="font-size:13px;color:{{ t.accentText }};font-weight:600">{{ c.collEyebrow }}</span>
+        <span style="width:32px;height:1px;background:{{ t.accent }}"></span>
+      </div>
+      <h2 style="font-family:{{ t.head }};font-weight:{{ t.headW }};font-size:clamp(40px,4.8vw,68px);line-height:1;color:{{ t.text }}">{{ c.collTitle }}</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px">
+      <sc-for list="{{ c.collections }}" as="col" hint-placeholder-count="3">
+        <a href="#" class="rev" style="position:relative;height:500px;border-radius:{{ t.radiusLg }};overflow:hidden;display:block;text-decoration:none" style-hover="transform:translateY(-4px)">
+          <img loading="lazy" decoding="async" src="https://picsum.photos/seed/{{ col.slot }}/1000/750.webp" alt="{{ col.ph }}" style="width:100%;height:100%;object-fit:cover;display:block">
+          <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,8,9,.1) 0%,transparent 30%,rgba(8,8,9,.9) 100%);pointer-events:none"></div>
+          <div style="position:absolute;right:30px;left:30px;bottom:32px;pointer-events:none">
+            <div style="font-size:12px;color:{{ t.accentBright }};font-weight:600;margin-bottom:10px">{{ col.count }}</div>
+            <div style="font-family:{{ t.head }};font-size:38px;line-height:1;color:#fff">{{ col.city }}</div>
+            <div style="font-size:14px;color:rgba(255,255,255,.8);margin-top:10px;font-weight:300">{{ col.desc }}</div>
+          </div>
+        </a>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- QUOTE -->
+  <section style="max-width:1100px;margin:0 auto;padding:140px 48px;text-align:center">
+    <div class="rev">
+      <span style="font-family:{{ t.head }};font-size:110px;color:{{ t.accentSoftBg }};line-height:0;display:inline-block;height:36px">”</span>
+      <blockquote style="font-family:{{ t.head }};font-weight:400;font-size:clamp(30px,3.6vw,50px);line-height:1.4;color:{{ t.text }};margin-top:22px">{{ c.quote }}</blockquote>
+      <div style="margin-top:32px;font-size:14px;color:{{ t.muted }}">{{ c.quoteAttr }}</div>
+    </div>
+  </section>
+
+  <!-- DUAL CTA -->
+  <section id="developers" style="max-width:1440px;margin:0 auto;padding:0 48px 120px">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+      <div class="rev" style="position:relative;height:420px;border-radius:{{ t.radiusLg }};overflow:hidden;display:flex;align-items:flex-end;padding:46px">
+        <img loading="lazy" decoding="async" src="https://picsum.photos/seed/{{ c.dev.slot }}/1000/750.webp" alt="{{ c.dev.ph }}" style="width:100%;height:100%;object-fit:cover;display:block">
+        <div style="position:absolute;inset:0;background:linear-gradient(300deg,rgba(8,8,9,.9),rgba(8,8,9,.35));pointer-events:none"></div>
+        <div style="position:relative;max-width:26ch">
+          <div style="font-size:12px;color:{{ t.accentBright }};font-weight:600;margin-bottom:14px">{{ c.dev.eyebrow }}</div>
+          <h3 style="font-family:{{ t.head }};font-size:40px;line-height:1.05;font-weight:{{ t.headW }};color:#fff">{{ c.dev.title }}</h3>
+          <a href="#" style="display:inline-flex;margin-top:22px;color:{{ t.accentBright }};font-size:14px;font-weight:600;border-bottom:1px solid {{ t.accent }};padding-bottom:5px;text-decoration:none">{{ c.dev.link }}</a>
+        </div>
+      </div>
+      <div id="brokers" class="rev" style="position:relative;height:420px;border-radius:{{ t.radiusLg }};overflow:hidden;display:flex;align-items:flex-end;padding:46px">
+        <img loading="lazy" decoding="async" src="https://picsum.photos/seed/{{ c.broker.slot }}/1000/750.webp" alt="{{ c.broker.ph }}" style="width:100%;height:100%;object-fit:cover;display:block">
+        <div style="position:absolute;inset:0;background:linear-gradient(300deg,rgba(8,8,9,.9),rgba(8,8,9,.35));pointer-events:none"></div>
+        <div style="position:relative;max-width:26ch">
+          <div style="font-size:12px;color:{{ t.accentBright }};font-weight:600;margin-bottom:14px">{{ c.broker.eyebrow }}</div>
+          <h3 style="font-family:{{ t.head }};font-size:40px;line-height:1.05;font-weight:{{ t.headW }};color:#fff">{{ c.broker.title }}</h3>
+          <a href="#" style="display:inline-flex;margin-top:22px;color:{{ t.accentBright }};font-size:14px;font-weight:600;border-bottom:1px solid {{ t.accent }};padding-bottom:5px;text-decoration:none">{{ c.broker.link }}</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VALUES -->
+  <section style="border-top:1px solid {{ t.line }};background:{{ t.bgAlt }}">
+    <div style="max-width:1440px;margin:0 auto;padding:100px 48px;display:grid;grid-template-columns:repeat(3,1fr);gap:56px">
+      <sc-for list="{{ c.values }}" as="v" hint-placeholder-count="3">
+        <div class="rev">
+          <div style="font-family:{{ t.head }};font-size:16px;color:{{ t.accentText }};margin-bottom:20px">{{ v.num }}</div>
+          <h4 style="font-family:{{ t.head }};font-size:30px;font-weight:{{ t.headW }};margin-bottom:14px;color:{{ t.text }}">{{ v.title }}</h4>
+          <p style="font-size:15.5px;line-height:1.8;color:{{ t.soft }};font-weight:300">{{ v.body }}</p>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section style="position:relative;overflow:hidden;padding:140px 48px;text-align:center">
+    <div style="position:absolute;inset:0;opacity:{{ t.ctaOpacity }}"><img loading="lazy" decoding="async" src="https://picsum.photos/seed/{{ c.ctaBg }}/1000/750.webp" alt="خلفية داخلية أنيقة" style="width:100%;height:100%;object-fit:cover;display:block"></div>
+    <div style="position:absolute;inset:0;background:{{ t.ctaScrim }};pointer-events:none"></div>
+    <div class="rev" style="position:relative;max-width:760px;margin:0 auto">
+      <h2 style="font-family:{{ t.head }};font-weight:{{ t.headW }};font-size:clamp(40px,5vw,72px);line-height:1.05;color:{{ t.text }}">{{ c.contactTitle }}</h2>
+      <p style="font-size:18px;line-height:1.7;color:{{ t.soft }};margin-top:22px;font-weight:300">{{ c.contactSub }}</p>
+      <div style="display:flex;gap:14px;justify-content:center;margin-top:38px">
+        <a href="#" style="background:{{ t.grad }};color:{{ t.onGrad }};padding:16px 38px;font-weight:700;font-size:14px;border-radius:{{ t.radius }};text-decoration:none">{{ c.contactBtn1 }}</a>
+        <a href="#" style="border:1px solid {{ t.outlineBorder }};color:{{ t.text }};padding:16px 38px;font-weight:600;font-size:14px;border-radius:{{ t.radius }};text-decoration:none">{{ c.contactBtn2 }}</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer style="border-top:1px solid {{ t.line }};background:{{ t.footerBg }}">
+    <div style="max-width:1440px;margin:0 auto;padding:72px 48px 36px">
+      <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:44px;padding-bottom:56px;border-bottom:1px solid {{ t.line }}">
+        <div>
+          <div style="font-family:'Noto Naskh Arabic',serif;font-size:34px;font-weight:600;color:{{ t.text }}">مَعلم</div>
+          <div style="font-size:9px;letter-spacing:5px;color:{{ t.accentText }};margin-top:4px;font-weight:600;direction:ltr">MA'LAM</div>
+          <p style="max-width:36ch;margin-top:20px;font-size:14px;line-height:1.75;color:{{ t.muted }};font-weight:300">{{ c.footerDesc }}</p>
+        </div>
+        <sc-for list="{{ c.footerCols }}" as="fc" hint-placeholder-count="3">
+          <div>
+            <div style="font-size:12px;color:{{ t.accentText }};font-weight:600;margin-bottom:18px">{{ fc.head }}</div>
+            <sc-for list="{{ fc.links }}" as="fl" hint-placeholder-count="4">
+              <div style="margin-bottom:12px"><a href="#" style="color:{{ t.soft }};font-size:14px;font-weight:300;text-decoration:none" style-hover="color:{{ t.text }}">{{ fl }}</a></div>
+            </sc-for>
+          </div>
+        </sc-for>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding-top:28px;font-size:12.5px;color:{{ t.muted }}">
+        <span>{{ c.footerCopy }}</span>
+        <span style="display:flex;gap:26px">
+          <sc-for list="{{ c.footerLegal }}" as="fg" hint-placeholder-count="3"><a href="#" style="color:{{ t.muted }};text-decoration:none">{{ fg }}</a></sc-for>
+        </span>
+      </div>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:900},&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;modern-luxury&quot;,&quot;contemporary&quot;,&quot;bold-premium&quot;],&quot;default&quot;:&quot;bold-premium&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Theme&quot;},&quot;prefix&quot;:{&quot;editor&quot;:null,&quot;default&quot;:&quot;t&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  themeTokens(key) {
+    const T = {
+      'modern-luxury': {
+        bg: '#F4EFE7', bgAlt: '#EBE2D5', footerBg: '#EEE7DA',
+        text: '#2A251E', soft: '#5C5346', muted: '#948877', line: 'rgba(42,37,30,.13)',
+        accent: '#B08D3C', accentText: '#98762C', accentBright: '#C9A24B', accentSoftBg: 'rgba(176,141,60,.22)',
+        grad: 'linear-gradient(180deg,#C9A24B,#A07E32)', onGrad: '#2A210E',
+        head: "'Amiri', serif", body: "'IBM Plex Sans Arabic', sans-serif", headW: 700,
+        radius: '3px', radiusLg: '6px',
+        heroScrim: 'linear-gradient(180deg,rgba(20,16,10,.55),rgba(20,16,10,.15) 38%,rgba(244,239,231,.55) 80%,#F4EFE7)',
+        searchBg: 'rgba(251,248,242,.82)', searchBorder: 'rgba(42,37,30,.14)', searchDiv: 'rgba(42,37,30,.12)',
+        searchLabel: '#948877', searchVal: '#2A251E',
+        ctaOpacity: 0.16, ctaScrim: 'linear-gradient(180deg,#F4EFE7,rgba(244,239,231,.6),#F4EFE7)',
+        outlineBorder: 'rgba(42,37,30,.28)'
+      },
+      'contemporary': {
+        bg: '#FFFFFF', bgAlt: '#F5F8F6', footerBg: '#0B0F0D',
+        text: '#0B0F0D', soft: '#454F4B', muted: '#7B857F', line: 'rgba(11,15,13,.1)',
+        accent: '#0B5D3B', accentText: '#0B5D3B', accentBright: '#3FA972', accentSoftBg: 'rgba(11,93,59,.14)',
+        grad: '#0B5D3B', onGrad: '#FFFFFF',
+        head: "'IBM Plex Sans Arabic', sans-serif", body: "'IBM Plex Sans Arabic', sans-serif", headW: 600,
+        radius: '12px', radiusLg: '18px',
+        heroScrim: 'linear-gradient(180deg,rgba(0,0,0,.5),rgba(0,0,0,.15) 40%,rgba(255,255,255,0) 66%,#FFFFFF)',
+        searchBg: 'rgba(255,255,255,.9)', searchBorder: 'rgba(11,15,13,.1)', searchDiv: 'rgba(11,15,13,.08)',
+        searchLabel: '#7B857F', searchVal: '#0B0F0D',
+        ctaOpacity: 0.1, ctaScrim: 'linear-gradient(180deg,#FFFFFF,rgba(245,248,246,.7),#FFFFFF)',
+        outlineBorder: 'rgba(11,15,13,.18)'
+      },
+      'bold-premium': {
+        bg: '#0A0A0B', bgAlt: '#0E0E10', footerBg: '#070708',
+        text: '#F6F3EC', soft: '#B8B3A7', muted: '#8C877B', line: 'rgba(255,255,255,.09)',
+        accent: '#B8912F', accentText: '#D8B968', accentBright: '#E4C878', accentSoftBg: 'rgba(228,200,120,.2)',
+        grad: 'linear-gradient(180deg,#E4C878,#B8912F)', onGrad: '#161310',
+        head: "'Reem Kufi', sans-serif", body: "'Almarai', sans-serif", headW: 600,
+        radius: '2px', radiusLg: '5px',
+        heroScrim: 'linear-gradient(180deg,rgba(10,10,11,.72),rgba(10,10,11,.28) 40%,rgba(10,10,11,.6) 78%,#0A0A0B)',
+        searchBg: 'rgba(20,20,22,.72)', searchBorder: 'rgba(255,255,255,.12)', searchDiv: 'rgba(255,255,255,.09)',
+        searchLabel: '#8C877B', searchVal: '#F6F3EC',
+        ctaOpacity: 0.35, ctaScrim: 'linear-gradient(180deg,#0A0A0B,rgba(10,10,11,.6),#0A0A0B)',
+        outlineBorder: 'rgba(255,255,255,.22)'
+      }
+    };
+    return T[key] || T['bold-premium'];
+  }
+
+  renderVals() {
+    const t = this.themeTokens(this.props.theme || 'bold-premium');
+    const p = this.props.prefix || 't';
+    const c = {
+      navLinks: [ {t:'المشاريع',href:'#'}, {t:'المجموعات',href:'#collections'}, {t:'المطوّرون',href:'#developers'}, {t:'الوسطاء',href:'#brokers'} ],
+      heroEyebrow: 'المملكة العربية السعودية · تأسست ٢٠٢٦',
+      heroTitle1: 'حيثُ تُصبح المعالم',
+      heroTitleEm: 'بيتاً.',
+      heroSub: 'محفظة منسّقة لأرقى المساكن في المملكة — من أفق الرياض إلى شواطئ المنطقة الشرقية.',
+      searchCells: [ {l:'الموقع',v:'الرياض، السعودية'}, {l:'نوع العقار',v:'فيلا · بنتهاوس'}, {l:'السعر',v:'أي ميزانية'} ],
+      searchBtn: 'استكشف', scroll: 'مرّر للأسفل',
+      marquee: ['الرياض','العليا','كورنيش جدة','مركز الملك عبدالله المالي','الدمام','الخبر','بوابة الدرعية','البحر الأحمر','الرياض','العليا','كورنيش جدة','مركز الملك عبدالله المالي','الدمام','الخبر','بوابة الدرعية','البحر الأحمر'],
+      featEyebrow: 'مسكن مميّز', featTitle: 'مساكن نلاين', featView: 'عرض المسكن ←',
+      featMeta: ['الرياض · العليا','٣–٥ غرف نوم','٢٤٠–٦٢٠ م²'], featPricePre: 'يبدأ من', featPrice: '٤٫٨ مليون',
+      stats: [ {v:'+١٤٠٠',l:'مسكن منسّق'}, {v:'١٨ مليار',l:'قيمة المحفظة '}, {v:'١٢',l:'مشروع رئيسي'}, {v:'٩٨٪',l:'نسبة استبقاء العملاء'} ],
+      collEyebrow: 'منسّقة حسب المدينة', collTitle: 'المجموعات',
+      collections: [
+        {city:'الرياض',count:'٦٤٠ مسكناً',desc:'بنتهاوسات الأفق وأبراج مركز الملك عبدالله المالي.',slot:p+'-col-riyadh',ph:'أفق الرياض عند الغسق'},
+        {city:'جدة',count:'٣٨٠ مسكناً',desc:'حياة الواجهة البحرية على الكورنيش.',slot:p+'-col-jeddah',ph:'كورنيش جدة'},
+        {city:'الدمام · الخبر',count:'٢١٠ مساكن',desc:'مساكن الواجهة البحرية في المنطقة الشرقية.',slot:p+'-col-dammam',ph:'فلل الخبر البحرية'}
+      ],
+      quote: 'نحن لا نبيع الأمتار المربّعة، بل نمنحك العنوان الذي يُعرّف أسلوب حياتك.',
+      quoteAttr: 'فيصل الراشد · شريك مؤسّس',
+      dev: {eyebrow:'للمطوّرين', title:'سوّق مشروعك لمشترين مؤهّلين.', link:'أدرج مشروعاً ←', slot:p+'-cta-dev', ph:'مشروع تطوير / مخطط رئيسي'},
+      broker: {eyebrow:'للوسطاء', title:'انضمّ إلى أرقى شبكة وساطة في المملكة.', link:'كن شريكاً ←', slot:p+'-cta-broker', ph:'وسيط عقاري / محفظة'},
+      values: [
+        {num:'٠١',title:'خاصٌّ بطبيعته',body:'فرصٌ خارج السوق وتخصيصات ما قبل الإطلاق محفوظة لعملائنا — قبل أن تصل إلى السوق العام.'},
+        {num:'٠٢',title:'موثّقٌ في كل خطوة',body:'كلّ عرضٍ موثّق الملكية، ومُدقّق من المطوّر، ومُصوّر وفق معيار تحريري واحد. لا مفاجآت ولا حِيَل عرض.'},
+        {num:'٠٣',title:'مستشارٌ واحد مخصّص',body:'نقطة تواصل واحدة من المعاينة الأولى حتى التسليم — يتقن سوق المملكة ولغتك وطموحاتك.'}
+      ],
+      contactTitle: 'لنبدأ الحديث.',
+      contactSub: 'سيرافقك مستشارٌ خاص عبر المحفظة ويرتّب المعاينات في الوقت الذي يناسبك.',
+      contactBtn1: 'تصفّح المحفظة', contactBtn2: 'تحدّث إلى مستشار',
+      footerDesc: 'العنوان المنسّق للمعيشة المميّزة في المملكة. الرياض · جدة · الدمام.',
+      footerCols: [
+        {head:'استكشف',links:['كل المشاريع','المجموعات','الإطلاقات الجديدة','خارج السوق']},
+        {head:'الشركاء',links:['للمطوّرين','للوسطاء','علاقات المستثمرين','الاستشارات']},
+        {head:'الشركة',links:['عن مَعلم','المجلّة','الوظائف','تواصل معنا']}
+      ],
+      footerCopy: '© ٢٠٢٦ مَعلم للاستثمار العقاري. جميع الحقوق محفوظة.',
+      footerLegal: ['الخصوصية','الشروط','إنستغرام'],
+      hero: {slot: p+'-hero'},
+      feat: {main: p+'-feat-main', i2: p+'-feat-2', i3: p+'-feat-3'},
+      ctaBg: p+'-cta-bg'
+    };
+    return { t, c, toggleLang: () => {} };
+  }
+}
+</script>
+</body>
+</html>

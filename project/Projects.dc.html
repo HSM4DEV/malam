@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Manrope:wght@300;400;500;600;700&family=Noto+Naskh+Arabic:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="./image-slot.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0B0B0C; }
+  ::selection { background: rgba(201,162,75,0.3); color: #F4F1EA; }
+  a { color: #C9A24B; text-decoration: none; }
+  a:hover { color: #E4C878; }
+</style>
+</helmet>
+<div style="font-family:'Manrope',sans-serif;color:#F4F1EA;background:#0B0B0C;min-height:100vh">
+
+  <!-- NAV -->
+  <nav style="position:sticky;top:0;z-index:100;height:78px;background:rgba(9,9,10,.92);backdrop-filter:blur(18px);border-bottom:1px solid rgba(255,255,255,.08)">
+    <div style="max-width:1440px;margin:0 auto;padding:0 48px;height:100%;display:flex;align-items:center;justify-content:space-between">
+      <div style="display:flex;align-items:center;gap:56px">
+        <a href="Homepage.dc.html" style="display:flex;flex-direction:column;line-height:.9;color:#F4F1EA">
+          <span style="font-family:'Noto Naskh Arabic',serif;font-size:30px;font-weight:600">مَعلم</span>
+          <span style="font-size:9px;letter-spacing:5px;color:#C9A24B;margin-top:5px;font-weight:600">MA'LAM</span>
+        </a>
+        <div style="display:flex;gap:38px;font-size:13.5px;letter-spacing:.4px;font-weight:500">
+          <a href="Projects.dc.html" style="color:#E4C878">Projects</a>
+          <a href="Homepage.dc.html#collections" style="color:#E8E4DA">Collections</a>
+          <a href="Homepage.dc.html#developers" style="color:#E8E4DA">Developers</a>
+          <a href="Homepage.dc.html#brokers" style="color:#E8E4DA">Brokers</a>
+        </div>
+      </div>
+      <a href="#" style="display:inline-flex;align-items:center;gap:9px;border:1px solid rgba(201,162,75,.5);color:#E4C878;padding:11px 22px;border-radius:2px;font-size:12.5px;letter-spacing:1px;font-weight:600" style-hover="background:rgba(201,162,75,.1)">Book a viewing</a>
+    </div>
+  </nav>
+
+  <!-- PAGE HEAD -->
+  <div style="max-width:1440px;margin:0 auto;padding:64px 48px 34px">
+    <div style="display:flex;align-items:center;gap:14px;margin-bottom:18px">
+      <span style="width:32px;height:1px;background:#C9A24B"></span>
+      <span style="font-size:11.5px;letter-spacing:3.5px;color:#D8B968;font-weight:600">THE PORTFOLIO</span>
+    </div>
+    <div style="display:flex;align-items:flex-end;justify-content:space-between">
+      <h1 style="font-family:'Cormorant Garamond',serif;font-weight:500;font-size:clamp(44px,5vw,76px);line-height:1;letter-spacing:-.5px">Discover residences</h1>
+      <p style="font-size:15px;color:#8C877B;padding-bottom:10px"><span style="color:#F4F1EA;font-weight:600">{{ resultCount }}</span> residences across the Kingdom</p>
+    </div>
+  </div>
+
+  <!-- FILTER BAR -->
+  <div style="position:sticky;top:78px;z-index:90;background:rgba(9,9,10,.92);backdrop-filter:blur(18px);border-top:1px solid rgba(255,255,255,.07);border-bottom:1px solid rgba(255,255,255,.07)">
+    <div style="max-width:1440px;margin:0 auto;padding:16px 48px;display:flex;align-items:center;justify-content:space-between;gap:24px">
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <sc-for list="{{ cityChips }}" as="c" hint-placeholder-count="4">
+          <button onClick="{{ c.onClick }}" style="{{ c.style }}">{{ c.label }}</button>
+        </sc-for>
+      </div>
+      <div style="display:flex;align-items:center;gap:20px">
+        <sc-for list="{{ dropdowns }}" as="d" hint-placeholder-count="3">
+          <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:#C9C4B8;cursor:pointer;padding:9px 14px;border:1px solid rgba(255,255,255,.12);border-radius:2px" style-hover="border-color:rgba(201,162,75,.5)">
+            <span style="color:#8C877B">{{ d.label }}</span><span style="color:#F4F1EA;font-weight:500">{{ d.value }}</span>
+            <span style="color:#8C877B;font-size:9px">▾</span>
+          </div>
+        </sc-for>
+        <div style="width:1px;height:22px;background:rgba(255,255,255,.14)"></div>
+        <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:#C9C4B8;cursor:pointer">
+          <span style="color:#8C877B">Sort</span><span style="color:#F4F1EA;font-weight:500">{{ sortLabel }}</span>
+          <span style="color:#8C877B;font-size:9px">▾</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GRID -->
+  <div style="max-width:1440px;margin:0 auto;padding:44px 48px 120px">
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:26px">
+      <sc-for list="{{ projects }}" as="p" hint-placeholder-count="6">
+        <a href="Project-Details.dc.html" style="display:block;border:1px solid rgba(255,255,255,.08);border-radius:4px;overflow:hidden;background:#0F0F11;transition:transform .5s cubic-bezier(.16,.84,.44,1),border-color .5s" style-hover="transform:translateY(-6px);border-color:rgba(201,162,75,.35)">
+          <div style="position:relative;height:280px;overflow:hidden">
+            <img loading="lazy" decoding="async" src="https://picsum.photos/seed/{{ p.slot }}/1000/750.webp" alt="{{ p.ph }}" style="width:100%;height:100%;object-fit:cover;display:block">
+            <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,8,9,.35) 0%,transparent 34%);pointer-events:none"></div>
+            <span style="position:absolute;top:16px;left:16px;background:{{ p.tagBg }};color:{{ p.tagColor }};font-size:10.5px;letter-spacing:1.5px;font-weight:700;padding:6px 12px;border-radius:2px;backdrop-filter:blur(8px)">{{ p.tag }}</span>
+            <span style="position:absolute;top:16px;right:16px;width:38px;height:38px;display:flex;align-items:center;justify-content:center;background:rgba(15,15,17,.6);border:1px solid rgba(255,255,255,.15);border-radius:50%;backdrop-filter:blur(8px);color:#E4C878;font-size:15px">♡</span>
+          </div>
+          <div style="padding:26px 28px 30px">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+              <span style="font-size:12px;letter-spacing:1.5px;color:#8C877B">{{ p.location }}</span>
+              <span style="font-size:12px;color:#8C877B">{{ p.developer }}</span>
+            </div>
+            <h3 style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:500;line-height:1.05;margin-bottom:18px">{{ p.name }}</h3>
+            <div style="display:flex;gap:18px;padding-bottom:20px;border-bottom:1px solid rgba(255,255,255,.08);font-size:13px;color:#A5A093">
+              <span>{{ p.beds }} Beds</span><span>·</span><span>{{ p.baths }} Baths</span><span>·</span><span>{{ p.area }}</span>
+            </div>
+            <div style="display:flex;align-items:baseline;justify-content:space-between;margin-top:18px">
+              <div>
+                <div style="font-size:10.5px;letter-spacing:1.5px;color:#8C877B;margin-bottom:3px">STARTING FROM</div>
+                <div style="font-family:'Cormorant Garamond',serif;font-size:26px;color:#E4C878">{{ p.price }}</div>
+              </div>
+              <span style="font-size:13px;color:#C9C4B8;letter-spacing:.5px">View →</span>
+            </div>
+          </div>
+        </a>
+      </sc-for>
+    </div>
+
+    <div style="display:flex;justify-content:center;margin-top:64px">
+      <button style="border:1px solid rgba(255,255,255,.18);color:#F4F1EA;background:none;font-family:inherit;padding:16px 44px;font-size:13.5px;letter-spacing:1px;font-weight:600;border-radius:2px;cursor:pointer" style-hover="border-color:rgba(201,162,75,.6);color:#E4C878">Load more residences</button>
+    </div>
+  </div>
+
+  <footer style="border-top:1px solid rgba(255,255,255,.09);background:#08080A">
+    <div style="max-width:1440px;margin:0 auto;padding:40px 48px;display:flex;justify-content:space-between;align-items:center;font-size:12.5px;color:#6E695E">
+      <span>© 2026 مَعلم Ma'lam Real Estate.</span>
+      <a href="Homepage.dc.html" style="color:#A5A093">← Back to home</a>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:900}}">
+class Component extends DCLogic {
+  state = { city: 'All' };
+
+  renderVals() {
+    const active = this.state.city;
+    const cities = ['All', 'Riyadh', 'Jeddah', 'Dammam · Khobar'];
+    const cityChips = cities.map(label => {
+      const on = label === active;
+      return {
+        label,
+        onClick: () => this.setState({ city: label }),
+        style: {
+          fontFamily: 'inherit', fontSize: '13px', letterSpacing: '.5px', fontWeight: on ? 700 : 500,
+          padding: '9px 20px', borderRadius: '2px', cursor: 'pointer', transition: 'all .3s',
+          border: on ? '1px solid rgba(201,162,75,.6)' : '1px solid rgba(255,255,255,.12)',
+          background: on ? 'linear-gradient(180deg,rgba(216,185,104,.18),rgba(184,145,47,.1))' : 'transparent',
+          color: on ? '#E4C878' : '#C9C4B8'
+        }
+      };
+    });
+
+    const all = [
+      { name: 'The Nline Residences', location: 'RIYADH · AL OLAYA', developer: 'Vision Estates', beds: '3–5', baths: '4', area: '240–620 m²', price: ' 4.8M', tag: 'SIGNATURE', tagBg: 'linear-gradient(180deg,#D8B968,#B8912F)', tagColor: '#161310', slot: 'p-1', ph: 'Glass tower dusk', city: 'Riyadh' },
+      { name: 'Diriyah Court Villas', location: 'RIYADH · DIRIYAH', developer: 'Diriyah Co.', beds: '4–6', baths: '6', area: '480–900 m²', price: ' 9.2M', tag: 'NEW LAUNCH', tagBg: 'rgba(15,15,17,.65)', tagColor: '#E4C878', slot: 'p-2', ph: 'Najdi-style villa courtyard', city: 'Riyadh' },
+      { name: 'Corniche Sky Lofts', location: 'JEDDAH · CORNICHE', developer: 'Red Sea Living', beds: '2–4', baths: '3', area: '180–410 m²', price: ' 3.6M', tag: 'WATERFRONT', tagBg: 'rgba(15,15,17,.65)', tagColor: '#E4C878', slot: 'p-3', ph: 'Waterfront apartment balcony', city: 'Jeddah' },
+      { name: 'Al Khobar Marina Estate', location: 'KHOBAR · CORNICHE', developer: 'Gulf Landmark', beds: '4–5', baths: '5', area: '360–700 m²', price: ' 6.4M', tag: 'SEAFRONT', tagBg: 'rgba(15,15,17,.65)', tagColor: '#E4C878', slot: 'p-4', ph: 'Marina villa at golden hour', city: 'Dammam · Khobar' },
+      { name: 'KAFD Sky Penthouse', location: 'RIYADH · KAFD', developer: 'Capital Towers', beds: '3–4', baths: '4', area: '300–540 m²', price: ' 7.9M', tag: 'PENTHOUSE', tagBg: 'rgba(15,15,17,.65)', tagColor: '#E4C878', slot: 'p-5', ph: 'Penthouse skyline view', city: 'Riyadh' },
+      { name: 'Obhur Bay Residences', location: 'JEDDAH · OBHUR', developer: 'Red Sea Living', beds: '3–5', baths: '4', area: '260–580 m²', price: ' 5.1M', tag: 'BEACHFRONT', tagBg: 'rgba(15,15,17,.65)', tagColor: '#E4C878', slot: 'p-6', ph: 'Beachfront villa pool', city: 'Jeddah' }
+    ];
+    const projects = active === 'All' ? all : all.filter(p => p.city === active);
+
+    return {
+      cityChips, projects,
+      resultCount: projects.length + (active === 'All' ? '' : ''),
+      sortLabel: 'Featured',
+      dropdowns: [
+        { label: 'Type', value: 'Any' },
+        { label: 'Beds', value: '3+' },
+        { label: 'Price', value: 'Any' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

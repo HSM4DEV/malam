@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Noto+Serif+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: #F6F3EC; }
+  .pg a { text-decoration: none; }
+  .pg ::selection { background: rgba(20,69,60,.16); }
+  .wrap { max-width: 1320px; margin: 0 auto; padding: 0 40px; }
+  .g3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; }
+  .g4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 22px; }
+  .split { display: grid; grid-template-columns: 1.05fr .95fr; gap: 56px; align-items: center; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+  .rev { animation: fadeUp .7s cubic-bezier(.2,.7,.3,1) both; }
+  @media (max-width: 900px) { .g3, .g4, .split { grid-template-columns: 1fr; } .wrap { padding: 0 22px; } .split { gap: 34px; } }
+</style>
+</helmet>
+<div class="pg" dir="rtl" style="font-family:'IBM Plex Sans Arabic',sans-serif;background:#F6F3EC;color:#17181A;min-height:100vh;overflow-x:hidden">
+  <dc-import name="SiteNav" active="brokers" hint-size="100%,74px"></dc-import>
+
+  <!-- HERO -->
+  <header class="wrap" style="padding-top:72px;padding-bottom:80px">
+    <div class="split">
+      <div class="rev">
+        <div style="display:inline-flex;align-items:center;gap:10px;background:#E6EDE9;border:1px solid rgba(20,69,60,.18);padding:7px 14px;border-radius:999px;margin-bottom:24px">
+          <span style="width:6px;height:6px;border-radius:50%;background:#14453C"></span>
+          <span style="font-size:12.5px;color:#14453C;font-weight:600">لِلوسطاء</span>
+        </div>
+        <h1 style="font-family:'Noto Serif Arabic',serif;font-weight:600;font-size:clamp(40px,5vw,68px);line-height:1.14;max-width:16ch">انضمّ إلى أرقى شبكة وساطةٍ في المملكة.</h1>
+        <p style="font-size:18px;line-height:1.7;color:#46433C;font-weight:300;margin-top:20px;max-width:46ch">قوائم حصرية، عملاءُ من النخبة، وأدواتٌ تُنجز صفقاتك أسرع — ضمن شبكةٍ تُقدّر المهنية والخصوصية.</p>
+        <div style="display:flex;gap:14px;margin-top:32px;flex-wrap:wrap">
+          <a href="Auth.dc.html" style="background:#14453C;color:#F6F3EC;padding:15px 30px;font-size:14.5px;font-weight:600;border-radius:12px" style-hover="background:#0E332C">قدّم طلب انضمام</a>
+          <a href="#how" style="border:1px solid rgba(23,24,26,.2);color:#17181A;padding:15px 30px;font-size:14.5px;font-weight:600;border-radius:12px" style-hover="border-color:#14453C">كيف تنضم</a>
+        </div>
+      </div>
+      <div class="rev" style="position:relative">
+        <div style="position:relative;aspect-ratio:4/5;border-radius:20px;overflow:hidden;border:1px solid rgba(23,24,26,.1)">
+          <img loading="lazy" decoding="async" src="https://picsum.photos/seed/brk-hero/1000/750.webp" alt="وسيطٌ عقاريٌّ أنيق في مكتبٍ راقٍ / لقاء عميل" style="width:100%;height:100%;object-fit:cover;display:block">
+        </div>
+        <div style="position:absolute;bottom:22px;right:22px;background:rgba(252,251,247,.95);backdrop-filter:blur(10px);border:1px solid rgba(23,24,26,.08);border-radius:16px;padding:18px 22px;box-shadow:0 20px 40px -24px rgba(23,24,26,.5)">
+          <div style="font-size:12px;color:#8A857A;margin-bottom:4px">متوسّط العمولة السنوية</div>
+          <div style="font-family:'Noto Serif Arabic',serif;font-size:26px;color:#14453C;font-weight:600">أعلى بـ ٣٥٪</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- BENEFITS -->
+  <section class="wrap" style="padding-top:20px;padding-bottom:40px">
+    <div class="rev" style="max-width:620px;margin-bottom:44px">
+      <div style="font-size:12.5px;letter-spacing:1px;color:#14453C;font-weight:700;margin-bottom:12px">لماذا مَعلم</div>
+      <h2 style="font-family:'Noto Serif Arabic',serif;font-size:clamp(30px,3.6vw,48px);line-height:1.1;font-weight:600">أدواتٌ ومزايا تُنجز صفقاتك</h2>
+    </div>
+    <div class="g3">
+      <sc-for list="{{ benefits }}" as="b" hint-placeholder-count="6">
+        <div class="rev" style="background:#FCFBF7;border:1px solid rgba(23,24,26,.09);border-radius:18px;padding:32px 28px">
+          <div style="width:44px;height:44px;border-radius:12px;background:#E6EDE9;display:flex;align-items:center;justify-content:center;color:#14453C;margin-bottom:20px">
+            <svg width="20" height="24" viewBox="0 0 24 28" fill="none"><path d="M2 27 V11 A10 10 0 0 1 22 11 V27" stroke="currentColor" stroke-width="2"/><path d="M2 27 H22" stroke="currentColor" stroke-width="2"/></svg>
+          </div>
+          <h3 style="font-family:'Noto Serif Arabic',serif;font-size:22px;font-weight:600;margin-bottom:10px">{{ b.title }}</h3>
+          <p style="font-size:14.5px;line-height:1.8;color:#5C5850;font-weight:300">{{ b.body }}</p>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- HOW TO JOIN -->
+  <section id="how" style="background:#ECE6DA;border-top:1px solid rgba(23,24,26,.1);margin-top:56px">
+    <div class="wrap" style="padding:90px 40px">
+      <div class="rev" style="max-width:620px;margin-bottom:44px">
+        <div style="font-size:12.5px;letter-spacing:1px;color:#14453C;font-weight:700;margin-bottom:12px">الانضمام</div>
+        <h2 style="font-family:'Noto Serif Arabic',serif;font-size:clamp(30px,3.6vw,48px);line-height:1.1;font-weight:600">ثلاث خطواتٍ لتصبح شريكاً</h2>
+      </div>
+      <div class="g3">
+        <sc-for list="{{ steps }}" as="s" hint-placeholder-count="3">
+          <div class="rev" style="border-top:2px solid #14453C;padding-top:22px">
+            <div style="font-family:'Noto Serif Arabic',serif;font-size:34px;color:#14453C;font-weight:600;margin-bottom:12px">{{ s.no }}</div>
+            <h3 style="font-family:'Noto Serif Arabic',serif;font-size:22px;font-weight:600;margin-bottom:10px">{{ s.title }}</h3>
+            <p style="font-size:14.5px;line-height:1.8;color:#5C5850;font-weight:300">{{ s.body }}</p>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- METRICS -->
+  <section style="background:#0E332C;color:#EAF0ED">
+    <div class="wrap" style="padding:72px 40px">
+      <div class="g4" style="gap:40px">
+        <sc-for list="{{ metrics }}" as="m" hint-placeholder-count="4">
+          <div class="rev" style="text-align:center">
+            <div style="font-family:'Noto Serif Arabic',serif;font-size:clamp(40px,4.4vw,60px);line-height:1;color:#F6F3EC;font-weight:600">{{ m.v }}</div>
+            <div style="font-size:13px;color:#8FBFB0;margin-top:12px">{{ m.l }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIAL -->
+  <section class="wrap" style="padding:90px 40px;text-align:center;max-width:920px">
+    <blockquote class="rev" style="font-family:'Noto Serif Arabic',serif;font-size:clamp(26px,3.2vw,40px);line-height:1.5;font-weight:500">«القوائم الحصرية وحدها غيّرت أعمالي. أُغلق صفقاتٍ أكبر وبثقةٍ أكثر.»</blockquote>
+    <div style="margin-top:26px;font-size:14px;color:#6E6A61">— وسيطٌ معتمد، الرياض</div>
+  </section>
+
+  <!-- CTA -->
+  <section class="wrap" style="padding-bottom:90px">
+    <div class="rev" style="background:#14453C;border-radius:24px;padding:64px 56px;text-align:center">
+      <h2 style="font-family:'Noto Serif Arabic',serif;font-size:clamp(30px,3.8vw,50px);line-height:1.14;color:#F6F3EC;font-weight:600;max-width:24ch;margin:0 auto">ابدأ رحلتك في شبكة مَعلم للوسطاء.</h2>
+      <div style="display:flex;gap:14px;justify-content:center;margin-top:32px;flex-wrap:wrap">
+        <a href="Auth.dc.html" style="background:#F6F3EC;color:#0E332C;padding:15px 32px;font-size:15px;font-weight:600;border-radius:12px" style-hover="background:#fff">قدّم طلب انضمام</a>
+        <a href="Contact.dc.html" style="border:1px solid rgba(246,243,236,.4);color:#F6F3EC;padding:15px 32px;font-size:15px;font-weight:600;border-radius:12px" style-hover="border-color:#F6F3EC">تحدّث إلى فريقنا</a>
+      </div>
+    </div>
+  </section>
+
+  <dc-import name="SiteFooter" hint-size="100%,440px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1320,&quot;height&quot;:900}}">
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      benefits: [
+        { title: 'قوائمُ حصرية', body: 'وصولٌ مبكرٌ إلى مساكن خارج السوق وتخصيصات ما قبل الإطلاق.' },
+        { title: 'عملاءُ من النخبة', body: 'طلباتُ شراءٍ مُتحقَّقة من مشترين جادّين وذوي قدرةٍ عالية.' },
+        { title: 'عمولاتٌ تنافسية', body: 'هيكل عمولاتٍ شفّاف ومجزٍ، مع دفعاتٍ منتظمة وواضحة.' },
+        { title: 'أدواتٌ رقمية', body: 'لوحةٌ لإدارة القوائم والعملاء والصفقات في مكانٍ واحد.' },
+        { title: 'تسويقٌ جاهز', body: 'موادُّ عرضٍ وتصويرٌ احترافي لكل قائمةٍ تمثّلها.' },
+        { title: 'تدريبٌ ودعم', body: 'ورشٌ دورية ومستشارٌ لدعمك في الصفقات الكبرى.' }
+      ],
+      steps: [
+        { no: '٠١', title: 'قدّم طلبك', body: 'أنشئ حسابك وأرفق رخصتك ومحفظة أعمالك.' },
+        { no: '٠٢', title: 'تحقّقٌ سريع', body: 'يراجع فريقنا طلبك ويتحقّق من اعتمادك خلال أيام.' },
+        { no: '٠٣', title: 'ابدأ العمل', body: 'ادخل لوحتك، واستعرض القوائم الحصرية، وابدأ الإغلاق.' }
+      ],
+      metrics: [
+        { v: '+٤٠٠', l: 'وسيطٌ معتمد' },
+        { v: '٣٥٪', l: 'عمولةٌ أعلى' },
+        { v: '٢٤س', l: 'زمن ردٍّ للطلبات' },
+        { v: '٩٦٪', l: 'رضا الوسطاء' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

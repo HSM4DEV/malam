@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Aref+Ruqaa:wght@400;700&family=Tajawal:wght@200;300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: #EEE8DC; }
+  .arch ::selection { background: rgba(168,73,38,.22); }
+  .arch a { text-decoration: none; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(26px); } to { opacity: 1; transform: none; } }
+  @keyframes devIn { from { opacity: 0; transform: scale(1.06); } to { opacity: 1; transform: none; } }
+  .rev { animation: fadeUp 1s cubic-bezier(.16,.84,.44,1) both; }
+  .plate { animation: devIn 1.4s cubic-bezier(.16,.84,.44,1) both; }
+  .grain { position: fixed; inset: 0; z-index: 900; pointer-events: none; opacity: .05; mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+  .idxrow { transition: color .5s; }
+  .idxrow:hover .idxname { color: #A8492E; }
+  .idxrow:hover .idxthumb { max-height: 150px; opacity: 1; margin-top: 24px; }
+  .idxthumb { max-height: 0; opacity: 0; overflow: hidden; transition: max-height .7s cubic-bezier(.16,.84,.44,1), opacity .6s, margin-top .6s; }
+  .leader { flex: 1; border-bottom: 1px dotted rgba(26,23,18,.4); margin: 0 18px 7px; }
+  .chapimg { transition: transform 1.3s cubic-bezier(.16,.84,.44,1); }
+  .chaprow:hover .chapimg { transform: scale(1.04); }
+</style>
+</helmet>
+<div class="arch" dir="rtl" style="font-family:'Tajawal',sans-serif;background:#EEE8DC;color:#1A1712;min-height:100vh;position:relative;overflow-x:hidden">
+  <div class="grain"></div>
+
+  <!-- edge edition label -->
+  <div style="position:fixed;top:50%;left:20px;transform:translateY(-50%) rotate(180deg);writing-mode:vertical-rl;z-index:40;font-size:11px;letter-spacing:4px;color:rgba(26,23,18,.4);font-weight:500;direction:ltr">EDITION I — MMXXVI</div>
+
+  <!-- TOP BAR -->
+  <nav style="position:fixed;top:0;left:0;right:0;z-index:80;height:70px;background:rgba(238,232,220,.86);backdrop-filter:blur(10px);border-bottom:1px solid rgba(26,23,18,.16)">
+    <div style="max-width:1360px;margin:0 auto;padding:0 40px;height:100%;display:flex;align-items:center;justify-content:space-between">
+      <a href="#cover" style="display:flex;align-items:baseline;gap:12px;color:#1A1712">
+        <span style="font-family:'Aref Ruqaa',serif;font-size:30px;font-weight:700;line-height:1">مَعلم</span>
+        <span style="font-size:9px;letter-spacing:4px;color:#A8492E;font-weight:700;direction:ltr">MA'LAM</span>
+      </a>
+      <div style="display:flex;gap:36px;font-size:13.5px;font-weight:500;color:#3A362E">
+        <a href="#foreword" style="color:#3A362E" style-hover="color:#A8492E">افتتاحية</a>
+        <a href="#index" style="color:#3A362E" style-hover="color:#A8492E">الفهرس</a>
+        <a href="#plate" style="color:#3A362E" style-hover="color:#A8492E">اللوحات</a>
+        <a href="#chapters" style="color:#3A362E" style-hover="color:#A8492E">الفصول</a>
+        <a href="#colophon" style="color:#3A362E" style-hover="color:#A8492E">عن الدار</a>
+      </div>
+      <a href="#colophon" style="display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(26,23,18,.4);color:#1A1712;padding:9px 20px;font-size:12.5px;font-weight:500;border-radius:1px" style-hover="background:#1A1712;color:#EEE8DC">احجز معاينة</a>
+    </div>
+  </nav>
+
+  <!-- COVER -->
+  <header id="cover" style="max-width:1360px;margin:0 auto;padding:150px 40px 90px;min-height:100vh;display:grid;grid-template-columns:1.05fr .95fr;gap:64px;align-items:center">
+    <div class="rev">
+      <div style="display:flex;align-items:center;gap:16px;margin-bottom:34px">
+        <span style="font-size:12px;letter-spacing:2px;color:#A8492E;font-weight:700">العدد الأول</span>
+        <span style="width:44px;height:1px;background:rgba(26,23,18,.4)"></span>
+        <span style="font-size:12px;letter-spacing:1px;color:#8C8474">شتاء ٢٠٢٦</span>
+      </div>
+      <h1 style="font-family:'Aref Ruqaa',serif;font-weight:700;font-size:clamp(96px,15vw,220px);line-height:.82;color:#1A1712;margin-bottom:8px">مَعلم</h1>
+      <p style="font-family:'Amiri',serif;font-size:clamp(26px,3vw,40px);line-height:1.4;color:#47423A;max-width:20ch;margin-top:28px">دليلٌ منسّق للعمارة السكنية الفاخرة في المملكة.</p>
+      <div style="display:flex;gap:26px;margin-top:44px;padding-top:26px;border-top:1px solid rgba(26,23,18,.18);font-size:13px;letter-spacing:.5px;color:#6B6456">
+        <span>المجلّد الأول</span><span style="color:#C6BBA6">/</span><span>٢٠٢٦</span><span style="color:#C6BBA6">/</span><span>الرياض · جدة · الدمام</span>
+      </div>
+    </div>
+    <div class="plate">
+      <div style="position:relative;aspect-ratio:3/4;background:#E2D9C8;border:1px solid rgba(26,23,18,.14);overflow:hidden">
+        <img loading="lazy" decoding="async" src="https://picsum.photos/seed/ar-cover/1000/750.webp" alt="لوحة الغلاف — برج سكني، ضوء طبيعي، حبيبات فيلمية" style="width:100%;height:100%;object-fit:cover;display:block">
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-top:16px;font-size:12px;letter-spacing:.5px;color:#8C8474">
+        <span>لوحة ٠٠ — مساكن نلاين، الرياض</span>
+        <span style="direction:ltr">Pl. 00</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- FOREWORD -->
+  <section id="foreword" style="border-top:1px solid rgba(26,23,18,.18);background:#E9E2D3">
+    <div style="max-width:1360px;margin:0 auto;padding:96px 40px;display:grid;grid-template-columns:220px 1fr;gap:56px">
+      <div class="rev">
+        <div style="font-family:'Amiri',serif;font-size:78px;line-height:.8;color:#A8492E">٠١</div>
+        <div style="font-size:13px;letter-spacing:2px;color:#6B6456;margin-top:14px;font-weight:500">افتتاحية</div>
+      </div>
+      <div class="rev">
+        <p style="font-family:'Amiri',serif;font-size:clamp(28px,3.1vw,42px);line-height:1.55;color:#26221B;max-width:24ch">
+          <span style="color:#A8492E">نحن</span> لا نبيع الأمتار المربّعة؛ بل نوثّق العناوين التي تُعرّف حياةً بأكملها.
+        </p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:44px;max-width:900px">
+          <p style="font-size:16px;line-height:1.95;color:#47423A;font-weight:300">وُلد «مَعلم» من قناعةٍ بأنّ المسكن الاستثنائي يستحق أن يُقدَّم كما تُقدَّم القطعة النادرة: بعنايةٍ، وبسياقٍ، وبصدق. كلّ مسكنٍ في هذا الدليل مُختارٌ بيدٍ واحدة، وموثّقٌ وفق معيارٍ تحريريٍّ لا يقبل المساومة.</p>
+          <p style="font-size:16px;line-height:1.95;color:#47423A;font-weight:300">من مبانٍ طينيّةٍ في الدرعية أُعيدت قراءتها، إلى أبراجٍ زجاجيّةٍ تعيد رسم أفق الرياض — نحن نبحث عن المعالم التي تصمد أمام الزمن، ونضعها بين يديك دون ضجيج، وبخصوصيةٍ تليق بمقتنيها.</p>
+        </div>
+        <div style="margin-top:40px;font-family:'Amiri',serif;font-style:italic;font-size:20px;color:#6B6456">— فيصل الراشد، الشريك المؤسّس</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INDEX -->
+  <section id="index" style="max-width:1360px;margin:0 auto;padding:96px 40px">
+    <div class="rev" style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:44px;border-bottom:2px solid #1A1712;padding-bottom:22px">
+      <div style="display:flex;align-items:baseline;gap:22px">
+        <span style="font-family:'Amiri',serif;font-size:40px;color:#A8492E">٠٢</span>
+        <h2 style="font-family:'Amiri',serif;font-size:clamp(38px,4.4vw,60px);line-height:1;color:#1A1712">الفهرس</h2>
+      </div>
+      <div style="font-size:13px;letter-spacing:1px;color:#8C8474;padding-bottom:8px">المساكن المختارة — ٢٠٢٦</div>
+    </div>
+
+    <sc-for list="{{ index }}" as="r" hint-placeholder-count="5">
+      <a href="#plate" class="idxrow" style="display:block;padding:26px 4px;border-bottom:1px solid rgba(26,23,18,.16);color:#1A1712">
+        <div style="display:flex;align-items:baseline;gap:26px">
+          <span style="font-family:'Amiri',serif;font-size:26px;color:#A8492E;width:52px;flex:none">{{ r.no }}</span>
+          <span class="idxname" style="font-family:'Amiri',serif;font-size:clamp(26px,3vw,40px);line-height:1;transition:color .5s;flex:none">{{ r.name }}</span>
+          <span style="font-size:14px;color:#8C8474;flex:none;padding-bottom:5px">{{ r.city }}</span>
+          <span class="leader"></span>
+          <span style="font-size:13px;color:#6B6456;flex:none;padding-bottom:5px;direction:ltr">{{ r.plate }}</span>
+          <span style="font-family:'Amiri',serif;font-size:24px;color:#1A1712;flex:none;width:180px;text-align:left">{{ r.price }}</span>
+        </div>
+        <div class="idxthumb">
+          <div style="height:150px;background:#E2D9C8;overflow:hidden;position:relative">
+            <img loading="lazy" decoding="async" src="https://picsum.photos/seed/{{ r.slot }}/1000/750.webp" alt="{{ r.ph }}" style="width:100%;height:100%;object-fit:cover;display:block">
+          </div>
+        </div>
+      </a>
+    </sc-for>
+  </section>
+
+  <!-- PLATE (featured spread) -->
+  <section id="plate" style="background:#1A1712;color:#EEE8DC">
+    <div style="max-width:1360px;margin:0 auto;padding:96px 40px">
+      <div class="rev" style="display:flex;align-items:baseline;gap:22px;margin-bottom:40px">
+        <span style="font-family:'Amiri',serif;font-size:40px;color:#D4794F">٠٣</span>
+        <h2 style="font-family:'Amiri',serif;font-size:clamp(38px,4.4vw,60px);line-height:1;color:#EEE8DC">اللوحة المميّزة</h2>
+      </div>
+      <div class="plate" style="position:relative;aspect-ratio:16/8;background:#241f18;overflow:hidden;border:1px solid rgba(238,232,220,.14)">
+        <img loading="lazy" decoding="async" src="https://picsum.photos/seed/ar-plate-main/1000/750.webp" alt="لوحة كاملة — واجهة مساكن نلاين عند الغسق" style="width:100%;height:100%;object-fit:cover;display:block">
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-top:16px;font-size:12.5px;letter-spacing:.5px;color:#A79E8B;border-bottom:1px solid rgba(238,232,220,.14);padding-bottom:28px">
+        <span>لوحة ٠٣ — مساكن نلاين، حيّ العليا، الرياض</span>
+        <span style="direction:ltr">Pl. 03 — The Nline Residences</span>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1.5fr 1fr;gap:60px;margin-top:48px">
+        <div>
+          <p style="font-family:'Amiri',serif;font-size:clamp(26px,2.9vw,38px);line-height:1.5;color:#EEE8DC;max-width:26ch">يرتفع البرج سبعةً وأربعين طابقاً فوق العليا، بصمتٍ من الزجاج البرونزيّ والحجر، يعيد رسم أفق الرياض.</p>
+          <p style="font-size:16px;line-height:1.95;color:#B7AF9C;font-weight:300;margin-top:28px;max-width:52ch">كلّ مسكنٍ موجَّهٌ نحو مركز الملك عبدالله المالي، بزجاجٍ يمتدّ من الأرض إلى السقف، وشرفاتٍ خاصّة، وتشطيباتٍ من أتيليه ميلانيّ حائزٍ على جوائز. تبلغ الارتفاعات الداخلية ٣٫٤ أمتار في المجموعة المميّزة.</p>
+          <a href="#colophon" style="display:inline-flex;margin-top:32px;color:#D4794F;font-size:14px;font-weight:500;border-bottom:1px solid rgba(212,121,79,.5);padding-bottom:6px">اطلب ملف اللوحة الكامل ←</a>
+        </div>
+        <div>
+          <div style="font-size:12px;letter-spacing:2px;color:#8C8474;margin-bottom:18px">المواصفات</div>
+          <sc-for list="{{ specs }}" as="s" hint-placeholder-count="5">
+            <div style="display:flex;justify-content:space-between;padding:15px 0;border-bottom:1px solid rgba(238,232,220,.13)">
+              <span style="font-size:14px;color:#A79E8B">{{ s.k }}</span>
+              <span style="font-family:'Amiri',serif;font-size:20px;color:#EEE8DC">{{ s.v }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:48px">
+        <div style="aspect-ratio:1;background:#241f18;overflow:hidden"><img loading="lazy" decoding="async" src="https://picsum.photos/seed/ar-plate-2/1000/750.webp" alt="تفصيلة — المواد" style="width:100%;height:100%;object-fit:cover;display:block"></div>
+        <div style="aspect-ratio:1;background:#241f18;overflow:hidden"><img loading="lazy" decoding="async" src="https://picsum.photos/seed/ar-plate-3/1000/750.webp" alt="تفصيلة — الصالة" style="width:100%;height:100%;object-fit:cover;display:block"></div>
+        <div style="aspect-ratio:1;background:#241f18;overflow:hidden"><img loading="lazy" decoding="async" src="https://picsum.photos/seed/ar-plate-4/1000/750.webp" alt="تفصيلة — المسبح" style="width:100%;height:100%;object-fit:cover;display:block"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHAPTERS -->
+  <section id="chapters" style="max-width:1360px;margin:0 auto;padding:96px 40px">
+    <div class="rev" style="display:flex;align-items:baseline;gap:22px;margin-bottom:56px">
+      <span style="font-family:'Amiri',serif;font-size:40px;color:#A8492E">٠٤</span>
+      <h2 style="font-family:'Amiri',serif;font-size:clamp(38px,4.4vw,60px);line-height:1;color:#1A1712">الفصول — حسب المدينة</h2>
+    </div>
+    <sc-for list="{{ chapters }}" as="ch" hint-placeholder-count="3">
+      <a href="#index" class="chaprow rev" style="display:grid;grid-template-columns:{{ ch.cols }};gap:52px;align-items:center;padding:44px 0;border-bottom:1px solid rgba(26,23,18,.16);color:#1A1712">
+        <div style="{{ ch.imgOrder }}position:relative;aspect-ratio:16/10;background:#E2D9C8;overflow:hidden;border:1px solid rgba(26,23,18,.14)">
+          <div class="chapimg" style="position:absolute;inset:0"><img loading="lazy" decoding="async" src="https://picsum.photos/seed/{{ ch.slot }}/1000/750.webp" alt="{{ ch.ph }}" style="width:100%;height:100%;object-fit:cover;display:block"></div>
+        </div>
+        <div style="{{ ch.txtOrder }}">
+          <div style="font-size:13px;letter-spacing:2px;color:#A8492E;font-weight:700;margin-bottom:16px">{{ ch.label }}</div>
+          <h3 style="font-family:'Amiri',serif;font-size:clamp(48px,6vw,88px);line-height:.92;color:#1A1712">{{ ch.city }}</h3>
+          <p style="font-size:16px;line-height:1.9;color:#5C5648;font-weight:300;margin-top:20px;max-width:34ch">{{ ch.desc }}</p>
+          <div style="display:flex;align-items:center;gap:20px;margin-top:26px">
+            <span style="font-family:'Amiri',serif;font-size:26px;color:#A8492E">{{ ch.count }}</span>
+            <span style="font-size:14px;color:#1A1712;border-bottom:1px solid rgba(26,23,18,.4);padding-bottom:4px">تصفّح الفصل ←</span>
+          </div>
+        </div>
+      </a>
+    </sc-for>
+  </section>
+
+  <!-- NOTES -->
+  <section style="background:#E9E2D3;border-top:1px solid rgba(26,23,18,.18)">
+    <div style="max-width:1360px;margin:0 auto;padding:96px 40px">
+      <div class="rev" style="display:flex;align-items:baseline;gap:22px;margin-bottom:52px">
+        <span style="font-family:'Amiri',serif;font-size:40px;color:#A8492E">٠٥</span>
+        <h2 style="font-family:'Amiri',serif;font-size:clamp(38px,4.4vw,60px);line-height:1;color:#1A1712">ملاحظات الدار</h2>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:52px">
+        <sc-for list="{{ notes }}" as="n" hint-placeholder-count="3">
+          <div class="rev" style="display:grid;grid-template-columns:44px 1fr;gap:16px">
+            <div style="font-family:'Amiri',serif;font-size:30px;color:#A8492E;line-height:1">{{ n.no }}</div>
+            <div>
+              <h4 style="font-family:'Amiri',serif;font-size:27px;color:#1A1712;margin-bottom:12px">{{ n.title }}</h4>
+              <p style="font-size:15px;line-height:1.9;color:#5C5648;font-weight:300">{{ n.body }}</p>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- COLOPHON / CONTACT -->
+  <section id="colophon" style="background:#1A1712;color:#EEE8DC">
+    <div style="max-width:1360px;margin:0 auto;padding:110px 40px 60px">
+      <div class="rev" style="text-align:center;max-width:780px;margin:0 auto">
+        <span style="font-family:'Amiri',serif;font-size:40px;color:#D4794F">٠٦</span>
+        <h2 style="font-family:'Amiri',serif;font-size:clamp(44px,5.5vw,82px);line-height:1.05;color:#EEE8DC;margin-top:14px">لنبدأ الحديث.</h2>
+        <p style="font-size:18px;line-height:1.8;color:#B7AF9C;font-weight:300;margin-top:22px">يرافقك مستشارٌ خاصّ عبر الدليل، ويرتّب المعاينات في الوقت الذي يناسبك — بخصوصيةٍ تامّة.</p>
+        <div style="display:flex;gap:16px;justify-content:center;margin-top:38px">
+          <a href="#" style="background:#A8492E;color:#F4ECE0;padding:16px 38px;font-size:14px;font-weight:500;border-radius:1px" style-hover="background:#8E3A21">احجز معاينة خاصّة</a>
+          <a href="#" style="border:1px solid rgba(238,232,220,.35);color:#EEE8DC;padding:16px 38px;font-size:14px;font-weight:500;border-radius:1px" style-hover="border-color:#EEE8DC">اطلب الكتيّب</a>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-top:90px;padding-top:56px;border-top:1px solid rgba(238,232,220,.16)">
+        <div>
+          <div style="font-family:'Aref Ruqaa',serif;font-size:38px;color:#EEE8DC">مَعلم</div>
+          <div style="font-size:9px;letter-spacing:5px;color:#D4794F;margin-top:4px;font-weight:700;direction:ltr">MA'LAM — EDITION I</div>
+          <p style="max-width:34ch;margin-top:20px;font-size:14px;line-height:1.85;color:#A79E8B;font-weight:300">دار نشرٍ للعمارة السكنية الفاخرة في المملكة. يُطبع بعنايةٍ في الرياض.</p>
+        </div>
+        <sc-for list="{{ colophon }}" as="col" hint-placeholder-count="3">
+          <div>
+            <div style="font-size:11px;letter-spacing:2px;color:#D4794F;font-weight:700;margin-bottom:18px">{{ col.head }}</div>
+            <sc-for list="{{ col.lines }}" as="ln" hint-placeholder-count="3">
+              <div style="margin-bottom:11px;font-size:14px;color:#B7AF9C;font-weight:300">{{ ln }}</div>
+            </sc-for>
+          </div>
+        </sc-for>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding-top:34px;margin-top:44px;border-top:1px solid rgba(238,232,220,.12);font-size:12.5px;color:#8C8474">
+        <span>© ٢٠٢٦ مَعلم للاستثمار العقاري — جميع الحقوق محفوظة.</span>
+        <span style="direction:ltr;letter-spacing:2px">RIYADH · JEDDAH · DAMMAM</span>
+      </div>
+    </div>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1360,&quot;height&quot;:900}}">
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      index: [
+        { no: '٠١', name: 'مساكن نلاين', city: 'الرياض · العليا', plate: 'Pl. 03', price: '٤٫٨ مليون', slot: 'ar-idx-1', ph: 'برج زجاجي عند الغسق' },
+        { no: '٠٢', name: 'فلل بلاط الدرعية', city: 'الرياض · الدرعية', plate: 'Pl. 07', price: '٩٫٢ مليون', slot: 'ar-idx-2', ph: 'فناء فيلا نجدية' },
+        { no: '٠٣', name: 'شرفات الكورنيش', city: 'جدة · الكورنيش', plate: 'Pl. 11', price: '٣٫٦ مليون', slot: 'ar-idx-3', ph: 'شقة على الواجهة البحرية' },
+        { no: '٠٤', name: 'مرسى الخبر', city: 'الخبر · الكورنيش', plate: 'Pl. 14', price: '٦٫٤ مليون', slot: 'ar-idx-4', ph: 'فيلا على المرسى' },
+        { no: '٠٥', name: 'بنتهاوس المركز المالي', city: 'الرياض · المركز المالي', plate: 'Pl. 18', price: '٧٫٩ مليون', slot: 'ar-idx-5', ph: 'بنتهاوس بإطلالة على الأفق' }
+      ],
+      specs: [
+        { k: 'الطوابق', v: '٤٧ طابقاً' },
+        { k: 'غرف النوم', v: '٣–٥' },
+        { k: 'المساحة الداخلية', v: '٢٤٠–٦٢٠ م²' },
+        { k: 'ارتفاع السقف', v: '٣٫٤ م' },
+        { k: 'التسليم', v: 'الربع الرابع ٢٠٢٧' }
+      ],
+      chapters: [
+        { label: 'الفصل الأول', city: 'الرياض', desc: 'بنتهاوسات الأفق وأبراج المركز الماليّ، وفللٌ طينيّةٌ أُعيدت قراءتها في الدرعية.', count: '٦٤٠ مسكناً', slot: 'ar-ch-1', ph: 'أفق الرياض عند الغسق', cols: '1.15fr .85fr', imgOrder: 'order:1;', txtOrder: 'order:2;' },
+        { label: 'الفصل الثاني', city: 'جدة', desc: 'حياة الواجهة البحرية على الكورنيش وخليج أبحر — بحرٌ وضوءٌ ونسيم.', count: '٣٨٠ مسكناً', slot: 'ar-ch-2', ph: 'كورنيش جدة', cols: '.85fr 1.15fr', imgOrder: 'order:2;', txtOrder: 'order:1;' },
+        { label: 'الفصل الثالث', city: 'الدمام · الخبر', desc: 'مساكن الواجهة البحرية بالمنطقة الشرقية، بهدوءٍ يليق بالخليج.', count: '٢١٠ مساكن', slot: 'ar-ch-3', ph: 'فلل الخبر البحرية', cols: '1.15fr .85fr', imgOrder: 'order:1;', txtOrder: 'order:2;' }
+      ],
+      notes: [
+        { no: '٠١', title: 'خاصٌّ بطبيعته', body: 'فرصٌ خارج السوق وتخصيصات ما قبل الإطلاق، محفوظةٌ لعملاء الدار قبل أن تصل إلى العامّة.' },
+        { no: '٠٢', title: 'موثّقٌ بعناية', body: 'كلّ مسكنٍ موثّق الملكية، ومُدقّقٌ من المطوّر، ومُصوّرٌ وفق معيارٍ تحريريٍّ واحد. لا حِيَل عرض.' },
+        { no: '٠٣', title: 'مستشارٌ واحد', body: 'نقطة تواصلٍ واحدة من المعاينة الأولى حتى التسليم — تُتقن السوق ولغتك وطموحاتك.' }
+      ],
+      colophon: [
+        { head: 'الدليل', lines: ['كل المساكن', 'الفهرس', 'الإطلاقات الجديدة', 'خارج السوق'] },
+        { head: 'الشركاء', lines: ['للمطوّرين', 'للوسطاء', 'علاقات المستثمرين'] },
+        { head: 'تواصل', lines: ['الرياض، حيّ العليا', '‎+٩٦٦ ١١ ٠٠٠ ٠٠٠٠', 'concierge@malam.sa'] }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

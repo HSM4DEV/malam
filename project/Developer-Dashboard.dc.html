@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Noto+Serif+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #F1EDE3; }
+  .pg a { text-decoration: none; }
+  .pg ::selection { background: rgba(20,69,60,.16); }
+  .dash { display: grid; grid-template-columns: 264px 1fr; min-height: 100vh; }
+  .kpis { display: grid; grid-template-columns: repeat(4,1fr); gap: 18px; }
+  .mainrow { display: grid; grid-template-columns: 1.5fr 1fr; gap: 20px; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+  @keyframes growBar { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+  .rev { animation: fadeUp .6s cubic-bezier(.2,.7,.3,1) both; }
+  .bar { transform-origin: bottom; animation: growBar .8s cubic-bezier(.2,.7,.3,1) both; }
+  .trow { transition: background .2s; }
+  .trow:hover { background: #F6F3EC; }
+  .navi { transition: background .2s, color .2s; }
+  @media (max-width: 960px) { .dash { grid-template-columns: 1fr; } .dside { display: none !important; } .kpis { grid-template-columns: 1fr 1fr; } .mainrow { grid-template-columns: 1fr; } }
+  @media (max-width: 560px) { .kpis { grid-template-columns: 1fr; } }
+</style>
+</helmet>
+<div class="pg" dir="rtl" style="font-family:'IBM Plex Sans Arabic',sans-serif;background:#F1EDE3;color:#17181A;min-height:100vh">
+  <div class="dash">
+    <!-- SIDEBAR -->
+    <aside class="dside" style="background:#0E332C;color:#EAF0ED;position:sticky;top:0;height:100vh;display:flex;flex-direction:column;padding:26px 20px">
+      <a href="Homepage-Signature.dc.html" style="display:flex;align-items:center;gap:11px;color:#F6F3EC;padding:0 8px 24px;border-bottom:1px solid rgba(246,243,236,.12)">
+        <svg width="22" height="26" viewBox="0 0 24 28" fill="none"><path d="M2 27 V11 A10 10 0 0 1 22 11 V27" stroke="currentColor" stroke-width="2"/><path d="M2 27 H22" stroke="currentColor" stroke-width="2"/></svg>
+        <span style="font-family:'Noto Serif Arabic',serif;font-size:24px;font-weight:700">مَعلم</span>
+        <span style="font-size:9px;background:rgba(143,191,176,.2);color:#8FBFB0;padding:3px 8px;border-radius:6px;font-weight:600">مطوّر</span>
+      </a>
+      <nav style="display:flex;flex-direction:column;gap:4px;margin-top:22px;flex:1">
+        <sc-for list="{{ nav }}" as="n" hint-placeholder-count="7">
+          <a href="#" onClick="{{ n.onClick }}" class="navi" style="{{ n.style }}">
+            <span style="font-size:16px;width:22px;text-align:center">{{ n.icon }}</span>
+            <span>{{ n.label }}</span>
+            <sc-if value="{{ n.hasBadge }}" hint-placeholder-val="{{ false }}"><span style="margin-inline-start:auto;background:#C4643C;color:#fff;font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px">{{ n.badge }}</span></sc-if>
+          </a>
+        </sc-for>
+      </nav>
+      <div style="border-top:1px solid rgba(246,243,236,.12);padding-top:16px;display:flex;align-items:center;gap:12px">
+        <div style="width:40px;height:40px;border-radius:50%;overflow:hidden;flex:none;border:1px solid rgba(246,243,236,.2)"><img loading="lazy" decoding="async" src="https://picsum.photos/seed/dd-user/1000/750.webp" alt="صورة المطوّر" style="width:100%;height:100%;object-fit:cover;display:block"></div>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:14px;font-weight:600;color:#F6F3EC;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">مجموعة فيجن</div>
+          <div style="font-size:12px;color:#8FBFB0">حساب مطوّر</div>
+        </div>
+        <a href="Auth.dc.html" style="color:#8FBFB0;font-size:16px" style-hover="color:#F6F3EC">⏻</a>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main style="display:flex;flex-direction:column;min-width:0">
+      <!-- TOPBAR -->
+      <header style="position:sticky;top:0;z-index:20;background:rgba(241,237,227,.9);backdrop-filter:blur(12px);border-bottom:1px solid rgba(23,24,26,.1);padding:18px 32px;display:flex;align-items:center;justify-content:space-between;gap:20px">
+        <div>
+          <div style="font-size:12.5px;color:#8A857A">مرحباً بعودتك 👋</div>
+          <h1 style="font-family:'Noto Serif Arabic',serif;font-size:26px;font-weight:600;line-height:1.1">نظرة عامة</h1>
+        </div>
+        <div style="display:flex;align-items:center;gap:14px">
+          <div style="position:relative;display:flex;align-items:center">
+            <span style="position:absolute;right:14px;color:#8A857A"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.7"/><path d="M11 11 L14.5 14.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span>
+            <input placeholder="بحث…" style="font-family:inherit;background:#FCFBF7;border:1px solid rgba(23,24,26,.14);border-radius:11px;padding:11px 40px 11px 14px;font-size:14px;color:#17181A;outline:none;width:220px">
+          </div>
+          <button style="width:44px;height:44px;border:1px solid rgba(23,24,26,.14);background:#FCFBF7;border-radius:11px;cursor:pointer;font-size:16px;position:relative">🔔<span style="position:absolute;top:9px;right:11px;width:7px;height:7px;background:#C4643C;border-radius:50%"></span></button>
+          <a href="Market-Your-Project.dc.html" style="background:#14453C;color:#F6F3EC;padding:12px 22px;font-size:14px;font-weight:600;border-radius:11px;white-space:nowrap" style-hover="background:#0E332C">+ مشروع جديد</a>
+        </div>
+      </header>
+
+      <div style="padding:28px 32px;display:flex;flex-direction:column;gap:20px">
+        <!-- KPIs -->
+        <div class="kpis">
+          <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="4">
+            <div class="rev" style="background:#FCFBF7;border:1px solid rgba(23,24,26,.09);border-radius:16px;padding:22px 24px">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+                <span style="font-size:13px;color:#6E6A61">{{ k.label }}</span>
+                <span style="width:34px;height:34px;border-radius:10px;background:#E6EDE9;color:#14453C;display:flex;align-items:center;justify-content:center;font-size:15px">{{ k.icon }}</span>
+              </div>
+              <div style="font-family:'Noto Serif Arabic',serif;font-size:34px;font-weight:600;line-height:1">{{ k.value }}</div>
+              <div style="font-size:12.5px;margin-top:8px;color:{{ k.deltaColor }}">{{ k.delta }} عن الشهر الماضي</div>
+            </div>
+          </sc-for>
+        </div>
+
+        <!-- CHART + LEADS -->
+        <div class="mainrow">
+          <!-- chart -->
+          <div class="rev" style="background:#FCFBF7;border:1px solid rgba(23,24,26,.09);border-radius:16px;padding:24px 26px">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:22px">
+              <div>
+                <div style="font-family:'Noto Serif Arabic',serif;font-size:20px;font-weight:600">أداء المشاهدات</div>
+                <div style="font-size:12.5px;color:#8A857A;margin-top:2px">آخر ١٢ أسبوعاً</div>
+              </div>
+              <div style="display:flex;gap:6px;background:#F1EDE3;padding:4px;border-radius:10px">
+                <span style="background:#FCFBF7;color:#14453C;font-size:12.5px;font-weight:600;padding:7px 14px;border-radius:7px;box-shadow:0 1px 4px -2px rgba(0,0,0,.3)">أسبوعي</span>
+                <span style="color:#6E6A61;font-size:12.5px;font-weight:500;padding:7px 14px">شهري</span>
+              </div>
+            </div>
+            <div style="display:flex;align-items:flex-end;gap:8px;height:200px">
+              <sc-for list="{{ chart }}" as="b" hint-placeholder-count="12">
+                <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;height:100%;justify-content:flex-end">
+                  <div class="bar" style="{{ b.style }}"></div>
+                  <span style="font-size:10.5px;color:#A7A092">{{ b.label }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <!-- leads -->
+          <div class="rev" style="background:#FCFBF7;border:1px solid rgba(23,24,26,.09);border-radius:16px;padding:24px 26px;display:flex;flex-direction:column">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">
+              <div style="font-family:'Noto Serif Arabic',serif;font-size:20px;font-weight:600">أحدث الطلبات</div>
+              <a href="#" style="font-size:13px;color:#14453C;font-weight:600">عرض الكل</a>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:4px;flex:1">
+              <sc-for list="{{ leads }}" as="l" hint-placeholder-count="5">
+                <div style="display:flex;align-items:center;gap:12px;padding:12px 8px;border-radius:10px" class="trow">
+                  <span style="width:38px;height:38px;flex:none;border-radius:50%;background:{{ l.avBg }};color:{{ l.avColor }};display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600">{{ l.initials }}</span>
+                  <div style="flex:1;min-width:0">
+                    <div style="font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ l.name }}</div>
+                    <div style="font-size:12.5px;color:#8A857A;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ l.project }}</div>
+                  </div>
+                  <span style="font-size:11.5px;color:#A7A092;flex:none">{{ l.time }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+
+        <!-- PROJECTS TABLE -->
+        <div class="rev" style="background:#FCFBF7;border:1px solid rgba(23,24,26,.09);border-radius:16px;overflow:hidden">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:22px 26px;border-bottom:1px solid rgba(23,24,26,.09)">
+            <div style="font-family:'Noto Serif Arabic',serif;font-size:20px;font-weight:600">مشاريعي</div>
+            <div style="display:flex;gap:8px">
+              <sc-for list="{{ filterTabs }}" as="t" hint-placeholder-count="3"><span style="{{ t.style }}">{{ t.label }}</span></sc-for>
+            </div>
+          </div>
+          <div style="overflow-x:auto">
+            <div style="min-width:720px">
+              <div style="display:grid;grid-template-columns:2fr 1fr 1.3fr 1fr 1fr 40px;gap:16px;padding:14px 26px;font-size:12px;color:#8A857A;font-weight:600;border-bottom:1px solid rgba(23,24,26,.08)">
+                <span>المشروع</span><span>المدينة</span><span>الوحدات المباعة</span><span>المشاهدات</span><span>الحالة</span><span></span>
+              </div>
+              <sc-for list="{{ projects }}" as="p" hint-placeholder-count="5">
+                <a href="Project-Details.dc.html" class="trow" style="display:grid;grid-template-columns:2fr 1fr 1.3fr 1fr 1fr 40px;gap:16px;padding:16px 26px;align-items:center;border-bottom:1px solid rgba(23,24,26,.06);cursor:pointer;color:inherit">
+                  <div style="display:flex;align-items:center;gap:12px;min-width:0">
+                    <div style="width:44px;height:44px;flex:none;border-radius:10px;overflow:hidden;background:#ECE6DA"><img loading="lazy" decoding="async" src="https://picsum.photos/seed/{{ p.slot }}/1000/750.webp" alt="{{ p.ph }}" style="width:100%;height:100%;object-fit:cover;display:block"></div>
+                    <span style="font-weight:600;font-size:14.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ p.name }}</span>
+                  </div>
+                  <span style="font-size:14px;color:#5C5850">{{ p.city }}</span>
+                  <div>
+                    <div style="font-size:13px;color:#5C5850;margin-bottom:5px">{{ p.soldLabel }}</div>
+                    <div style="height:6px;background:#ECE6DA;border-radius:999px;overflow:hidden;max-width:120px"><div style="{{ p.barStyle }}"></div></div>
+                  </div>
+                  <span style="font-size:14px;color:#5C5850;font-weight:500">{{ p.views }}</span>
+                  <span style="{{ p.statusStyle }}">{{ p.status }}</span>
+                  <span style="color:#A7A092;font-size:18px;text-align:center">⋯</span>
+                </a>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+
+        <!-- EMPTY STATE widget -->
+        <div class="rev" style="background:#FCFBF7;border:1px dashed rgba(23,24,26,.2);border-radius:16px;padding:40px;text-align:center">
+          <div style="width:54px;height:54px;border-radius:14px;background:#E6EDE9;color:#14453C;display:flex;align-items:center;justify-content:center;font-size:22px;margin:0 auto 16px">✦</div>
+          <div style="font-family:'Noto Serif Arabic',serif;font-size:22px;font-weight:600;margin-bottom:8px">أطلق مرحلتك القادمة</div>
+          <p style="font-size:14px;color:#6E6A61;font-weight:300;max-width:40ch;margin:0 auto 20px">لا توجد مشاريع مسوّدة حالياً. ابدأ بإضافة مشروعٍ جديد ليصل إلى آلاف المشترين المؤهّلين.</p>
+          <a href="Market-Your-Project.dc.html" style="display:inline-block;background:#14453C;color:#F6F3EC;padding:13px 28px;font-size:14px;font-weight:600;border-radius:11px" style-hover="background:#0E332C">+ إضافة مشروع</a>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1320,&quot;height&quot;:900}}">
+class Component extends DCLogic {
+  state = { active: 'overview' };
+  renderVals() {
+    const items = [
+      { key: 'overview', label: 'نظرة عامة', icon: '◫' },
+      { key: 'projects', label: 'مشاريعي', icon: '▤' },
+      { key: 'units', label: 'الوحدات', icon: '▦' },
+      { key: 'leads', label: 'الطلبات', icon: '✉', badge: '٨' },
+      { key: 'analytics', label: 'التحليلات', icon: '◔' },
+      { key: 'messages', label: 'الرسائل', icon: '❏' },
+      { key: 'settings', label: 'الإعدادات', icon: '⚙' }
+    ];
+    const nav = items.map(n => {
+      const on = n.key === this.state.active;
+      return { ...n, hasBadge: !!n.badge, onClick: () => this.setState({ active: n.key }), style: {
+        display: 'flex', alignItems: 'center', gap: '13px', padding: '12px 14px', borderRadius: '11px',
+        fontSize: '14.5px', fontWeight: on ? 600 : 400, cursor: 'pointer',
+        background: on ? 'rgba(143,191,176,.16)' : 'transparent', color: on ? '#F6F3EC' : '#B9CEC7'
+      }};
+    });
+
+    const kpis = [
+      { label: 'مشاهدات المحفظة', value: '٤٨٫٢ ألف', delta: '▲ ١٢٪', deltaColor: '#14453C', icon: '◔' },
+      { label: 'طلبات جديدة', value: '٣٢٦', delta: '▲ ٨٪', deltaColor: '#14453C', icon: '✉' },
+      { label: 'وحدات مباعة', value: '٨٤', delta: '▲ ٥٪', deltaColor: '#14453C', icon: '✓' },
+      { label: 'إيراد الشهر (بالمليون)', value: '٢١٤ م', delta: '▼ ٣٪', deltaColor: '#C4643C', icon: '◈' }
+    ];
+
+    const heights = [42, 55, 48, 63, 58, 72, 68, 80, 74, 88, 82, 95];
+    const labels = ['١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩', '١٠', '١١', '١٢'];
+    const chart = heights.map((h, i) => ({
+      label: labels[i],
+      style: { width: '100%', height: h + '%', borderRadius: '6px 6px 3px 3px', animationDelay: (i * 0.05) + 's',
+        background: i === heights.length - 1 ? 'linear-gradient(180deg,#14453C,#0E332C)' : '#CBD9D2' }
+    }));
+
+    const leads = [
+      { name: 'عبدالله المطيري', project: 'مساكن نلاين · بنتهاوس', time: 'قبل ٥ د', initials: 'ع', avBg: '#E6EDE9', avColor: '#14453C' },
+      { name: 'لطيفة السعد', project: 'فلل الدرعية · فيلا ٥غ', time: 'قبل ٢٢ د', initials: 'ل', avBg: '#F3E7DE', avColor: '#C4643C' },
+      { name: 'خالد الغامدي', project: 'مساكن نلاين · ٣غ', time: 'قبل ١ س', initials: 'خ', avBg: '#E6EDE9', avColor: '#14453C' },
+      { name: 'منيرة الحربي', project: 'شرفات الكورنيش', time: 'قبل ٣ س', initials: 'م', avBg: '#F3E7DE', avColor: '#C4643C' },
+      { name: 'سعود القرني', project: 'بنتهاوس المركز المالي', time: 'أمس', initials: 'س', avBg: '#E6EDE9', avColor: '#14453C' }
+    ];
+
+    const chip = (bg, color) => ({ background: bg, color, fontSize: '12px', fontWeight: 600, padding: '5px 12px', borderRadius: '999px', textAlign: 'center', whiteSpace: 'nowrap' });
+    const filterTabs = [ { k: 'all', label: 'الكل' }, { k: 'live', label: 'منشور' }, { k: 'draft', label: 'مسوّدة' } ].map((t, i) => ({
+      label: t.label, style: i === 0
+        ? { background: '#14453C', color: '#F6F3EC', fontSize: '12.5px', fontWeight: 600, padding: '7px 16px', borderRadius: '8px' }
+        : { background: 'transparent', color: '#6E6A61', fontSize: '12.5px', fontWeight: 500, padding: '7px 16px', borderRadius: '8px' }
+    }));
+
+    const mkBar = (pct) => ({ width: pct + '%', height: '100%', background: '#14453C', borderRadius: '999px' });
+    const projects = [
+      { name: 'مساكن نلاين', city: 'الرياض', soldLabel: '٥٤ / ٩٠ وحدة', barStyle: mkBar(60), views: '١٨٫٤ ألف', status: 'منشور', statusStyle: chip('#E6EDE9', '#14453C'), slot: 'dd-p1', ph: 'برج نلاين' },
+      { name: 'فلل بلاط الدرعية', city: 'الرياض', soldLabel: '١٢ / ٤٠ وحدة', barStyle: mkBar(30), views: '٩٫٢ ألف', status: 'منشور', statusStyle: chip('#E6EDE9', '#14453C'), slot: 'dd-p2', ph: 'فلل الدرعية' },
+      { name: 'شرفات الكورنيش', city: 'جدة', soldLabel: '٠ / ٦٠ وحدة', barStyle: mkBar(3), views: '١٫١ ألف', status: 'قيد المراجعة', statusStyle: chip('#F5EAD8', '#9A6B18'), slot: 'dd-p3', ph: 'شرفات الكورنيش' },
+      { name: 'مرسى الخبر', city: 'الخبر', soldLabel: '٨ / ٢٤ وحدة', barStyle: mkBar(33), views: '٤٫٦ ألف', status: 'منشور', statusStyle: chip('#E6EDE9', '#14453C'), slot: 'dd-p4', ph: 'مرسى الخبر' },
+      { name: 'واحة الملقا', city: 'الرياض', soldLabel: 'مسوّدة', barStyle: mkBar(0), views: '—', status: 'مسوّدة', statusStyle: chip('#EDE6D8', '#6E6A61'), slot: 'dd-p5', ph: 'واحة الملقا' }
+    ];
+
+    return { nav, kpis, chart, leads, filterTabs, projects };
+  }
+}
+</script>
+</body>
+</html>

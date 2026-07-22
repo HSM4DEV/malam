@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Noto+Serif+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: #F6F3EC; }
+  .pg a { text-decoration: none; }
+  .pg ::selection { background: rgba(20,69,60,.16); }
+  .wrap { max-width: 1320px; margin: 0 auto; padding: 0 40px; }
+  .g3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; }
+  .g4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 22px; }
+  .split { display: grid; grid-template-columns: 1.05fr .95fr; gap: 60px; align-items: center; }
+  .mosaic { display: grid; grid-template-columns: 1.4fr 1fr; grid-template-rows: 1fr 1fr; gap: 14px; height: 520px; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+  .rev { animation: fadeUp .7s cubic-bezier(.2,.7,.3,1) both; }
+  @media (max-width: 900px) { .g3, .g4, .split { grid-template-columns: 1fr; } .mosaic { grid-template-columns: 1fr 1fr; height: 380px; } .wrap { padding: 0 22px; } .split { gap: 34px; } }
+</style>
+</helmet>
+<div class="pg" dir="rtl" style="font-family:'IBM Plex Sans Arabic',sans-serif;background:#F6F3EC;color:#17181A;min-height:100vh;overflow-x:hidden">
+  <dc-import name="SiteNav" active="about" hint-size="100%,74px"></dc-import>
+
+  <!-- HERO -->
+  <header class="wrap" style="padding-top:80px;padding-bottom:64px">
+    <div class="rev" style="max-width:900px">
+      <div style="display:inline-flex;align-items:center;gap:10px;background:#E6EDE9;border:1px solid rgba(20,69,60,.18);padding:7px 14px;border-radius:999px;margin-bottom:26px">
+        <span style="width:6px;height:6px;border-radius:50%;background:#14453C"></span>
+        <span style="font-size:12.5px;color:#14453C;font-weight:600">عن مَعلم</span>
+      </div>
+      <h1 style="font-family:'Noto Serif Arabic',serif;font-weight:600;font-size:clamp(42px,5.4vw,76px);line-height:1.1;max-width:18ch">نصنع العناوين التي تُعرّف حياةً بأكملها.</h1>
+      <p style="font-size:19px;line-height:1.75;color:#46433C;font-weight:300;margin-top:24px;max-width:60ch">«مَعلم» منصّةٌ سعوديةٌ للعقار الفاخر، تصل بين المساكن الاستثنائية ومقتنيها بعنايةٍ تحريريةٍ وخصوصيةٍ تامّة — ونؤمن أن المسكن الرفيع يستحق أن يُقدَّم كما تُقدَّم القطعة النادرة.</p>
+    </div>
+  </header>
+
+  <!-- IMAGE MOSAIC -->
+  <section class="wrap" style="padding-bottom:20px">
+    <div class="rev mosaic">
+      <div style="grid-row:span 2;position:relative;border-radius:18px;overflow:hidden;border:1px solid rgba(23,24,26,.1)"><img loading="lazy" decoding="async" src="https://picsum.photos/seed/ab-1/1000/750.webp" alt="واجهة برجٍ سكنيٍّ فاخر في العليا بالرياض عند الغسق" style="width:100%;height:100%;object-fit:cover;display:block"></div>
+      <div style="position:relative;border-radius:18px;overflow:hidden;border:1px solid rgba(23,24,26,.1)"><img loading="lazy" decoding="async" src="https://picsum.photos/seed/ab-2/1000/750.webp" alt="صالة معيشةٍ راقية بإضاءةٍ طبيعية" style="width:100%;height:100%;object-fit:cover;display:block"></div>
+      <div style="position:relative;border-radius:18px;overflow:hidden;border:1px solid rgba(23,24,26,.1)"><img loading="lazy" decoding="async" src="https://picsum.photos/seed/ab-3/1000/750.webp" alt="تفصيلة عمارةٍ نجديةٍ من الدرعية" style="width:100%;height:100%;object-fit:cover;display:block"></div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <section class="wrap" style="padding-top:64px;padding-bottom:20px">
+    <div class="g4" style="border-top:1px solid rgba(23,24,26,.12);border-bottom:1px solid rgba(23,24,26,.12)">
+      <sc-for list="{{ stats }}" as="s" hint-placeholder-count="4">
+        <div class="rev" style="padding:44px 20px;text-align:center;border-inline-start:1px solid rgba(23,24,26,.12)">
+          <div style="font-family:'Noto Serif Arabic',serif;font-size:clamp(38px,4.2vw,56px);line-height:1;color:#14453C;font-weight:600">{{ s.v }}</div>
+          <div style="font-size:13px;color:#6E6A61;margin-top:12px">{{ s.l }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- STORY -->
+  <section class="wrap" style="padding-top:80px;padding-bottom:40px">
+    <div class="split">
+      <div class="rev">
+        <div style="font-size:12.5px;letter-spacing:1px;color:#14453C;font-weight:700;margin-bottom:14px">قصّتنا</div>
+        <h2 style="font-family:'Noto Serif Arabic',serif;font-size:clamp(30px,3.6vw,48px);line-height:1.12;font-weight:600;max-width:16ch">وُلدنا من قناعةٍ بأن الفخامة تبدأ بالثقة.</h2>
+      </div>
+      <div class="rev" style="display:flex;flex-direction:column;gap:18px">
+        <p style="font-size:16px;line-height:1.95;color:#46433C;font-weight:300">في سوقٍ يزخر بالخيارات، لاحظنا أن المشتري الفاخر يبحث عن شيءٍ نادر: عرضٌ صادق، ومسارٌ واضح، ومستشارٌ يُصغي. أطلقنا «مَعلم» لنملأ هذه الفجوة — بمعيارٍ تحريريٍّ واحدٍ لا يقبل المساومة.</p>
+        <p style="font-size:16px;line-height:1.95;color:#46433C;font-weight:300">اليوم نصل بين نخبة المطوّرين وأكثر المشترين تطلّباً في الرياض وجدة والمنطقة الشرقية، عبر محفظةٍ موثّقةٍ بالكامل، وشبكةٍ من الوسطاء المعتمدين، وتجربةٍ رقميةٍ صُمّمت لتكون هادئةً وواضحةً وجديرةً بالثقة.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- VALUES -->
+  <section style="background:#ECE6DA;border-top:1px solid rgba(23,24,26,.1);margin-top:64px">
+    <div class="wrap" style="padding:88px 40px">
+      <div class="rev" style="max-width:620px;margin-bottom:48px">
+        <div style="font-size:12.5px;letter-spacing:1px;color:#14453C;font-weight:700;margin-bottom:12px">قيمنا</div>
+        <h2 style="font-family:'Noto Serif Arabic',serif;font-size:clamp(30px,3.6vw,48px);line-height:1.1;font-weight:600">مبادئُ نبني عليها كل قرار</h2>
+      </div>
+      <div class="g3">
+        <sc-for list="{{ values }}" as="v" hint-placeholder-count="3">
+          <div class="rev" style="background:#FCFBF7;border:1px solid rgba(23,24,26,.09);border-radius:18px;padding:34px 30px">
+            <div style="width:46px;height:46px;border-radius:12px;background:#E6EDE9;display:flex;align-items:center;justify-content:center;color:#14453C;margin-bottom:22px">
+              <svg width="22" height="24" viewBox="0 0 24 28" fill="none"><path d="M2 27 V11 A10 10 0 0 1 22 11 V27" stroke="currentColor" stroke-width="2"/><path d="M2 27 H22" stroke="currentColor" stroke-width="2"/></svg>
+            </div>
+            <h3 style="font-family:'Noto Serif Arabic',serif;font-size:24px;font-weight:600;margin-bottom:10px">{{ v.title }}</h3>
+            <p style="font-size:14.5px;line-height:1.85;color:#5C5850;font-weight:300">{{ v.body }}</p>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- LEADERSHIP -->
+  <section class="wrap" style="padding-top:88px;padding-bottom:40px">
+    <div class="rev" style="max-width:620px;margin-bottom:48px">
+      <div style="font-size:12.5px;letter-spacing:1px;color:#14453C;font-weight:700;margin-bottom:12px">القيادة</div>
+      <h2 style="font-family:'Noto Serif Arabic',serif;font-size:clamp(30px,3.6vw,48px);line-height:1.1;font-weight:600">فريقٌ يجمع العقار والتصميم والتقنية</h2>
+    </div>
+    <div class="g4">
+      <sc-for list="{{ team }}" as="t" hint-placeholder-count="4">
+        <div class="rev">
+          <div style="position:relative;aspect-ratio:4/5;border-radius:16px;overflow:hidden;border:1px solid rgba(23,24,26,.1);margin-bottom:16px"><img loading="lazy" decoding="async" src="https://picsum.photos/seed/{{ t.slot }}/1000/750.webp" alt="{{ t.ph }}" style="width:100%;height:100%;object-fit:cover;display:block"></div>
+          <div style="font-family:'Noto Serif Arabic',serif;font-size:21px;font-weight:600">{{ t.name }}</div>
+          <div style="font-size:13.5px;color:#6E6A61;margin-top:3px">{{ t.role }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="wrap" style="padding-top:60px;padding-bottom:90px">
+    <div class="rev" style="background:#14453C;border-radius:24px;padding:64px 56px;text-align:center">
+      <h2 style="font-family:'Noto Serif Arabic',serif;font-size:clamp(30px,3.8vw,50px);line-height:1.14;color:#F6F3EC;font-weight:600;max-width:22ch;margin:0 auto">لنبنِ عنوانك القادم معاً.</h2>
+      <div style="display:flex;gap:14px;justify-content:center;margin-top:32px;flex-wrap:wrap">
+        <a href="Contact.dc.html" style="background:#F6F3EC;color:#0E332C;padding:15px 32px;font-size:15px;font-weight:600;border-radius:12px" style-hover="background:#fff">تواصل معنا</a>
+        <a href="Homepage-Signature.dc.html" style="border:1px solid rgba(246,243,236,.4);color:#F6F3EC;padding:15px 32px;font-size:15px;font-weight:600;border-radius:12px" style-hover="border-color:#F6F3EC">تصفّح المساكن</a>
+      </div>
+    </div>
+  </section>
+
+  <dc-import name="SiteFooter" hint-size="100%,440px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1320,&quot;height&quot;:900}}">
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      stats: [
+        { v: '٢٠٢٦', l: 'سنة التأسيس' },
+        { v: '+١٤٠٠', l: 'مسكن منسّق' },
+        { v: '١٨ مليار', l: 'قيمة المحفظة ' },
+        { v: '٣ مدن', l: 'الرياض · جدة · الدمام' }
+      ],
+      values: [
+        { title: 'الثقة أولاً', body: 'كل مسكنٍ موثّق الملكية ومُدقّق. نقول الحقيقة كاملةً، حتى حين لا تكون في مصلحة الصفقة.' },
+        { title: 'العناية بالتفصيل', body: 'من التصوير إلى الكلمة، نلتزم بمعيارٍ تحريريٍّ واحدٍ يليق بمكانة كل عنوان.' },
+        { title: 'الخصوصية', body: 'نحمي بيانات عملائنا وصفقاتهم بسريّةٍ تامّة، ونعمل بهدوءٍ بعيداً عن الضجيج.' }
+      ],
+      team: [
+        { name: 'فيصل الراشد', role: 'الشريك المؤسّس والرئيس التنفيذي', slot: 'ab-t1', ph: 'صورة بورتريه للرئيس التنفيذي' },
+        { name: 'نورة القحطاني', role: 'رئيسة التصميم والتجربة', slot: 'ab-t2', ph: 'صورة بورتريه لرئيسة التصميم' },
+        { name: 'سلطان الدوسري', role: 'رئيس الشراكات', slot: 'ab-t3', ph: 'صورة بورتريه لرئيس الشراكات' },
+        { name: 'ريم العنزي', role: 'رئيسة العمليات', slot: 'ab-t4', ph: 'صورة بورتريه لرئيسة العمليات' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Noto+Serif+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: #F6F3EC; }
+  .pg a { text-decoration: none; }
+  .pg ::selection { background: rgba(20,69,60,.16); }
+  .pg select { font-family: inherit; background: #FCFBF7; border: 1px solid rgba(23,24,26,.14); border-radius: 10px; padding: 10px 14px; font-size: 13.5px; color: #17181A; outline: none; cursor: pointer; }
+  .pg select:focus { border-color: #14453C; }
+  .wrap { max-width: 1320px; margin: 0 auto; padding: 0 40px; }
+  .grid3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; }
+  .maplayout { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; align-items: start; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+  @keyframes pop { 0% { transform: scale(.85); } 60% { transform: scale(1.12); } 100% { transform: scale(1); } }
+  .rev { animation: fadeUp .6s cubic-bezier(.2,.7,.3,1) both; }
+  .pcard { transition: transform .35s cubic-bezier(.2,.7,.3,1), box-shadow .35s; }
+  .pcard:hover { transform: translateY(-5px); box-shadow: 0 30px 50px -34px rgba(23,24,26,.5); }
+  .pcard:hover .pthumb { transform: scale(1.05); }
+  .pthumb { transition: transform 1s cubic-bezier(.2,.7,.3,1); }
+  .heart { transition: transform .2s, background .2s, color .2s; }
+  .heart:active { transform: scale(.9); }
+  .heart.on { animation: pop .35s ease; }
+  .pin { transition: transform .25s; }
+  .pin:hover { transform: translate(50%,-50%) scale(1.08); z-index: 5; }
+  @media (max-width: 1000px) { .grid3 { grid-template-columns: 1fr 1fr; } .maplayout { grid-template-columns: 1fr; } .mappane { height: 340px !important; position: static !important; } }
+  @media (max-width: 680px) { .grid3 { grid-template-columns: 1fr; } .wrap { padding: 0 20px; } .filterrow { flex-direction: column; align-items: stretch !important; } }
+</style>
+</helmet>
+<div class="pg" dir="rtl" style="font-family:'IBM Plex Sans Arabic',sans-serif;background:#F6F3EC;color:#17181A;min-height:100vh;overflow-x:hidden">
+  <dc-import name="SiteNav" active="home" hint-size="100%,74px"></dc-import>
+
+  <!-- HEAD -->
+  <header class="wrap" style="padding-top:56px;padding-bottom:20px">
+    <div class="rev" style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap">
+      <div>
+        <div style="font-size:12.5px;letter-spacing:1px;color:#14453C;font-weight:700;margin-bottom:12px">اكتشف المساكن</div>
+        <h1 style="font-family:'Noto Serif Arabic',serif;font-weight:600;font-size:clamp(36px,4.6vw,60px);line-height:1.08;max-width:18ch">محفظةٌ منسّقةٌ من أرقى العناوين في المملكة</h1>
+      </div>
+      <div style="font-size:15px;color:#6E6A61"><span style="font-family:'Noto Serif Arabic',serif;font-size:24px;color:#14453C;font-weight:600">{{ count }}</span> مسكناً متاحاً</div>
+    </div>
+  </header>
+
+  <!-- FILTER BAR -->
+  <div style="position:sticky;top:74px;z-index:30;background:rgba(246,243,236,.92);backdrop-filter:blur(12px);border-top:1px solid rgba(23,24,26,.08);border-bottom:1px solid rgba(23,24,26,.1)">
+    <div class="wrap" style="padding-top:16px;padding-bottom:16px">
+      <div class="filterrow" style="display:flex;align-items:center;justify-content:space-between;gap:16px">
+        <!-- search + city -->
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;flex:1">
+          <div style="position:relative;display:flex;align-items:center">
+            <span style="position:absolute;right:14px;color:#8A857A"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.7"/><path d="M11 11 L14.5 14.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span>
+            <input onInput="{{ onSearch }}" placeholder="ابحث بالاسم أو الحي…" style="font-family:inherit;background:#FCFBF7;border:1px solid rgba(23,24,26,.14);border-radius:10px;padding:10px 38px 10px 14px;font-size:13.5px;color:#17181A;outline:none;width:220px">
+          </div>
+          <sc-for list="{{ cityChips }}" as="c" hint-placeholder-count="4">
+            <button onClick="{{ c.onClick }}" style="{{ c.style }}">{{ c.label }}</button>
+          </sc-for>
+        </div>
+        <!-- selects + view -->
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+          <select onChange="{{ onType }}"><option>كل الأنواع</option><option>فيلا</option><option>شقة</option><option>بنتهاوس</option><option>دوبلكس</option><option>تاون هاوس</option></select>
+          <select onChange="{{ onBeds }}"><option>كل الغرف</option><option>+٣ غرف</option><option>+٤ غرف</option><option>+٥ غرف</option></select>
+          <select onChange="{{ onPrice }}"><option>أي سعر</option><option>أقل من ٤ مليون</option><option>٤ – ٧ مليون</option><option>٧ – ١٢ مليون</option><option>أكثر من ١٢ مليون</option></select>
+          <select onChange="{{ onSort }}"><option>مميّز</option><option>الأحدث</option><option>السعر: الأقل</option><option>السعر: الأعلى</option></select>
+          <div style="display:flex;background:#ECE6DA;padding:4px;border-radius:11px;gap:2px">
+            <sc-for list="{{ viewTabs }}" as="v" hint-placeholder-count="3">
+              <button onClick="{{ v.onClick }}" title="{{ v.title }}" style="{{ v.style }}">{{ v.icon }}</button>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+      <!-- active filter summary -->
+      <div style="display:flex;align-items:center;gap:14px;margin-top:12px">
+        <button onClick="{{ toggleSaved }}" style="{{ savedBtnStyle }}">♡ المحفوظة ({{ savedCount }})</button>
+        <sc-if value="{{ hasFilters }}" hint-placeholder-val="{{ false }}">
+          <button onClick="{{ clearFilters }}" style="background:none;border:none;font-family:inherit;font-size:13px;color:#8A857A;cursor:pointer;text-decoration:underline">مسح عوامل التصفية</button>
+        </sc-if>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULTS -->
+  <section class="wrap" style="padding-top:32px;padding-bottom:80px">
+
+    <!-- EMPTY -->
+    <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+      <div class="rev" style="text-align:center;padding:90px 20px;background:#FCFBF7;border:1px solid rgba(23,24,26,.1);border-radius:20px">
+        <div style="width:60px;height:60px;border-radius:50%;background:#E6EDE9;color:#14453C;display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 18px">⌂</div>
+        <div style="font-family:'Noto Serif Arabic',serif;font-size:26px;font-weight:600;margin-bottom:8px">لا مساكن مطابقة</div>
+        <p style="font-size:15px;color:#6E6A61;font-weight:300;max-width:34ch;margin:0 auto 22px">جرّب توسيع نطاق البحث أو مسح بعض عوامل التصفية.</p>
+        <button onClick="{{ clearFilters }}" style="background:#14453C;color:#F6F3EC;border:none;font-family:inherit;padding:13px 28px;font-size:14px;font-weight:600;border-radius:11px;cursor:pointer">مسح عوامل التصفية</button>
+      </div>
+    </sc-if>
+
+    <!-- GRID VIEW -->
+    <sc-if value="{{ isGrid }}" hint-placeholder-val="{{ true }}">
+      <div class="grid3">
+        <sc-for list="{{ results }}" as="p" hint-placeholder-count="6">
+          <a href="Project-Details.dc.html" class="pcard" style="display:block;background:#FCFBF7;border:1px solid rgba(23,24,26,.09);border-radius:18px;overflow:hidden">
+            <div style="position:relative;aspect-ratio:4/3;overflow:hidden">
+              <div class="pthumb" style="position:absolute;inset:0"><img loading="lazy" decoding="async" src="https://picsum.photos/seed/{{ p.slot }}/1000/750.webp" alt="{{ p.ph }}" style="width:100%;height:100%;object-fit:cover;display:block"></div>
+              <span style="position:absolute;top:14px;right:14px;background:rgba(246,243,236,.94);backdrop-filter:blur(6px);color:#14453C;font-size:11px;letter-spacing:.3px;font-weight:700;padding:6px 12px;border-radius:999px">{{ p.tag }}</span>
+              <button onClick="{{ p.toggleFav }}" class="{{ p.heartClass }}" style="{{ p.heartStyle }}">{{ p.heartIcon }}</button>
+            </div>
+            <div style="padding:22px 22px 24px">
+              <div style="font-size:12px;letter-spacing:.3px;color:#8A857A;font-weight:600;margin-bottom:7px">{{ p.cityLabel }}</div>
+              <h3 style="font-family:'Noto Serif Arabic',serif;font-size:23px;color:#17181A;font-weight:600;line-height:1.12;margin-bottom:14px">{{ p.name }}</h3>
+              <div style="display:flex;gap:13px;font-size:13px;color:#5C5850;padding-bottom:16px;border-bottom:1px solid rgba(23,24,26,.09)">
+                <span>{{ p.beds }} غرف</span><span style="color:#CFC7B6">·</span><span>{{ p.baths }} حمّام</span><span style="color:#CFC7B6">·</span><span>{{ p.area }}</span>
+              </div>
+              <div style="display:flex;align-items:baseline;justify-content:space-between;margin-top:16px">
+                <div><div style="font-size:11.5px;color:#8A857A;margin-bottom:2px">يبدأ من</div><div style="font-family:'Noto Serif Arabic',serif;font-size:22px;color:#14453C;font-weight:600">{{ p.priceLabel }} <svg viewBox="0 0 1124.14 1256.39" role="img" aria-label="ريال سعودي" style="height:0.82em;width:auto;fill:currentColor;display:inline-block;vertical-align:-0.05em;margin-inline:0.08em"><path d="M699.62,1113.02h0c-20.06,44.48-33.32,92.75-38.4,143.37l424.51-90.24c20.06-44.47,33.31-92.75,38.4-143.37l-424.51,90.24Z"></path><path d="M1085.73,895.8c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.33v-135.2l292.27-62.11c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.27V66.13c-50.67,28.45-95.67,66.32-132.25,110.99v403.35l-132.25,28.11V0c-50.67,28.44-95.67,66.32-132.25,110.99v525.69l-295.91,62.88c-20.06,44.47-33.33,92.75-38.42,143.37l334.33-71.05v170.26l-358.3,76.14c-20.06,44.47-33.32,92.75-38.4,143.37l375.04-79.7c30.53-6.35,56.77-24.4,73.83-49.24l68.78-101.97v-.02c7.14-10.55,11.3-23.27,11.3-36.97v-149.98l132.25-28.11v270.4l424.53-90.28Z"></path></svg></div></div>
+                <span style="font-size:13.5px;color:#17181A;font-weight:500">عرض ←</span>
+              </div>
+            </div>
+          </a>
+        </sc-for>
+      </div>
+    </sc-if>
+
+    <!-- LIST VIEW -->
+    <sc-if value="{{ isList }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <sc-for list="{{ results }}" as="p" hint-placeholder-count="5">
+          <a href="Project-Details.dc.html" class="pcard" style="display:grid;grid-template-columns:300px 1fr auto;gap:24px;background:#FCFBF7;border:1px solid rgba(23,24,26,.09);border-radius:18px;overflow:hidden;align-items:stretch">
+            <div style="position:relative;min-height:200px;overflow:hidden">
+              <div class="pthumb" style="position:absolute;inset:0"><img loading="lazy" decoding="async" src="https://picsum.photos/seed/{{ p.slotList }}/1000/750.webp" alt="{{ p.ph }}" style="width:100%;height:100%;object-fit:cover;display:block"></div>
+              <span style="position:absolute;top:14px;right:14px;background:rgba(246,243,236,.94);backdrop-filter:blur(6px);color:#14453C;font-size:11px;font-weight:700;padding:6px 12px;border-radius:999px">{{ p.tag }}</span>
+            </div>
+            <div style="padding:24px 4px;display:flex;flex-direction:column;justify-content:center">
+              <div style="font-size:12px;color:#8A857A;font-weight:600;margin-bottom:8px">{{ p.cityLabel }}</div>
+              <h3 style="font-family:'Noto Serif Arabic',serif;font-size:27px;color:#17181A;font-weight:600;line-height:1.1;margin-bottom:12px">{{ p.name }}</h3>
+              <p style="font-size:14px;color:#5C5850;font-weight:300;line-height:1.7;margin-bottom:14px;max-width:52ch">{{ p.blurb }}</p>
+              <div style="display:flex;gap:16px;font-size:13.5px;color:#46433C">
+                <span>{{ p.beds }} غرف</span><span style="color:#CFC7B6">·</span><span>{{ p.baths }} حمّام</span><span style="color:#CFC7B6">·</span><span>{{ p.area }}</span><span style="color:#CFC7B6">·</span><span>{{ p.type }}</span>
+              </div>
+            </div>
+            <div style="padding:24px 26px;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:14px;border-inline-start:1px solid rgba(23,24,26,.08);min-width:220px">
+              <div><div style="font-size:11.5px;color:#8A857A;margin-bottom:3px">يبدأ من</div><div style="font-family:'Noto Serif Arabic',serif;font-size:28px;color:#14453C;font-weight:600">{{ p.priceLabel }} <svg viewBox="0 0 1124.14 1256.39" role="img" aria-label="ريال سعودي" style="height:0.82em;width:auto;fill:currentColor;display:inline-block;vertical-align:-0.05em;margin-inline:0.08em"><path d="M699.62,1113.02h0c-20.06,44.48-33.32,92.75-38.4,143.37l424.51-90.24c20.06-44.47,33.31-92.75,38.4-143.37l-424.51,90.24Z"></path><path d="M1085.73,895.8c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.33v-135.2l292.27-62.11c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.27V66.13c-50.67,28.45-95.67,66.32-132.25,110.99v403.35l-132.25,28.11V0c-50.67,28.44-95.67,66.32-132.25,110.99v525.69l-295.91,62.88c-20.06,44.47-33.33,92.75-38.42,143.37l334.33-71.05v170.26l-358.3,76.14c-20.06,44.47-33.32,92.75-38.4,143.37l375.04-79.7c30.53-6.35,56.77-24.4,73.83-49.24l68.78-101.97v-.02c7.14-10.55,11.3-23.27,11.3-36.97v-149.98l132.25-28.11v270.4l424.53-90.28Z"></path></svg></div></div>
+              <span style="background:#14453C;color:#F6F3EC;padding:11px 24px;font-size:13.5px;font-weight:600;border-radius:11px">عرض التفاصيل</span>
+              <button onClick="{{ p.toggleFav }}" class="{{ p.heartClass }}" style="{{ p.heartStyleList }}">{{ p.heartIcon }} حفظ</button>
+            </div>
+          </a>
+        </sc-for>
+      </div>
+    </sc-if>
+
+    <!-- MAP VIEW -->
+    <sc-if value="{{ isMap }}" hint-placeholder-val="{{ false }}">
+      <div class="maplayout">
+        <div class="mappane" style="position:sticky;top:210px;height:640px;border-radius:20px;overflow:hidden;border:1px solid rgba(23,24,26,.1)">
+          <img loading="lazy" decoding="async" src="https://picsum.photos/seed/pl-map/1000/750.webp" alt="خريطة المملكة — مواقع المساكن في الرياض وجدة والدمام" style="width:100%;height:100%;object-fit:cover;display:block">
+          <div style="position:absolute;inset:0;background:rgba(14,51,44,.12);pointer-events:none"></div>
+          <sc-for list="{{ pins }}" as="pin" hint-placeholder-count="6">
+            <div class="pin" style="{{ pin.style }}">{{ pin.priceLabel }} <svg viewBox="0 0 1124.14 1256.39" role="img" aria-label="ريال سعودي" style="height:0.82em;width:auto;fill:currentColor;display:inline-block;vertical-align:-0.05em;margin-inline:0.08em"><path d="M699.62,1113.02h0c-20.06,44.48-33.32,92.75-38.4,143.37l424.51-90.24c20.06-44.47,33.31-92.75,38.4-143.37l-424.51,90.24Z"></path><path d="M1085.73,895.8c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.33v-135.2l292.27-62.11c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.27V66.13c-50.67,28.45-95.67,66.32-132.25,110.99v403.35l-132.25,28.11V0c-50.67,28.44-95.67,66.32-132.25,110.99v525.69l-295.91,62.88c-20.06,44.47-33.33,92.75-38.42,143.37l334.33-71.05v170.26l-358.3,76.14c-20.06,44.47-33.32,92.75-38.4,143.37l375.04-79.7c30.53-6.35,56.77-24.4,73.83-49.24l68.78-101.97v-.02c7.14-10.55,11.3-23.27,11.3-36.97v-149.98l132.25-28.11v270.4l424.53-90.28Z"></path></svg></div>
+          </sc-for>
+          <div style="position:absolute;bottom:16px;right:16px;background:rgba(252,251,247,.95);backdrop-filter:blur(6px);border:1px solid rgba(23,24,26,.1);border-radius:10px;padding:9px 14px;font-size:12.5px;color:#46433C;pointer-events:none">{{ count }} مسكناً على الخريطة</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <sc-for list="{{ results }}" as="p" hint-placeholder-count="5">
+            <a href="Project-Details.dc.html" class="pcard" style="display:grid;grid-template-columns:130px 1fr;gap:16px;background:#FCFBF7;border:1px solid rgba(23,24,26,.09);border-radius:16px;overflow:hidden">
+              <div style="position:relative;min-height:130px"><img loading="lazy" decoding="async" src="https://picsum.photos/seed/{{ p.slotMap }}/1000/750.webp" alt="{{ p.ph }}" style="width:100%;height:100%;object-fit:cover;display:block"></div>
+              <div style="padding:16px 6px 16px 0;display:flex;flex-direction:column;justify-content:center">
+                <div style="font-size:11.5px;color:#8A857A;font-weight:600;margin-bottom:5px">{{ p.cityLabel }}</div>
+                <h3 style="font-family:'Noto Serif Arabic',serif;font-size:20px;font-weight:600;line-height:1.1;margin-bottom:8px">{{ p.name }}</h3>
+                <div style="font-size:12.5px;color:#5C5850;margin-bottom:10px">{{ p.beds }} غرف · {{ p.area }}</div>
+                <div style="font-family:'Noto Serif Arabic',serif;font-size:19px;color:#14453C;font-weight:600">{{ p.priceLabel }} <svg viewBox="0 0 1124.14 1256.39" role="img" aria-label="ريال سعودي" style="height:0.82em;width:auto;fill:currentColor;display:inline-block;vertical-align:-0.05em;margin-inline:0.08em"><path d="M699.62,1113.02h0c-20.06,44.48-33.32,92.75-38.4,143.37l424.51-90.24c20.06-44.47,33.31-92.75,38.4-143.37l-424.51,90.24Z"></path><path d="M1085.73,895.8c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.33v-135.2l292.27-62.11c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.27V66.13c-50.67,28.45-95.67,66.32-132.25,110.99v403.35l-132.25,28.11V0c-50.67,28.44-95.67,66.32-132.25,110.99v525.69l-295.91,62.88c-20.06,44.47-33.33,92.75-38.42,143.37l334.33-71.05v170.26l-358.3,76.14c-20.06,44.47-33.32,92.75-38.4,143.37l375.04-79.7c30.53-6.35,56.77-24.4,73.83-49.24l68.78-101.97v-.02c7.14-10.55,11.3-23.27,11.3-36.97v-149.98l132.25-28.11v270.4l424.53-90.28Z"></path></svg></div>
+              </div>
+            </a>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+  </section>
+
+  <dc-import name="SiteFooter" hint-size="100%,440px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1320,&quot;height&quot;:900}}">
+class Component extends DCLogic {
+  state = { view: 'grid', city: 'الكل', type: 'الكل', minBeds: 0, price: 'الكل', sort: 'مميّز', q: '', savedOnly: false, favs: {} };
+
+  componentDidMount() {
+    try { const s = JSON.parse(localStorage.getItem('malam_favs') || '{}'); this.setState({ favs: s }); } catch (e) {}
+  }
+  toggleFav(id) {
+    this.setState(s => {
+      const favs = { ...s.favs, [id]: !s.favs[id] };
+      if (!favs[id]) delete favs[id];
+      try { localStorage.setItem('malam_favs', JSON.stringify(favs)); } catch (e) {}
+      return { favs };
+    });
+  }
+
+  renderVals() {
+    const S = this.state;
+    const data = [
+      { id: 'nline', name: 'مساكن نلاين', city: 'الرياض', cityLabel: 'الرياض · العليا', district: 'العليا', type: 'بنتهاوس', beds: '٣–٥', bedsN: 5, baths: '٤', area: '٢٤٠–٦٢٠ م²', price: 4.8, priceLabel: '٤٫٨ م', tag: 'مميّز', order: 9, pin: { top: '34%', left: '54%' }, blurb: 'سبعةٌ وأربعون طابقاً من الزجاج البرونزيّ تعيد رسم أفق العليا، بإطلالاتٍ لا تُحجب.' },
+      { id: 'diriyah', name: 'فلل بلاط الدرعية', city: 'الرياض', cityLabel: 'الرياض · الدرعية', district: 'الدرعية', type: 'فيلا', beds: '٤–٦', bedsN: 6, baths: '٦', area: '٤٨٠–٩٠٠ م²', price: 9.2, priceLabel: '٩٫٢ م', tag: 'إطلاق جديد', order: 8, pin: { top: '28%', left: '46%' }, blurb: 'عمارةٌ نجديةٌ أُعيدت قراءتها بلغةٍ معاصرة، حول فناءاتٍ خاصّةٍ وحدائق.' },
+      { id: 'corniche', name: 'شرفات الكورنيش', city: 'جدة', cityLabel: 'جدة · الكورنيش', district: 'الكورنيش', type: 'شقة', beds: '٢–٤', bedsN: 4, baths: '٣', area: '١٨٠–٤١٠ م²', price: 3.6, priceLabel: '٣٫٦ م', tag: 'واجهة بحرية', order: 6, pin: { top: '52%', left: '30%' }, blurb: 'شققٌ على البحر مباشرةً، بشرفاتٍ ممتدّةٍ تطلّ على غروب الكورنيش.' },
+      { id: 'khobar', name: 'مرسى الخبر', city: 'الدمام', cityLabel: 'الخبر · الكورنيش', district: 'الكورنيش', type: 'فيلا', beds: '٤–٥', bedsN: 5, baths: '٥', area: '٣٦٠–٧٠٠ م²', price: 6.4, priceLabel: '٦٫٤ م', tag: 'على البحر', order: 5, pin: { top: '40%', left: '70%' }, blurb: 'فللٌ على المرسى بمظلّاتٍ خاصّةٍ لليخوت، وهدوءٍ يليق بالخليج.' },
+      { id: 'kafd', name: 'بنتهاوس المركز المالي', city: 'الرياض', cityLabel: 'الرياض · المركز المالي', district: 'المركز المالي', type: 'بنتهاوس', beds: '٣–٤', bedsN: 4, baths: '٤', area: '٣٠٠–٥٤٠ م²', price: 7.9, priceLabel: '٧٫٩ م', tag: 'بنتهاوس', order: 7, pin: { top: '31%', left: '58%' }, blurb: 'مساكن علويةٌ في قلب المركز الماليّ، بخدمات فندقيةٍ على مدار الساعة.' },
+      { id: 'obhur', name: 'خليج أبحر', city: 'جدة', cityLabel: 'جدة · أبحر', district: 'أبحر', type: 'فيلا', beds: '٣–٥', bedsN: 5, baths: '٤', area: '٢٦٠–٥٨٠ م²', price: 5.1, priceLabel: '٥٫١ م', tag: 'شاطئي', order: 4, pin: { top: '58%', left: '26%' }, blurb: 'فللٌ شاطئيةٌ بمسابح خاصّةٍ ووصولٍ مباشرٍ إلى رمال أبحر.' },
+      { id: 'malqa', name: 'دوبلكس الملقا', city: 'الرياض', cityLabel: 'الرياض · الملقا', district: 'الملقا', type: 'دوبلكس', beds: '٤', bedsN: 4, baths: '٥', area: '٣٢٠–٤٦٠ م²', price: 4.2, priceLabel: '٤٫٢ م', tag: 'جديد', order: 3, pin: { top: '24%', left: '52%' }, blurb: 'دوبلكسات عصريةٌ في الملقا، بمساحاتٍ مرنةٍ وأسقفٍ عالية.' },
+      { id: 'safarat', name: 'تاون هاوس السفارات', city: 'الرياض', cityLabel: 'الرياض · حي السفارات', district: 'حي السفارات', type: 'تاون هاوس', beds: '٤', bedsN: 4, baths: '٤', area: '٣٠٠–٤٢٠ م²', price: 5.6, priceLabel: '٥٫٦ م', tag: 'حصري', order: 2, pin: { top: '38%', left: '49%' }, blurb: 'تاون هاوس ضمن مجتمعٍ مسوّرٍ هادئ، محاطٍ بالخضرة والخصوصية.' },
+      { id: 'lulu', name: 'برج اللؤلؤة', city: 'الدمام', cityLabel: 'الدمام · الشاطئ', district: 'الشاطئ', type: 'شقة', beds: '٣', bedsN: 3, baths: '٣', area: '١٦٠–٣٤٠ م²', price: 2.9, priceLabel: '٢٫٩ م', tag: 'واجهة بحرية', order: 1, pin: { top: '46%', left: '66%' }, blurb: 'شققٌ بإطلالةٍ على خليج الدمام، بأسعارٍ تُعدّ مدخلاً مثالياً للاقتناء.' }
+    ].map(d => ({ ...d, slot: 'pl-' + d.id, slotList: 'pll-' + d.id, slotMap: 'plm-' + d.id }));
+
+    const priceRanges = { 'الكل': [0, 99], 'أقل من ٤ مليون': [0, 4], '٤ – ٧ مليون': [4, 7], '٧ – ١٢ مليون': [7, 12], 'أكثر من ١٢ مليون': [12, 99] };
+    let list = data.filter(d => {
+      if (S.city !== 'الكل' && d.city !== S.city) return false;
+      if (S.type !== 'الكل' && d.type !== S.type) return false;
+      if (S.minBeds && d.bedsN < S.minBeds) return false;
+      const [lo, hi] = priceRanges[S.price] || [0, 99];
+      if (d.price < lo || d.price > hi) return false;
+      if (S.savedOnly && !S.favs[d.id]) return false;
+      if (S.q) { const q = S.q.trim(); if (!(d.name + ' ' + d.district + ' ' + d.cityLabel).includes(q)) return false; }
+      return true;
+    });
+    if (S.sort === 'الأحدث') list = list.slice().sort((a, b) => b.order - a.order);
+    else if (S.sort === 'السعر: الأقل') list = list.slice().sort((a, b) => a.price - b.price);
+    else if (S.sort === 'السعر: الأعلى') list = list.slice().sort((a, b) => b.price - a.price);
+
+    const heartBase = { position: 'absolute', top: '12px', left: '12px', width: '38px', height: '38px', borderRadius: '50%', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px', cursor: 'pointer', backdropFilter: 'blur(6px)' };
+    const results = list.map(p => {
+      const on = !!S.favs[p.id];
+      return {
+        ...p,
+        toggleFav: (e) => { e.preventDefault(); e.stopPropagation(); this.toggleFav(p.id); },
+        heartClass: on ? 'heart on' : 'heart',
+        heartIcon: on ? '♥' : '♡',
+        heartStyle: { ...heartBase, background: on ? '#14453C' : 'rgba(252,251,247,.9)', color: on ? '#F6F3EC' : '#14453C' },
+        heartStyleList: { display: 'inline-flex', alignItems: 'center', gap: '7px', background: 'none', border: 'none', fontFamily: 'inherit', fontSize: '13px', fontWeight: 600, cursor: 'pointer', color: on ? '#14453C' : '#8A857A' }
+      };
+    });
+
+    const cityChips = ['الكل', 'الرياض', 'جدة', 'الدمام'].map(label => {
+      const on = label === S.city;
+      return { label, onClick: () => this.setState({ city: label }), style: {
+        fontFamily: 'inherit', fontSize: '13px', fontWeight: on ? 600 : 500, padding: '9px 18px', borderRadius: '999px', cursor: 'pointer', transition: 'all .2s',
+        border: on ? '1px solid #14453C' : '1px solid rgba(23,24,26,.15)', background: on ? '#14453C' : 'transparent', color: on ? '#F6F3EC' : '#46433C'
+      }};
+    });
+
+    const views = [ { k: 'grid', icon: '▦', title: 'شبكة' }, { k: 'list', icon: '☰', title: 'قائمة' }, { k: 'map', icon: '◉', title: 'خريطة' } ];
+    const viewTabs = views.map(v => {
+      const on = v.k === S.view;
+      return { icon: v.icon, title: v.title, onClick: () => this.setState({ view: v.k }), style: {
+        width: '38px', height: '34px', border: 'none', borderRadius: '8px', fontFamily: 'inherit', fontSize: '15px', cursor: 'pointer', transition: 'all .2s',
+        background: on ? '#FCFBF7' : 'transparent', color: on ? '#14453C' : '#8A857A', boxShadow: on ? '0 2px 6px -3px rgba(0,0,0,.4)' : 'none'
+      }};
+    });
+
+    const pins = results.map(p => ({ priceLabel: p.priceLabel, style: {
+      position: 'absolute', top: p.pin.top, left: p.pin.left, transform: 'translate(50%,-50%)',
+      background: '#14453C', color: '#F6F3EC', fontFamily: "'Noto Serif Arabic',serif", fontSize: '14px', fontWeight: 600,
+      padding: '7px 13px', borderRadius: '999px', boxShadow: '0 8px 20px -8px rgba(14,51,44,.7)', cursor: 'pointer', whiteSpace: 'nowrap', border: '2px solid #F6F3EC'
+    }}));
+
+    const savedCount = Object.keys(S.favs).length;
+    const bedsMap = { 'كل الغرف': 0, '+٣ غرف': 3, '+٤ غرف': 4, '+٥ غرف': 5 };
+    const typeMap = { 'كل الأنواع': 'الكل' };
+    const hasFilters = S.city !== 'الكل' || S.type !== 'الكل' || S.minBeds !== 0 || S.price !== 'الكل' || S.savedOnly || !!S.q;
+
+    return {
+      results, pins, cityChips, viewTabs,
+      count: list.length,
+      isEmpty: list.length === 0,
+      isGrid: S.view === 'grid', isList: S.view === 'list', isMap: S.view === 'map',
+      onSearch: (e) => this.setState({ q: e.target.value }),
+      onType: (e) => this.setState({ type: typeMap[e.target.value] || e.target.value }),
+      onBeds: (e) => this.setState({ minBeds: bedsMap[e.target.value] || 0 }),
+      onPrice: (e) => this.setState({ price: e.target.value === 'أي سعر' ? 'الكل' : e.target.value }),
+      onSort: (e) => this.setState({ sort: e.target.value }),
+      toggleSaved: () => this.setState(s => ({ savedOnly: !s.savedOnly })),
+      savedCount,
+      savedBtnStyle: {
+        display: 'inline-flex', alignItems: 'center', gap: '6px', fontFamily: 'inherit', fontSize: '13px', fontWeight: 600, padding: '9px 16px', borderRadius: '999px', cursor: 'pointer', transition: 'all .2s',
+        border: S.savedOnly ? '1px solid #14453C' : '1px solid rgba(23,24,26,.15)', background: S.savedOnly ? '#E6EDE9' : 'transparent', color: '#14453C'
+      },
+      hasFilters,
+      clearFilters: () => this.setState({ city: 'الكل', type: 'الكل', minBeds: 0, price: 'الكل', q: '', savedOnly: false })
+    };
+  }
+}
+</script>
+</body>
+</html>

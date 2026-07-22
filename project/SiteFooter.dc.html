@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Noto+Serif+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  .sfoot a { text-decoration: none; }
+  .sfoot-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 44px; }
+  .sfoot-bottom { display: flex; justify-content: space-between; align-items: center; }
+  @media (max-width: 820px) { .sfoot-grid { grid-template-columns: 1fr 1fr; gap: 32px; } .sfoot-bottom { flex-direction: column; gap: 14px; align-items: flex-start; } }
+</style>
+</helmet>
+<footer class="sfoot" dir="rtl" style="font-family:'IBM Plex Sans Arabic',sans-serif;border-top:1px solid rgba(23,24,26,.1);background:#F1EDE3;color:#17181A">
+  <div style="max-width:1320px;margin:0 auto;padding:64px 40px 36px">
+    <div class="sfoot-grid" style="padding-bottom:48px;border-bottom:1px solid rgba(23,24,26,.1)">
+      <div>
+        <div style="display:flex;align-items:center;gap:11px;color:#14453C">
+          <svg width="22" height="26" viewBox="0 0 24 28" fill="none"><path d="M2 27 V11 A10 10 0 0 1 22 11 V27" stroke="currentColor" stroke-width="2"/><path d="M2 27 H22" stroke="currentColor" stroke-width="2"/></svg>
+          <span style="font-family:'Noto Serif Arabic',serif;font-size:28px;font-weight:700;color:#17181A">مَعلم</span>
+        </div>
+        <p style="max-width:34ch;margin-top:18px;font-size:14px;line-height:1.8;color:#6E6A61;font-weight:300">العنوان الموثوق للمعيشة الفاخرة في المملكة. نصل بين المساكن الاستثنائية ومقتنيها بعنايةٍ وخصوصية.</p>
+        <div style="display:flex;gap:12px;margin-top:22px">
+          <sc-for list="{{ social }}" as="s" hint-placeholder-count="3">
+            <a href="#" style="width:38px;height:38px;border:1px solid rgba(23,24,26,.15);border-radius:10px;display:flex;align-items:center;justify-content:center;color:#46433C;font-size:12px;direction:ltr" style-hover="border-color:#14453C;color:#14453C">{{ s }}</a>
+          </sc-for>
+        </div>
+      </div>
+      <sc-for list="{{ cols }}" as="col" hint-placeholder-count="3">
+        <div>
+          <div style="font-size:12px;letter-spacing:1px;color:#14453C;font-weight:700;margin-bottom:16px">{{ col.head }}</div>
+          <sc-for list="{{ col.links }}" as="l" hint-placeholder-count="4">
+            <div style="margin-bottom:11px"><a href="{{ l.href }}" style="color:#5C5850;font-size:14px;font-weight:300" style-hover="color:#17181A">{{ l.t }}</a></div>
+          </sc-for>
+        </div>
+      </sc-for>
+    </div>
+    <div class="sfoot-bottom" style="padding-top:28px;font-size:12.5px;color:#8A857A">
+      <span>© ٢٠٢٦ مَعلم للاستثمار العقاري. جميع الحقوق محفوظة.</span>
+      <span style="direction:ltr;letter-spacing:1px">RIYADH · JEDDAH · DAMMAM</span>
+    </div>
+  </div>
+</footer>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1320,&quot;height&quot;:420}}">
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      social: ['IG', 'X', 'in'],
+      cols: [
+        { head: 'استكشف', links: [ {t:'كل المساكن',href:'Projects-Signature.dc.html'}, {t:'المطوّرون',href:'Developers.dc.html'}, {t:'الوسطاء',href:'Brokers.dc.html'}, {t:'سوّق مشروعك',href:'Market-Your-Project.dc.html'} ] },
+        { head: 'الشركة', links: [ {t:'عن مَعلم',href:'About.dc.html'}, {t:'المدوّنة',href:'Blog.dc.html'}, {t:'الأسئلة الشائعة',href:'FAQ.dc.html'}, {t:'تواصل معنا',href:'Contact.dc.html'} ] },
+        { head: 'الحساب', links: [ {t:'تسجيل الدخول',href:'Auth.dc.html'}, {t:'لوحة المطوّر',href:'Developer-Dashboard.dc.html'}, {t:'لوحة الوسيط',href:'Broker-Dashboard.dc.html'} ] }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>
