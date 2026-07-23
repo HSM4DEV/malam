@@ -1,8 +1,11 @@
 # مَعلم (Ma'lam)
 
-A developer dashboard for real-estate companies — projects, units, leads,
-buyer conversations, and analytics — built with Next.js, Prisma, and
-Supabase Postgres.
+A Saudi luxury real-estate platform — public property search and listings,
+developer/broker company profiles, a developer dashboard (projects, units,
+leads, conversations, analytics), and an admin application-approval flow —
+built with Next.js, Prisma, and Supabase Postgres.
+
+**Live:** https://web-gamma-eight-15.vercel.app
 
 ## Stack
 
@@ -68,11 +71,20 @@ dashboard has something to render.
 npm run dev
 ```
 
-Open [http://localhost:3000/dashboard/developer](http://localhost:3000/dashboard/developer).
+Open [http://localhost:3000](http://localhost:3000).
+
+### Demo logins
+
+| Role | Email | Password |
+|---|---|---|
+| Developer (dashboard access) | `salman@vision-group.sa` | `Demo12345!` |
+| Admin (`/admin/applications`) | `admin@malam.sa` | `AdminDemo123!` |
 
 ## Project structure
 
 ```
+src/app/(public)/          # homepage, /projects, /developers/[slug], auth, contact, about, faq, brokers, blog
+src/app/admin/              # /admin/applications — approve/reject developer & broker signups
 src/app/dashboard/developer/
 ├── page.tsx           # overview
 ├── projects/          # project listings
@@ -82,6 +94,18 @@ src/app/dashboard/developer/
 ├── analytics/         # traffic & performance
 └── settings/          # notification preferences
 ```
+
+## Deployment
+
+Deployed on Vercel, connected to this repo's `main` branch for
+push-to-deploy. Production points at the same Supabase project as local
+dev — set the same variables from `.env` (§2 above) plus:
+
+| Variable | Purpose |
+|---|---|
+| `RESEND_API_KEY` | Enables real email delivery (password reset, account invites). Without it, links are logged server-side instead of sent |
+| `RESEND_FROM_EMAIL` | Sender address — defaults to Resend's sandbox `onboarding@resend.dev` |
+| `NEXT_PUBLIC_APP_URL` | Must be the deployed URL — used to build absolute links in emails |
 
 ## Other scripts
 
