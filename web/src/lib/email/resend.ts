@@ -30,7 +30,7 @@ export async function sendPasswordResetEmail(to: string, resetUrl: string): Prom
   }
 
   const from = process.env.RESEND_FROM_EMAIL ?? "onboarding@resend.dev";
-  await getClient().emails.send({
+  const { error } = await getClient().emails.send({
     from: `مَعلم <${from}>`,
     to,
     subject: "إعادة تعيين كلمة المرور — مَعلم",
@@ -49,6 +49,11 @@ export async function sendPasswordResetEmail(to: string, resetUrl: string): Prom
       </div>
     `,
   });
+  if (error) {
+    console.warn(
+      `[email] Resend rejected password-reset email to ${to}: ${error.message}. Reset link: ${resetUrl}`,
+    );
+  }
 }
 
 export async function sendAccountInviteEmail(
@@ -64,7 +69,7 @@ export async function sendAccountInviteEmail(
   }
 
   const from = process.env.RESEND_FROM_EMAIL ?? "onboarding@resend.dev";
-  await getClient().emails.send({
+  const { error } = await getClient().emails.send({
     from: `مَعلم <${from}>`,
     to,
     subject: "تمت الموافقة على طلبك — أنشئ كلمة مرورك",
@@ -81,4 +86,9 @@ export async function sendAccountInviteEmail(
       </div>
     `,
   });
+  if (error) {
+    console.warn(
+      `[email] Resend rejected account-invite email to ${to}: ${error.message}. Setup link: ${setupUrl}`,
+    );
+  }
 }
