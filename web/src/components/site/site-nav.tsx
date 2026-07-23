@@ -6,7 +6,10 @@ import { SiteNavUserMenu } from "@/components/site/site-nav-user-menu";
 
 const LINKS = [
   { key: "projects", label: "المساكن", href: "/projects" },
+  { key: "brokers", label: "الوسطاء", href: "/brokers" },
   { key: "about", label: "عن مَعلم", href: "/about" },
+  { key: "blog", label: "المدوّنة", href: "/blog" },
+  { key: "faq", label: "الأسئلة", href: "/faq" },
   { key: "contact", label: "تواصل", href: "/contact" },
 ] as const;
 

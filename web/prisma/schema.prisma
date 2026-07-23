@@ -411,3 +411,14 @@ model Inquiry {
 
   @@index([type, createdAt])
 }
+
+// ===========================================================================
+// Newsletter — Blog page email capture
+// ===========================================================================
+
+model NewsletterSubscriber {
+  id    String @id @default(cuid())
+  email String @unique
+
+  createdAt DateTime @default(now())
+}

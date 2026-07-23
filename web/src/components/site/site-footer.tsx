@@ -5,12 +5,18 @@ import { ArchMark } from "@/components/dashboard/arch-mark";
 const COLUMNS = [
   {
     head: "استكشف",
-    links: [{ t: "كل المساكن", href: "/projects" }],
+    links: [
+      { t: "كل المساكن", href: "/projects" },
+      { t: "الوسطاء", href: "/brokers" },
+      { t: "سوّق مشروعك", href: "/register/apply" },
+    ],
   },
   {
     head: "الشركة",
     links: [
       { t: "عن مَعلم", href: "/about" },
+      { t: "المدوّنة", href: "/blog" },
+      { t: "الأسئلة الشائعة", href: "/faq" },
       { t: "تواصل معنا", href: "/contact" },
     ],
   },
@@ -19,7 +25,6 @@ const COLUMNS = [
     links: [
       { t: "تسجيل الدخول", href: "/login" },
       { t: "إنشاء حساب", href: "/register" },
-      { t: "سوّق مشروعك", href: "/register/apply" },
     ],
   },
 ] as const;
