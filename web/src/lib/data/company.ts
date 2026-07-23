@@ -1,31 +1,36 @@
 import "server-only";
 import { cache } from "react";
 
+import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { toArabicDigits } from "@/lib/format";
 import { DEVELOPER_NAV } from "@/lib/data/mappers";
 import type { DashboardNavItem, DeveloperAccount } from "@/types/dashboard";
 
 /**
- * Resolves the developer company whose dashboard is being viewed.
- *
- * Phase 3 (auth wiring) will derive this from the NextAuth session
- * (`session.user.companyId`). Until real sign-in exists, the dashboard
- * operates on the seeded demo developer company. Wrapped in `cache()` so the
- * layout and page share a single lookup per request.
+ * Resolves the company whose dashboard is being viewed, from the signed-in
+ * user's session (`session.user.companyId`). `src/proxy.ts` already gates
+ * every /dashboard/* route to sessions with a role of DEVELOPER/BROKER and a
+ * companyId set, so the errors below are defensive invariants, not expected
+ * user-facing paths. Wrapped in `cache()` so the layout and page share a
+ * single lookup per request.
  */
 export const getDeveloperCompany = cache(async () => {
+  const session = await auth();
+  const companyId = session?.user?.companyId;
+  if (!companyId) {
+    throw new Error("No company is associated with the current session.");
+  }
+
   const company = await prisma.company.findUnique({
-    where: { slug: "vision-group" },
+    where: { id: companyId },
     include: {
       members: { orderBy: { createdAt: "asc" }, take: 1 },
     },
   });
 
   if (!company) {
-    throw new Error(
-      "Demo developer company not found. Run `npm run db:seed` after migrating.",
-    );
+    throw new Error(`Company ${companyId} referenced by the session was not found.`);
   }
 
   return company;

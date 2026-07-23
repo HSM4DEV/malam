@@ -1,7 +1,12 @@
+import bcrypt from "bcryptjs";
 import { PrismaPg } from "@prisma/adapter-pg";
 
 import { PrismaClient } from "../src/generated/prisma/client";
 import type { LeadSource, LeadStage } from "../src/generated/prisma/enums";
+
+// Demo dashboard login — seeded so the developer dashboard is testable
+// without a real signup flow. Not a production credential.
+const DEMO_PASSWORD = "Demo12345!";
 
 const connectionString =
   process.env.DIRECT_URL ?? process.env.DATABASE_URL ?? "";
@@ -56,6 +61,7 @@ async function main() {
     data: {
       name: "سلمان الراجحي",
       email: "salman@vision-group.sa",
+      passwordHash: await bcrypt.hash(DEMO_PASSWORD, 12),
       role: "DEVELOPER",
       jobTitle: "مدير التطوير العقاري",
       phone: "0554441234",
@@ -331,6 +337,7 @@ async function main() {
   });
 
   console.log("✅ Seed complete.");
+  console.log(`   Demo dashboard login: salman@vision-group.sa / ${DEMO_PASSWORD}`);
 }
 
 main()

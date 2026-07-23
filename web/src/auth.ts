@@ -38,7 +38,13 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         const valid = await verifyPassword(parsed.data.password, user.passwordHash);
         if (!valid) return null;
 
-        return { id: user.id, email: user.email, name: user.name, role: user.role };
+        return {
+          id: user.id,
+          email: user.email,
+          name: user.name,
+          role: user.role,
+          companyId: user.companyId,
+        };
       },
     }),
   ],
@@ -46,6 +52,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     jwt({ token, user }) {
       if (user) {
         token.role = user.role;
+        token.companyId = user.companyId;
       }
       return token;
     },
@@ -53,6 +60,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       if (session.user) {
         session.user.id = token.sub as string;
         session.user.role = token.role as UserRole;
+        session.user.companyId = token.companyId as string | null;
       }
       return session;
     },
