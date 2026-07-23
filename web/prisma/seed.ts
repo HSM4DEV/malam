@@ -35,6 +35,7 @@ async function main() {
   await prisma.session.deleteMany();
   await prisma.user.deleteMany();
   await prisma.company.deleteMany();
+  await prisma.inquiry.deleteMany();
 
   // --- Company + owner user -------------------------------------------------
   const company = await prisma.company.create({
@@ -47,6 +48,7 @@ async function main() {
       city: "الرياض",
       website: "vision-group.sa",
       bio: "مطوّر عقاري رائد في المملكة، متخصّص في المساكن الفاخرة والوجهات المتكاملة.",
+      foundedYear: 2011,
     },
   });
 
@@ -72,13 +74,13 @@ async function main() {
 
   // --- Projects -------------------------------------------------------------
   const projectSeed = [
-    { key: "nline", name: "مساكن نلاين", slug: "nline", city: "الرياض", district: "العليا", type: "بنتهاوس", status: "PUBLISHED", price: 4.8, tag: "مميّز", total: 90, sold: 54, reserved: 4, views: 18400, imageSeed: "pl-nline", imageAlt: "واجهة برج مساكن نلاين في العليا عند الغسق", blurb: "سبعةٌ وأربعون طابقاً من الزجاج البرونزيّ تعيد رسم أفق العليا." },
-    { key: "diriyah", name: "فلل بلاط الدرعية", slug: "diriyah", city: "الرياض", district: "الدرعية", type: "فيلا", status: "PUBLISHED", price: 9.2, tag: "إطلاق جديد", total: 40, sold: 12, reserved: 3, views: 9200, imageSeed: "pl-diriyah", imageAlt: "فلل بلاط الدرعية بعمارة نجدية معاصرة", blurb: "عمارةٌ نجديةٌ أُعيدت قراءتها بلغةٍ معاصرة حول فناءاتٍ خاصّة." },
-    { key: "corniche", name: "شرفات الكورنيش", slug: "corniche", city: "جدة", district: "الكورنيش", type: "شقة", status: "IN_REVIEW", price: 3.6, tag: "واجهة بحرية", total: 60, sold: 0, reserved: 2, views: 1100, imageSeed: "pl-corniche", imageAlt: "شرفات الكورنيش المطلة على البحر في جدة", blurb: "شققٌ على البحر مباشرةً بشرفاتٍ ممتدّةٍ تطلّ على غروب الكورنيش." },
-    { key: "khobar", name: "مرسى الخبر", slug: "khobar", city: "الخبر", district: "الكورنيش", type: "فيلا", status: "PUBLISHED", price: 6.4, tag: "على البحر", total: 24, sold: 8, reserved: 1, views: 4600, imageSeed: "pl-khobar", imageAlt: "فلل مرسى الخبر على واجهة الخليج", blurb: "فللٌ على المرسى بمظلّاتٍ خاصّةٍ لليخوت وهدوءٍ يليق بالخليج." },
-    { key: "kafd", name: "بنتهاوس المركز المالي", slug: "kafd", city: "الرياض", district: "المركز المالي", type: "بنتهاوس", status: "PUBLISHED", price: 7.9, tag: "بنتهاوس", total: 18, sold: 10, reserved: 2, views: 6800, imageSeed: "pl-kafd", imageAlt: "بنتهاوس المركز المالي في الرياض", blurb: "مساكن علويةٌ في قلب المركز الماليّ بخدمات فندقيةٍ على مدار الساعة." },
-    { key: "malqa", name: "واحة الملقا", slug: "malqa", city: "الرياض", district: "الملقا", type: "دوبلكس", status: "DRAFT", price: 4.2, tag: "مسوّدة", total: 0, sold: 0, reserved: 0, views: 0, imageSeed: "pl-malqa", imageAlt: "مخطط واحة الملقا السكنية في الرياض", blurb: null },
-    { key: "obhur", name: "خليج أبحر", slug: "obhur", city: "جدة", district: "أبحر", type: "فيلا", status: "DRAFT", price: 5.1, tag: "مسوّدة", total: 0, sold: 0, reserved: 0, views: 0, imageSeed: "pl-obhur", imageAlt: "فلل خليج أبحر الشاطئية في جدة", blurb: null },
+    { key: "nline", name: "مساكن نلاين", slug: "nline", city: "الرياض", district: "العليا", type: "بنتهاوس", status: "PUBLISHED", price: 4.8, tag: "مميّز", total: 90, sold: 54, reserved: 4, views: 18400, imageSeed: "pl-nline", imageAlt: "واجهة برج مساكن نلاين في العليا عند الغسق", blurb: "سبعةٌ وأربعون طابقاً من الزجاج البرونزيّ تعيد رسم أفق العليا.", amenities: ["مسبح لا متناهٍ", "صالة رياضية مجهّزة", "أمن على مدار الساعة", "مواقف خاصة", "صالة استقبال فندقية", "مصعد خاص"] },
+    { key: "diriyah", name: "فلل بلاط الدرعية", slug: "diriyah", city: "الرياض", district: "الدرعية", type: "فيلا", status: "PUBLISHED", price: 9.2, tag: "إطلاق جديد", total: 40, sold: 12, reserved: 3, views: 9200, imageSeed: "pl-diriyah", imageAlt: "فلل بلاط الدرعية بعمارة نجدية معاصرة", blurb: "عمارةٌ نجديةٌ أُعيدت قراءتها بلغةٍ معاصرة حول فناءاتٍ خاصّة.", amenities: ["حديقة خاصة", "مسبح خاص", "أمن على مدار الساعة", "غرفة خادمة", "موقف لسيارتين", "فناء داخلي"] },
+    { key: "corniche", name: "شرفات الكورنيش", slug: "corniche", city: "جدة", district: "الكورنيش", type: "شقة", status: "IN_REVIEW", price: 3.6, tag: "واجهة بحرية", total: 60, sold: 0, reserved: 2, views: 1100, imageSeed: "pl-corniche", imageAlt: "شرفات الكورنيش المطلة على البحر في جدة", blurb: "شققٌ على البحر مباشرةً بشرفاتٍ ممتدّةٍ تطلّ على غروب الكورنيش.", amenities: ["إطلالة بحرية مباشرة", "شرفة واسعة", "صالة رياضية", "أمن على مدار الساعة", "موقف خاص"] },
+    { key: "khobar", name: "مرسى الخبر", slug: "khobar", city: "الخبر", district: "الكورنيش", type: "فيلا", status: "PUBLISHED", price: 6.4, tag: "على البحر", total: 24, sold: 8, reserved: 1, views: 4600, imageSeed: "pl-khobar", imageAlt: "فلل مرسى الخبر على واجهة الخليج", blurb: "فللٌ على المرسى بمظلّاتٍ خاصّةٍ لليخوت وهدوءٍ يليق بالخليج.", amenities: ["مظلة يخت خاصة", "مسبح خاص", "إطلالة بحرية", "أمن على مدار الساعة", "حديقة خاصة"] },
+    { key: "kafd", name: "بنتهاوس المركز المالي", slug: "kafd", city: "الرياض", district: "المركز المالي", type: "بنتهاوس", status: "PUBLISHED", price: 7.9, tag: "بنتهاوس", total: 18, sold: 10, reserved: 2, views: 6800, imageSeed: "pl-kafd", imageAlt: "بنتهاوس المركز المالي في الرياض", blurb: "مساكن علويةٌ في قلب المركز الماليّ بخدمات فندقيةٍ على مدار الساعة.", amenities: ["خدمات فندقية", "صالة رياضية", "مسبح على السطح", "أمن على مدار الساعة", "موقف خاص", "مصعد خاص"] },
+    { key: "malqa", name: "واحة الملقا", slug: "malqa", city: "الرياض", district: "الملقا", type: "دوبلكس", status: "DRAFT", price: 4.2, tag: "مسوّدة", total: 0, sold: 0, reserved: 0, views: 0, imageSeed: "pl-malqa", imageAlt: "مخطط واحة الملقا السكنية في الرياض", blurb: null, amenities: ["مسبح مشترك", "حديقة", "أمن على مدار الساعة"] },
+    { key: "obhur", name: "خليج أبحر", slug: "obhur", city: "جدة", district: "أبحر", type: "فيلا", status: "DRAFT", price: 5.1, tag: "مسوّدة", total: 0, sold: 0, reserved: 0, views: 0, imageSeed: "pl-obhur", imageAlt: "فلل خليج أبحر الشاطئية في جدة", blurb: null, amenities: ["وصول مباشر للشاطئ", "مسبح خاص", "حديقة خاصة"] },
   ] as const;
 
   const projectIds = new Map<string, string>();
@@ -101,6 +103,7 @@ async function main() {
         viewCount: p.views,
         imageSeed: p.imageSeed,
         imageAlt: p.imageAlt,
+        amenities: [...p.amenities],
       },
     });
     projectIds.set(p.key, created.id);
@@ -108,16 +111,16 @@ async function main() {
 
   // --- Units (representative inventory sample) ------------------------------
   const unitSeed = [
-    { code: "NL-1204", typeName: "شقة بثلاث غرف", project: "nline", areaSqm: 240, floorLabel: "الطابق ١٢", beds: 3, price: 4.8, status: "AVAILABLE" },
-    { code: "NL-1801", typeName: "مسكن سماوي بأربع غرف", project: "nline", areaSqm: 360, floorLabel: "الطابق ١٨", beds: 4, price: 6.9, status: "RESERVED" },
-    { code: "NL-4701", typeName: "بنتهاوس دوبلكس", project: "nline", areaSqm: 620, floorLabel: "الطابق ٤٧", beds: 5, price: 12.5, status: "SOLD" },
-    { code: "DR-V08", typeName: "فيلا نجدية", project: "diriyah", areaSqm: 680, floorLabel: "دورين", beds: 5, price: 9.2, status: "AVAILABLE" },
-    { code: "DR-V12", typeName: "فيلا نجدية بفناء", project: "diriyah", areaSqm: 900, floorLabel: "دورين + قبو", beds: 6, price: 11.4, status: "RESERVED" },
-    { code: "KF-3302", typeName: "بنتهاوس المركز المالي", project: "kafd", areaSqm: 540, floorLabel: "الطابق ٣٣", beds: 4, price: 7.9, status: "AVAILABLE" },
-    { code: "KH-V03", typeName: "فيلا مرسى", project: "khobar", areaSqm: 420, floorLabel: "دورين", beds: 4, price: 6.4, status: "SOLD" },
-    { code: "KH-V07", typeName: "فيلا مرسى بمظلة يخت", project: "khobar", areaSqm: 700, floorLabel: "دورين", beds: 5, price: 8.8, status: "AVAILABLE" },
-    { code: "CR-0902", typeName: "شقة بحرية", project: "corniche", areaSqm: 180, floorLabel: "الطابق ٩", beds: 2, price: 3.6, status: "AVAILABLE" },
-    { code: "CR-1501", typeName: "شقة بحرية بثلاث غرف", project: "corniche", areaSqm: 410, floorLabel: "الطابق ١٥", beds: 3, price: 5.2, status: "RESERVED" },
+    { code: "NL-1204", typeName: "شقة بثلاث غرف", project: "nline", areaSqm: 240, floorLabel: "الطابق ١٢", beds: 3, baths: 3, price: 4.8, status: "AVAILABLE" },
+    { code: "NL-1801", typeName: "مسكن سماوي بأربع غرف", project: "nline", areaSqm: 360, floorLabel: "الطابق ١٨", beds: 4, baths: 4, price: 6.9, status: "RESERVED" },
+    { code: "NL-4701", typeName: "بنتهاوس دوبلكس", project: "nline", areaSqm: 620, floorLabel: "الطابق ٤٧", beds: 5, baths: 6, price: 12.5, status: "SOLD" },
+    { code: "DR-V08", typeName: "فيلا نجدية", project: "diriyah", areaSqm: 680, floorLabel: "دورين", beds: 5, baths: 5, price: 9.2, status: "AVAILABLE" },
+    { code: "DR-V12", typeName: "فيلا نجدية بفناء", project: "diriyah", areaSqm: 900, floorLabel: "دورين + قبو", beds: 6, baths: 7, price: 11.4, status: "RESERVED" },
+    { code: "KF-3302", typeName: "بنتهاوس المركز المالي", project: "kafd", areaSqm: 540, floorLabel: "الطابق ٣٣", beds: 4, baths: 5, price: 7.9, status: "AVAILABLE" },
+    { code: "KH-V03", typeName: "فيلا مرسى", project: "khobar", areaSqm: 420, floorLabel: "دورين", beds: 4, baths: 4, price: 6.4, status: "SOLD" },
+    { code: "KH-V07", typeName: "فيلا مرسى بمظلة يخت", project: "khobar", areaSqm: 700, floorLabel: "دورين", beds: 5, baths: 6, price: 8.8, status: "AVAILABLE" },
+    { code: "CR-0902", typeName: "شقة بحرية", project: "corniche", areaSqm: 180, floorLabel: "الطابق ٩", beds: 2, baths: 2, price: 3.6, status: "AVAILABLE" },
+    { code: "CR-1501", typeName: "شقة بحرية بثلاث غرف", project: "corniche", areaSqm: 410, floorLabel: "الطابق ١٥", beds: 3, baths: 3, price: 5.2, status: "RESERVED" },
   ] as const;
 
   for (const u of unitSeed) {
@@ -129,6 +132,7 @@ async function main() {
         areaSqm: u.areaSqm,
         floorLabel: u.floorLabel,
         beds: u.beds,
+        baths: u.baths,
         priceMillions: u.price,
         status: u.status,
       },

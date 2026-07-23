@@ -72,6 +72,17 @@ enum MessageSender {
   CONTACT
 }
 
+enum InquiryType {
+  CONTACT
+  DEVELOPER_APPLICATION
+}
+
+enum InquiryStatus {
+  NEW
+  CONTACTED
+  CLOSED
+}
+
 // ===========================================================================
 // Auth.js (NextAuth) — https://authjs.dev/getting-started/adapters/prisma
 // ===========================================================================
@@ -155,6 +166,7 @@ model Company {
   city          String?
   website       String?
   bio           String?     @db.Text
+  foundedYear   Int?
 
   members          User[]
   projects         Project[]
@@ -185,6 +197,7 @@ model Project {
   priceFromMillions Float
   tag               String
   blurb             String?       @db.Text
+  amenities         String[]      @default([])
 
   // Denormalized counters (a project may model far more units than seeded rows).
   totalUnits    Int @default(0)
@@ -215,6 +228,7 @@ model Unit {
   areaSqm       Int
   floorLabel    String
   beds          Int
+  baths         Int        @default(0)
   priceMillions Float
   status        UnitStatus @default(AVAILABLE)
 
@@ -241,6 +255,10 @@ model Lead {
   stage     LeadStage  @default(NEW)
   // Optional unit descriptor shown next to the project name (e.g. "بنتهاوس").
   unitLabel String?
+  // Booking-form scheduling fields (Project-Details "حجز معاينة").
+  preferredDate DateTime?
+  preferredTime String?
+  visitType     String?
 
   company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
   project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
@@ -365,4 +383,31 @@ model NotificationPreference {
 
   @@unique([userId, key])
   @@index([userId])
+}
+
+// ===========================================================================
+// Inquiries — general contact-us messages + developer/broker applications.
+// (Not tied to a single project/company, unlike Lead — that's what
+// distinguishes this from the CRM Lead model.)
+// ===========================================================================
+
+model Inquiry {
+  id     String      @id @default(cuid())
+  type   InquiryType
+  name   String
+  email  String
+  phone  String?
+  // Contact page "أنا" select (buyer/developer/broker/other) — CONTACT only.
+  role   String?
+  // Contact page "الموضوع" select — CONTACT only.
+  subject String?
+  // Applicant's company name — DEVELOPER_APPLICATION only.
+  companyName String?
+  message     String        @db.Text
+  status      InquiryStatus @default(NEW)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([type, createdAt])
 }

@@ -4,11 +4,12 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import { z } from "zod";
 
 import { prisma } from "@/lib/prisma";
+import { verifyPassword } from "@/lib/auth/password";
 import type { UserRole } from "@/generated/prisma/enums";
 
 const credentialsSchema = z.object({
   email: z.string().email(),
-  password: z.string().min(8),
+  password: z.string().min(1),
 });
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
@@ -17,7 +18,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   // database sessions for it) — https://authjs.dev/getting-started/authentication/credentials
   session: { strategy: "jwt" },
   pages: {
-    signIn: "/auth",
+    signIn: "/login",
   },
   providers: [
     Credentials({
@@ -29,12 +30,15 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         const parsed = credentialsSchema.safeParse(raw);
         if (!parsed.success) return null;
 
-        // TODO(auth-phase): look up the user in Postgres and verify
-        // `passwordHash` with a constant-time compare (e.g. bcrypt.compare).
-        // No users exist yet — the data layer is still mock-data-backed —
-        // so this intentionally never authenticates until that phase lands.
-        void parsed.data;
-        return null;
+        const user = await prisma.user.findUnique({
+          where: { email: parsed.data.email },
+        });
+        if (!user?.passwordHash) return null;
+
+        const valid = await verifyPassword(parsed.data.password, user.passwordHash);
+        if (!valid) return null;
+
+        return { id: user.id, email: user.email, name: user.name, role: user.role };
       },
     }),
   ],

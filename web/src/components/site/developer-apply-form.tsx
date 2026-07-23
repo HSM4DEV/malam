@@ -1,0 +1,77 @@
+"use client";
+
+import { useActionState } from "react";
+import { CheckCircle2 } from "lucide-react";
+
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { submitInquiryAction, type InquiryState } from "@/lib/actions/submit-inquiry";
+
+const initialState: InquiryState = {};
+
+export function DeveloperApplyForm() {
+  const [state, formAction, pending] = useActionState(submitInquiryAction, initialState);
+
+  if (state.success) {
+    return (
+      <div className="rounded-[22px] border border-foreground/10 bg-surface px-9 py-14 text-center shadow-[0_30px_60px_-38px_rgba(23,24,26,.4)]">
+        <CheckCircle2 className="mx-auto mb-5.5 size-12 text-pine" aria-hidden="true" />
+        <h2 className="mb-3 font-serif text-[30px] font-semibold">وصلنا طلبك</h2>
+        <p className="mx-auto max-w-[36ch] text-[15px] leading-[1.8] font-light text-muted-strong">
+          سيراجع فريقنا طلبك ويتواصل معك خلال يومي عمل لاستكمال إنشاء حساب شركتك.
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="rounded-[22px] border border-foreground/10 bg-surface px-8 py-9 shadow-[0_30px_60px_-38px_rgba(23,24,26,.4)]">
+      <form action={formAction} className="flex flex-col gap-4">
+        <input type="hidden" name="type" value="DEVELOPER_APPLICATION" />
+
+        <div className="grid grid-cols-1 gap-4.5 sm:grid-cols-2">
+          <Field label="الاسم الكامل *">
+            <Input name="name" placeholder="اسمك" required />
+          </Field>
+          <Field label="اسم الشركة *">
+            <Input name="companyName" placeholder="اسم شركتك" required />
+          </Field>
+        </div>
+
+        <div className="grid grid-cols-1 gap-4.5 sm:grid-cols-2">
+          <Field label="البريد الإلكتروني *">
+            <Input type="email" name="email" placeholder="you@company.sa" dir="ltr" className="text-end" required />
+          </Field>
+          <Field label="رقم الجوال *">
+            <Input name="phone" placeholder="+966 5X XXX XXXX" dir="ltr" className="text-end" required />
+          </Field>
+        </div>
+
+        <Field label="أخبرنا عن مشروعك *">
+          <textarea
+            name="message"
+            rows={5}
+            placeholder="نوع المشاريع، المدن، الحجم التقريبي…"
+            required
+            className="w-full rounded-[12px] border border-input bg-surface px-4 py-3 text-sm text-foreground outline-none placeholder:text-muted focus-visible:border-ring"
+          />
+        </Field>
+
+        {state.error ? <p className="text-[13px] text-clay">{state.error}</p> : null}
+
+        <Button type="submit" disabled={pending} className="h-[52px] text-[15px]">
+          {pending ? "جارٍ الإرسال…" : "إرسال الطلب"}
+        </Button>
+      </form>
+    </div>
+  );
+}
+
+function Field({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div>
+      <label className="mb-1.5 block text-[12.5px] font-semibold text-muted-strong">{label}</label>
+      {children}
+    </div>
+  );
+}
