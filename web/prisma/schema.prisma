@@ -81,6 +81,8 @@ enum InquiryStatus {
   NEW
   CONTACTED
   CLOSED
+  APPROVED
+  REJECTED
 }
 
 // ===========================================================================
@@ -403,6 +405,8 @@ model Inquiry {
   subject String?
   // Applicant's company name — DEVELOPER_APPLICATION only.
   companyName String?
+  // Intended Company.type once approved — DEVELOPER_APPLICATION only.
+  companyType CompanyType?
   message     String        @db.Text
   status      InquiryStatus @default(NEW)
 

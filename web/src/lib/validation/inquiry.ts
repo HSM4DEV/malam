@@ -16,6 +16,7 @@ export const developerApplicationSchema = z.object({
   email: z.string().email("أدخل بريداً إلكترونياً صحيحاً"),
   phone: z.string().min(1, "أدخل رقم جوالك"),
   companyName: z.string().min(1, "أدخل اسم الشركة"),
+  companyType: z.enum(["DEVELOPER", "BROKER"]),
   message: z.string().min(1, "أخبرنا عن مشروعك"),
 });
 

@@ -50,3 +50,35 @@ export async function sendPasswordResetEmail(to: string, resetUrl: string): Prom
     `,
   });
 }
+
+export async function sendAccountInviteEmail(
+  to: string,
+  companyName: string,
+  setupUrl: string,
+): Promise<void> {
+  if (!isEmailConfigured()) {
+    console.warn(
+      `[email] RESEND_API_KEY not set — skipping account-invite email to ${to}. Setup link: ${setupUrl}`,
+    );
+    return;
+  }
+
+  const from = process.env.RESEND_FROM_EMAIL ?? "onboarding@resend.dev";
+  await getClient().emails.send({
+    from: `مَعلم <${from}>`,
+    to,
+    subject: "تمت الموافقة على طلبك — أنشئ كلمة مرورك",
+    html: `
+      <div dir="rtl" style="font-family: 'IBM Plex Sans Arabic', sans-serif; color:#17181A; max-width:480px; margin:0 auto; padding:32px 24px;">
+        <h1 style="font-size:22px; margin-bottom:16px;">أهلاً بك في مَعلم</h1>
+        <p style="font-size:15px; line-height:1.7; color:#5C5850;">
+          تمّت الموافقة على طلب انضمام <strong>${companyName}</strong>. اضغط على الزر أدناه لتعيين
+          كلمة مرورك والدخول إلى لوحة تحكّمك. الرابط صالحٌ لمدة ٧ أيام.
+        </p>
+        <a href="${setupUrl}" style="display:inline-block; margin-top:20px; background:#14453C; color:#F6F3EC; padding:14px 28px; border-radius:12px; text-decoration:none; font-weight:600;">
+          تعيين كلمة المرور
+        </a>
+      </div>
+    `,
+  });
+}

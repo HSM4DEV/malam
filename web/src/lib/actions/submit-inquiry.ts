@@ -28,6 +28,7 @@ export async function submitInquiryAction(
       role: data.type === "CONTACT" ? data.role || null : null,
       subject: data.type === "CONTACT" ? data.subject || null : null,
       companyName: data.type === "DEVELOPER_APPLICATION" ? data.companyName : null,
+      companyType: data.type === "DEVELOPER_APPLICATION" ? data.companyType : null,
       message: data.message,
     },
   });

@@ -47,6 +47,21 @@ export function DeveloperApplyForm() {
           </Field>
         </div>
 
+        <Field label="نوع الحساب *">
+          <select
+            name="companyType"
+            required
+            defaultValue=""
+            className="h-11 w-full rounded-[11px] border border-input bg-surface px-4 text-sm text-foreground outline-none focus-visible:border-ring"
+          >
+            <option value="" disabled>
+              اختر…
+            </option>
+            <option value="DEVELOPER">مطوّر عقاري</option>
+            <option value="BROKER">وسيط عقاري</option>
+          </select>
+        </Field>
+
         <Field label="أخبرنا عن مشروعك *">
           <textarea
             name="message"

@@ -4,9 +4,10 @@ import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "../src/generated/prisma/client";
 import type { LeadSource, LeadStage } from "../src/generated/prisma/enums";
 
-// Demo dashboard login — seeded so the developer dashboard is testable
-// without a real signup flow. Not a production credential.
+// Demo logins — seeded so the developer dashboard and admin review page are
+// testable without a real signup flow. Not production credentials.
 const DEMO_PASSWORD = "Demo12345!";
+const ADMIN_PASSWORD = "AdminDemo123!";
 
 const connectionString =
   process.env.DIRECT_URL ?? process.env.DATABASE_URL ?? "";
@@ -66,6 +67,16 @@ async function main() {
       jobTitle: "مدير التطوير العقاري",
       phone: "0554441234",
       companyId: company.id,
+    },
+  });
+
+  // --- Admin (reviews developer/broker applications at /admin/applications) -
+  await prisma.user.create({
+    data: {
+      name: "مدير المنصّة",
+      email: "admin@malam.sa",
+      passwordHash: await bcrypt.hash(ADMIN_PASSWORD, 12),
+      role: "ADMIN",
     },
   });
 
@@ -338,6 +349,7 @@ async function main() {
 
   console.log("✅ Seed complete.");
   console.log(`   Demo dashboard login: salman@vision-group.sa / ${DEMO_PASSWORD}`);
+  console.log(`   Demo admin login: admin@malam.sa / ${ADMIN_PASSWORD}`);
 }
 
 main()
