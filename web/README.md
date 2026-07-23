@@ -107,6 +107,11 @@ dev — set the same variables from `.env` (§2 above) plus:
 | `RESEND_FROM_EMAIL` | Sender address — defaults to Resend's sandbox `onboarding@resend.dev` |
 | `NEXT_PUBLIC_APP_URL` | Must be the deployed URL — used to build absolute links in emails |
 
+The repo root is one level up from this app (`web/`), so the Vercel
+project's **Root Directory** setting must be `web` — otherwise git-triggered
+builds clone the repo and fail to find `app/`/`pages/` (they run from the
+repo root by default; only `web/` has the actual Next.js project).
+
 ## Other scripts
 
 | Script | Purpose |
