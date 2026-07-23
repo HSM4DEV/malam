@@ -1,0 +1,368 @@
+// Prisma schema for Ma'lam (مَعلم) — luxury real estate platform.
+// Database: Supabase PostgreSQL. ORM: Prisma. Auth: NextAuth (Auth.js).
+//
+// Connection model:
+//   - Runtime (PrismaClient + @prisma/adapter-pg) uses DATABASE_URL — the
+//     Supabase transaction pooler (Supavisor, port 6543) for serverless-safe
+//     connections.
+//   - Migrations & seeding use DIRECT_URL — a direct connection (port 5432) —
+//     configured in prisma.config.ts.
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ===========================================================================
+// Enums
+// ===========================================================================
+
+enum UserRole {
+  BUYER
+  DEVELOPER
+  BROKER
+  ADMIN
+}
+
+enum CompanyType {
+  DEVELOPER
+  BROKER
+}
+
+enum ProjectStatus {
+  DRAFT
+  IN_REVIEW
+  PUBLISHED
+}
+
+enum UnitStatus {
+  AVAILABLE
+  RESERVED
+  SOLD
+}
+
+enum LeadStage {
+  NEW
+  CONTACTED
+  VIEWING
+  NEGOTIATING
+  WON
+  LOST
+}
+
+enum LeadSource {
+  WEBSITE
+  AD
+  REFERRAL
+  WHATSAPP
+  EXHIBITION
+}
+
+enum AnalyticsPeriod {
+  WEEKLY
+  MONTHLY
+}
+
+enum MessageSender {
+  COMPANY
+  CONTACT
+}
+
+// ===========================================================================
+// Auth.js (NextAuth) — https://authjs.dev/getting-started/adapters/prisma
+// ===========================================================================
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  role          UserRole  @default(BUYER)
+  // Only set for Credentials-provider accounts; OAuth-only accounts leave null.
+  passwordHash  String?
+
+  // Profile (Settings › الملف الشخصي)
+  jobTitle String?
+  phone    String?
+
+  // A developer/broker user belongs to one company; buyers/admins may not.
+  companyId String?
+  company   Company? @relation(fields: [companyId], references: [id], onDelete: SetNull)
+
+  accounts          Account[]
+  sessions          Session[]
+  notificationPrefs NotificationPreference[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([companyId])
+}
+
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([provider, providerAccountId])
+  @@index([userId])
+}
+
+model Session {
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@id([identifier, token])
+}
+
+// ===========================================================================
+// Companies — a developer or broker organization
+// ===========================================================================
+
+model Company {
+  id            String      @id @default(cuid())
+  name          String
+  slug          String      @unique
+  type          CompanyType @default(DEVELOPER)
+  logoUrl       String?
+  avatarSeed    String?
+  licenseNumber String?
+  city          String?
+  website       String?
+  bio           String?     @db.Text
+
+  members          User[]
+  projects         Project[]
+  leads            Lead[]
+  conversations    Conversation[]
+  analyticsPoints  AnalyticsPoint[]
+  trafficSources   TrafficSource[]
+  analyticsSummary AnalyticsSummary?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ===========================================================================
+// Projects & Units
+// ===========================================================================
+
+model Project {
+  id                String        @id @default(cuid())
+  companyId         String
+  name              String
+  slug              String        @unique
+  city              String
+  district          String
+  // Property type, stored as its Arabic display label (بنتهاوس / فيلا / شقة …).
+  type              String
+  status            ProjectStatus @default(DRAFT)
+  priceFromMillions Float
+  tag               String
+  blurb             String?       @db.Text
+
+  // Denormalized counters (a project may model far more units than seeded rows).
+  totalUnits    Int @default(0)
+  soldUnits     Int @default(0)
+  reservedUnits Int @default(0)
+  viewCount     Int @default(0)
+
+  imageSeed String
+  imageAlt  String
+
+  company       Company        @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  units         Unit[]
+  leads         Lead[]
+  conversations Conversation[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([companyId])
+  @@index([status])
+}
+
+model Unit {
+  id            String     @id @default(cuid())
+  projectId     String
+  code          String     @unique
+  typeName      String
+  areaSqm       Int
+  floorLabel    String
+  beds          Int
+  priceMillions Float
+  status        UnitStatus @default(AVAILABLE)
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([projectId])
+  @@index([status])
+}
+
+// ===========================================================================
+// Leads — buyer inquiries / CRM pipeline
+// ===========================================================================
+
+model Lead {
+  id        String     @id @default(cuid())
+  companyId String
+  projectId String
+  buyerName String
+  phone     String
+  source    LeadSource
+  stage     LeadStage  @default(NEW)
+  // Optional unit descriptor shown next to the project name (e.g. "بنتهاوس").
+  unitLabel String?
+
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([companyId, createdAt])
+  @@index([projectId])
+  @@index([stage])
+}
+
+// ===========================================================================
+// Messages — inbox conversations between the company and a contact
+// ===========================================================================
+
+model Conversation {
+  id            String   @id @default(cuid())
+  companyId     String
+  projectId     String?
+  contactName   String
+  online        Boolean  @default(false)
+  lastMessageAt DateTime @default(now())
+
+  company  Company   @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  project  Project?  @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  messages Message[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([companyId, lastMessageAt])
+}
+
+model Message {
+  id             String        @id @default(cuid())
+  conversationId String
+  sender         MessageSender
+  body           String        @db.Text
+  // Contact messages start unread until the company opens the conversation.
+  readByCompany  Boolean       @default(true)
+
+  conversation Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@index([conversationId, createdAt])
+}
+
+// ===========================================================================
+// Analytics
+// ===========================================================================
+
+// One row per (company, period, bucket) — powers the "أداء المشاهدات" chart.
+model AnalyticsPoint {
+  id        String          @id @default(cuid())
+  companyId String
+  period    AnalyticsPeriod
+  bucket    Int
+  label     String
+  value     Int
+
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  @@unique([companyId, period, bucket])
+  @@index([companyId, period])
+}
+
+model TrafficSource {
+  id        String @id @default(cuid())
+  companyId String
+  label     String
+  visits    Int
+  sort      Int    @default(0)
+
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  @@index([companyId])
+}
+
+// Non-derivable headline metrics + period-over-period deltas (one per company).
+model AnalyticsSummary {
+  id        String @id @default(cuid())
+  companyId String @unique
+
+  // Deltas (percent) for KPIs derived from live counts elsewhere.
+  portfolioViewsDelta Int @default(0)
+  newLeadsDelta       Int @default(0)
+  unitsSoldDelta      Int @default(0)
+
+  // Revenue (Overview)
+  monthlyRevenueMillions Float @default(0)
+  monthlyRevenueDelta    Int   @default(0)
+
+  // Traffic quality (Analytics)
+  uniqueVisitors      Int   @default(0)
+  uniqueVisitorsDelta Int   @default(0)
+  avgSessionSeconds   Int   @default(0)
+  avgSessionDelta     Int   @default(0)
+  conversionRate      Float @default(0)
+  conversionRateDelta Float @default(0)
+
+  // Leads pipeline (Leads)
+  leadsConversionRate  Int @default(0)
+  leadsConversionDelta Int @default(0)
+
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+}
+
+// ===========================================================================
+// Settings — per-user notification toggles
+// ===========================================================================
+
+model NotificationPreference {
+  id      String  @id @default(cuid())
+  userId  String
+  // Stable key mapped to display copy in the data layer (label/description).
+  key     String
+  enabled Boolean @default(true)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, key])
+  @@index([userId])
+}

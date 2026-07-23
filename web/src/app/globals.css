@@ -1,0 +1,172 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+/*
+ * Design tokens — "Curated Clarity" system (مَعلم / Ma'lam), as approved in
+ * the design workspace. Sourced directly from Developer-Dashboard.dc.html.
+ * The dashboard is a single, light, fixed palette — no dark-mode variant was
+ * designed for it, so unlike the create-next-app default there's no
+ * prefers-color-scheme override here.
+ */
+:root {
+  --background: #f1ede3; /* page canvas */
+  --foreground: #17181a; /* ink */
+
+  --color-surface: #fcfbf7;
+  --color-sand: #ece6da;
+  --color-sage: #e6ede9;
+
+  --color-pine: #14453c;
+  --color-pine-dark: #0e332c;
+  --color-pine-mist: #8fbfb0;
+  --color-cream: #f6f3ec;
+
+  --color-clay: #c4643c;
+  --color-clay-soft: #f3e7de;
+  --color-amber: #9a6b18;
+  --color-amber-soft: #f5ead8;
+  --color-draft: #ede6d8;
+
+  --color-muted: #8a857a;
+  --color-muted-dark: #6e6a61;
+  --color-muted-light: #a7a092;
+  --color-muted-strong: #5c5850;
+
+  /* shadcn/ui semantic aliases, mapped onto the tokens above so generated
+     primitives (button, card, badge, …) use the Curated Clarity palette. */
+  --color-primary: var(--color-pine);
+  --color-primary-foreground: var(--color-cream);
+  --color-secondary: var(--color-sage);
+  --color-secondary-foreground: var(--color-pine);
+  --color-destructive: var(--color-clay);
+  --color-destructive-foreground: var(--color-cream);
+  --color-accent: var(--color-sage);
+  --color-accent-foreground: var(--color-pine);
+  --color-muted-foreground: var(--color-muted-dark);
+  --color-card: var(--color-surface);
+  --color-card-foreground: var(--foreground);
+  --color-popover: var(--color-surface);
+  --color-popover-foreground: var(--foreground);
+  --color-border: color-mix(in srgb, var(--foreground) 9%, transparent);
+  --color-input: color-mix(in srgb, var(--foreground) 14%, transparent);
+  --color-ring: var(--color-pine);
+  --radius: 0.7rem;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --color-surface: var(--color-surface);
+  --color-sand: var(--color-sand);
+  --color-sage: var(--color-sage);
+
+  --color-pine: var(--color-pine);
+  --color-pine-dark: var(--color-pine-dark);
+  --color-pine-mist: var(--color-pine-mist);
+  --color-cream: var(--color-cream);
+
+  --color-clay: var(--color-clay);
+  --color-clay-soft: var(--color-clay-soft);
+  --color-amber: var(--color-amber);
+  --color-amber-soft: var(--color-amber-soft);
+  --color-draft: var(--color-draft);
+
+  --color-muted: var(--color-muted);
+  --color-muted-dark: var(--color-muted-dark);
+  --color-muted-light: var(--color-muted-light);
+  --color-muted-strong: var(--color-muted-strong);
+
+  --color-primary: var(--color-primary);
+  --color-primary-foreground: var(--color-primary-foreground);
+  --color-secondary: var(--color-secondary);
+  --color-secondary-foreground: var(--color-secondary-foreground);
+  --color-destructive: var(--color-destructive);
+  --color-destructive-foreground: var(--color-destructive-foreground);
+  --color-accent: var(--color-accent);
+  --color-accent-foreground: var(--color-accent-foreground);
+  --color-muted-foreground: var(--color-muted-foreground);
+  --color-card: var(--color-card);
+  --color-card-foreground: var(--color-card-foreground);
+  --color-popover: var(--color-popover);
+  --color-popover-foreground: var(--color-popover-foreground);
+  --color-border: var(--color-border);
+  --color-input: var(--color-input);
+  --color-ring: var(--color-ring);
+
+  --radius-sm: calc(var(--radius) - 0.3rem);
+  --radius-md: calc(var(--radius) - 0.15rem);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 0.3rem);
+
+  /* Matches the dashboard prototype's own breakpoints (960px / 560px). */
+  --breakpoint-dash-sm: 35rem;
+  --breakpoint-dash: 60rem;
+
+  --font-sans: var(--font-sans-ar), "IBM Plex Sans Arabic", ui-sans-serif,
+    sans-serif;
+  --font-serif: "Noto Serif Arabic", ui-serif, serif;
+
+  --animate-fade-up: fade-up 0.6s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+  --animate-grow-bar: grow-bar 0.8s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+  --animate-grow-x: grow-x 0.8s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes grow-bar {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+@keyframes grow-x {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* Hover-lift card (from Projects-Signature .pcard) + slow thumbnail zoom. */
+.pcard {
+  transition:
+    transform 0.35s cubic-bezier(0.2, 0.7, 0.3, 1),
+    box-shadow 0.35s;
+}
+.pcard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 30px 50px -34px rgba(23, 24, 26, 0.5);
+}
+.pthumb {
+  transition: transform 1s cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+.pcard:hover .pthumb {
+  transform: scale(1.05);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+}
+
+::selection {
+  background: color-mix(in srgb, var(--color-pine) 16%, transparent);
+}
