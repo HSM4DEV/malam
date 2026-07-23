@@ -107,6 +107,16 @@ dev — set the same variables from `.env` (§2 above) plus:
 | `RESEND_FROM_EMAIL` | Sender address — defaults to Resend's sandbox `onboarding@resend.dev` |
 | `NEXT_PUBLIC_APP_URL` | Must be the deployed URL — used to build absolute links in emails |
 
+**Pending:** `malam.sa` is the intended sending domain, but it's still mid
+ownership-transfer and DNS isn't accessible yet. Until it's verified in
+Resend, `RESEND_FROM_EMAIL` must stay on the sandbox sender — Resend only
+delivers sandbox-sender emails to the account owner's own address, so
+password-reset/invite emails to anyone else currently just log the link
+server-side instead of sending. Once DNS access exists: add `malam.sa` at
+resend.com/domains, add the SPF/DKIM records it generates, wait for
+verification, then switch `RESEND_FROM_EMAIL` to an address on that domain
+(both locally and on Vercel) and redeploy.
+
 The repo root is one level up from this app (`web/`), so the Vercel
 project's **Root Directory** setting must be `web` — otherwise git-triggered
 builds clone the repo and fail to find `app/`/`pages/` (they run from the
