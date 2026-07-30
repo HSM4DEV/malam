@@ -11,7 +11,11 @@ export type NavKey =
   | "leads"
   | "analytics"
   | "messages"
-  | "settings";
+  | "settings"
+  | "listings"
+  | "clients"
+  | "deals"
+  | "commissions";
 
 export interface DashboardNavItem {
   key: NavKey;
@@ -234,4 +238,34 @@ export interface DeveloperSettingsData {
   profileFields: SettingsField[];
   companyFields: SettingsField[];
   notifications: SettingsToggle[];
+}
+
+// --- Broker deals (pipeline) page ------------------------------------------
+
+export type DealStage = "new" | "viewing" | "negotiating" | "won";
+
+export interface DealCard {
+  id: string;
+  name: string;
+  project: string;
+  time: string;
+}
+
+export interface DealColumn {
+  key: DealStage;
+  title: string;
+  count: string;
+  cards: DealCard[];
+}
+
+export interface BrokerDealsData {
+  columns: DealColumn[];
+}
+
+// --- Broker overview page --------------------------------------------------
+
+export interface BrokerOverviewData {
+  kpis: KpiMetric[];
+  pipeline: DealColumn[];
+  listings: UnitRow[];
 }

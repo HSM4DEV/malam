@@ -4,7 +4,7 @@ import { cache } from "react";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { toArabicDigits } from "@/lib/format";
-import { DEVELOPER_NAV } from "@/lib/data/mappers";
+import { BROKER_NAV, DEVELOPER_NAV } from "@/lib/data/mappers";
 import type { DashboardNavItem, DeveloperAccount } from "@/types/dashboard";
 
 /**
@@ -65,6 +65,36 @@ export const getDeveloperShell = cache(
         roleLabel: company.type === "DEVELOPER" ? "حساب مطوّر" : "حساب وسيط",
         avatarSeed: company.avatarSeed ?? "dd-user",
         avatarAlt: "صورة المطوّر",
+      },
+      nav,
+    };
+  },
+);
+
+/**
+ * Lightweight data for the broker dashboard shell (sidebar + account), used
+ * by the broker layout on every /dashboard/broker/* route. Mirrors
+ * getDeveloperShell() above, keyed off BROKER_NAV instead.
+ */
+export const getBrokerShell = cache(
+  async (): Promise<{ account: DeveloperAccount; nav: DashboardNavItem[] }> => {
+    const company = await getDeveloperCompany();
+    const newLeads = await prisma.lead.count({
+      where: { companyId: company.id, stage: "NEW" },
+    });
+
+    const nav: DashboardNavItem[] = BROKER_NAV.map((item) =>
+      item.key === "clients" && newLeads > 0
+        ? { ...item, badge: toArabicDigits(Math.min(newLeads, 99)) }
+        : { ...item },
+    );
+
+    return {
+      account: {
+        companyName: company.name,
+        roleLabel: "حساب وسيط",
+        avatarSeed: company.avatarSeed ?? "bd-user",
+        avatarAlt: "صورة الوسيط",
       },
       nav,
     };

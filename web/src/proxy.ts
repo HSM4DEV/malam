@@ -27,6 +27,16 @@ export default auth((req) => {
     return NextResponse.redirect(new URL("/", req.url));
   }
 
+  // A developer account has no business inside /dashboard/broker/* and vice
+  // versa — each role only sees its own dashboard.
+  const pathname = req.nextUrl.pathname;
+  if (pathname.startsWith("/dashboard/developer") && session.user.role !== "DEVELOPER") {
+    return NextResponse.redirect(new URL("/", req.url));
+  }
+  if (pathname.startsWith("/dashboard/broker") && session.user.role !== "BROKER") {
+    return NextResponse.redirect(new URL("/", req.url));
+  }
+
   return NextResponse.next();
 });
 

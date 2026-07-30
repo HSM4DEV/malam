@@ -62,8 +62,9 @@ never edit tables by hand in the Supabase dashboard.
 npm run db:seed
 ```
 
-Populates a demo company, projects, units, leads, and conversations so the
-dashboard has something to render.
+Populates a demo developer company and a demo broker company — each with its
+own projects, units, leads, and conversations — so both dashboards have
+something to render.
 
 ### 5. Run the app
 
@@ -78,6 +79,7 @@ Open [http://localhost:3000](http://localhost:3000).
 | Role | Email | Password |
 |---|---|---|
 | Developer (dashboard access) | `salman@vision-group.sa` | `Demo12345!` |
+| Broker (dashboard access) | `fahad@shammari-realty.sa` | `Demo12345!` |
 | Admin (`/admin/applications`) | `admin@malam.sa` | `AdminDemo123!` |
 
 ## Project structure

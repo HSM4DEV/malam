@@ -347,8 +347,197 @@ async function main() {
     },
   });
 
+  // ===========================================================================
+  // Broker company — its own portfolio, clients, and pipeline (/dashboard/broker)
+  // ===========================================================================
+
+  const brokerCompany = await prisma.company.create({
+    data: {
+      name: "مكتب الشمري العقاري",
+      slug: "shammari-realty",
+      type: "BROKER",
+      avatarSeed: "bd-user",
+      licenseNumber: "1200009821",
+      city: "الرياض",
+      website: "shammari-realty.sa",
+      bio: "وسيطٌ عقاريٌّ معتمد، متخصّص في تسويق الوحدات السكنية الفاخرة في الرياض وجدة.",
+      foundedYear: 2016,
+    },
+  });
+
+  const brokerOwner = await prisma.user.create({
+    data: {
+      name: "فهد الشمري",
+      email: "fahad@shammari-realty.sa",
+      passwordHash: await bcrypt.hash(DEMO_PASSWORD, 12),
+      role: "BROKER",
+      jobTitle: "وسيطٌ معتمد",
+      phone: "0561239876",
+      companyId: brokerCompany.id,
+    },
+  });
+
+  await prisma.notificationPreference.createMany({
+    data: [
+      { userId: brokerOwner.id, key: "newLeads", enabled: true },
+      { userId: brokerOwner.id, key: "messages", enabled: true },
+      { userId: brokerOwner.id, key: "weeklyReport", enabled: true },
+      { userId: brokerOwner.id, key: "marketing", enabled: false },
+    ],
+  });
+
+  const brokerProjectSeed = [
+    { key: "yasmin", name: "فلل الياسمين", slug: "yasmin-villas", city: "الرياض", district: "الياسمين", type: "فيلا", status: "PUBLISHED" as const, price: 4.8, tag: "حصري", total: 12, sold: 3, reserved: 2, views: 5200, imageSeed: "bd-yasmin", imageAlt: "فلل الياسمين في حي الياسمين بالرياض", blurb: "فللٌ عائليةٌ حديثة في حيٍّ هادئ شمال الرياض.", amenities: ["حديقة خاصة", "مسبح خاص", "أمن على مدار الساعة", "موقف لسيارتين"] },
+    { key: "nakheel", name: "شقق النخيل", slug: "nakheel-apartments", city: "جدة", district: "النخيل", type: "شقة", status: "PUBLISHED" as const, price: 2.4, tag: "نشط", total: 20, sold: 6, reserved: 3, views: 3100, imageSeed: "bd-nakheel", imageAlt: "شقق النخيل السكنية في جدة", blurb: "شققٌ عصريةٌ قريبة من الخدمات في حيّ النخيل بجدة.", amenities: ["صالة رياضية", "أمن على مدار الساعة", "مواقف مظللة"] },
+  ];
+
+  const brokerProjectIds = new Map<string, string>();
+  for (const p of brokerProjectSeed) {
+    const created = await prisma.project.create({
+      data: {
+        companyId: brokerCompany.id,
+        name: p.name,
+        slug: p.slug,
+        city: p.city,
+        district: p.district,
+        type: p.type,
+        status: p.status,
+        priceFromMillions: p.price,
+        tag: p.tag,
+        blurb: p.blurb,
+        totalUnits: p.total,
+        soldUnits: p.sold,
+        reservedUnits: p.reserved,
+        viewCount: p.views,
+        imageSeed: p.imageSeed,
+        imageAlt: p.imageAlt,
+        amenities: [...p.amenities],
+      },
+    });
+    brokerProjectIds.set(p.key, created.id);
+  }
+
+  const brokerUnitSeed = [
+    { code: "YS-V01", typeName: "فيلا بأربع غرف", project: "yasmin", areaSqm: 320, floorLabel: "دورين", beds: 4, baths: 4, price: 4.8, status: "AVAILABLE" as const },
+    { code: "YS-V02", typeName: "فيلا بخمس غرف", project: "yasmin", areaSqm: 380, floorLabel: "دورين", beds: 5, baths: 5, price: 5.6, status: "RESERVED" as const },
+    { code: "YS-V03", typeName: "فيلا ركنية", project: "yasmin", areaSqm: 340, floorLabel: "دورين", beds: 4, baths: 4, price: 5.1, status: "SOLD" as const },
+    { code: "NK-0704", typeName: "شقة بثلاث غرف", project: "nakheel", areaSqm: 210, floorLabel: "الطابق ٧", beds: 3, baths: 2, price: 2.4, status: "AVAILABLE" as const },
+    { code: "NK-1102", typeName: "شقة بغرفتين", project: "nakheel", areaSqm: 150, floorLabel: "الطابق ١١", beds: 2, baths: 2, price: 1.8, status: "AVAILABLE" as const },
+    { code: "NK-0301", typeName: "شقة بثلاث غرف مطلة", project: "nakheel", areaSqm: 240, floorLabel: "الطابق ٣", beds: 3, baths: 3, price: 2.9, status: "RESERVED" as const },
+  ];
+
+  for (const u of brokerUnitSeed) {
+    await prisma.unit.create({
+      data: {
+        projectId: brokerProjectIds.get(u.project)!,
+        code: u.code,
+        typeName: u.typeName,
+        areaSqm: u.areaSqm,
+        floorLabel: u.floorLabel,
+        beds: u.beds,
+        baths: u.baths,
+        priceMillions: u.price,
+        status: u.status,
+      },
+    });
+  }
+
+  const brokerLeadSeed: LeadInput[] = [
+    { buyerName: "عبدالله المطيري", phone: "0551112222", source: "REFERRAL", stage: "NEW", unitLabel: "فيلا ٤غ", project: "yasmin", createdAt: minutesAgo(15) },
+    { buyerName: "لطيفة السعد", phone: "0509998888", source: "WEBSITE", stage: "NEW", unitLabel: null, project: "nakheel", createdAt: minutesAgo(90) },
+    { buyerName: "خالد الغامدي", phone: "0564447777", source: "AD", stage: "CONTACTED", unitLabel: "شقة ٣غ", project: "nakheel", createdAt: daysAgo(1, 12) },
+    { buyerName: "منيرة الحربي", phone: "0537773333", source: "WHATSAPP", stage: "VIEWING", unitLabel: null, project: "yasmin", createdAt: daysAgo(2, 10) },
+    { buyerName: "سعود القرني", phone: "0591106666", source: "EXHIBITION", stage: "NEGOTIATING", unitLabel: "فيلا ٥غ", project: "yasmin", createdAt: daysAgo(3, 9) },
+    { buyerName: "نوف العتيبي", phone: "0585554444", source: "REFERRAL", stage: "WON", unitLabel: "فيلا ركنية", project: "yasmin", createdAt: daysAgo(5, 14) },
+    { buyerName: "فيصل الدوسري", phone: "0542221111", source: "WEBSITE", stage: "LOST", unitLabel: null, project: "nakheel", createdAt: daysAgo(6, 11) },
+    { buyerName: "ريم الشهري", phone: "0576669999", source: "AD", stage: "CONTACTED", unitLabel: "شقة بغرفتين", project: "nakheel", createdAt: daysAgo(1, 16, 30) },
+  ];
+
+  for (const lead of brokerLeadSeed) {
+    await prisma.lead.create({
+      data: {
+        companyId: brokerCompany.id,
+        projectId: brokerProjectIds.get(lead.project)!,
+        buyerName: lead.buyerName,
+        phone: lead.phone,
+        source: lead.source,
+        stage: lead.stage,
+        unitLabel: lead.unitLabel,
+        createdAt: lead.createdAt,
+      },
+    });
+  }
+
+  const brokerConversationSeed: Array<{
+    contactName: string;
+    project: string;
+    online: boolean;
+    messages: Msg[];
+  }> = [
+    {
+      contactName: "عبدالله المطيري",
+      project: "yasmin",
+      online: true,
+      messages: [
+        { sender: "CONTACT", body: "السلام عليكم، هل فيلا الياسمين رقم ١ ما زالت متاحة؟", createdAt: at(9, 40) },
+        { sender: "COMPANY", body: "وعليكم السلام أستاذ عبدالله، نعم متاحة. هل ترغب بموعد معاينة؟", createdAt: at(9, 48) },
+        { sender: "CONTACT", body: "نعم، يوم الخميس مساءً إن أمكن.", createdAt: at(9, 55), unread: true },
+      ],
+    },
+    {
+      contactName: "خالد الغامدي",
+      project: "nakheel",
+      online: false,
+      messages: [
+        { sender: "CONTACT", body: "أرغب بمعرفة تفاصيل التمويل المتاح لشقق النخيل.", createdAt: at(15, 5, 1) },
+        { sender: "COMPANY", body: "بالتأكيد، سأرسل لك خيارات التمويل المتاحة اليوم.", createdAt: at(15, 20, 1) },
+      ],
+    },
+  ];
+
+  for (const conv of brokerConversationSeed) {
+    const last = conv.messages[conv.messages.length - 1];
+    await prisma.conversation.create({
+      data: {
+        companyId: brokerCompany.id,
+        projectId: brokerProjectIds.get(conv.project)!,
+        contactName: conv.contactName,
+        online: conv.online,
+        lastMessageAt: last.createdAt,
+        messages: {
+          create: conv.messages.map((m) => ({
+            sender: m.sender,
+            body: m.body,
+            readByCompany: !m.unread,
+            createdAt: m.createdAt,
+          })),
+        },
+      },
+    });
+  }
+
+  await prisma.analyticsSummary.create({
+    data: {
+      companyId: brokerCompany.id,
+      portfolioViewsDelta: 6,
+      newLeadsDelta: 9,
+      unitsSoldDelta: 2,
+      monthlyRevenueMillions: 0,
+      monthlyRevenueDelta: 0,
+      uniqueVisitors: 4200,
+      uniqueVisitorsDelta: 5,
+      avgSessionSeconds: 150,
+      avgSessionDelta: 4,
+      conversionRate: 3.1,
+      conversionRateDelta: 0.6,
+      leadsConversionRate: 31,
+      leadsConversionDelta: 3,
+    },
+  });
+
   console.log("✅ Seed complete.");
-  console.log(`   Demo dashboard login: salman@vision-group.sa / ${DEMO_PASSWORD}`);
+  console.log(`   Demo developer login: salman@vision-group.sa / ${DEMO_PASSWORD}`);
+  console.log(`   Demo broker login: fahad@shammari-realty.sa / ${DEMO_PASSWORD}`);
   console.log(`   Demo admin login: admin@malam.sa / ${ADMIN_PASSWORD}`);
 }
 

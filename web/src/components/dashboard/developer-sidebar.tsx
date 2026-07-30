@@ -11,9 +11,10 @@ import type { DashboardNavItem, DeveloperAccount } from "@/types/dashboard";
 interface DeveloperSidebarProps {
   account: DeveloperAccount;
   nav: DashboardNavItem[];
+  roleBadge: "مطوّر" | "وسيط";
 }
 
-export function DeveloperSidebar({ account, nav }: DeveloperSidebarProps) {
+export function DeveloperSidebar({ account, nav, roleBadge }: DeveloperSidebarProps) {
   const pathname = usePathname();
 
   // Active = the nav item whose href is the longest prefix of the current path,
@@ -31,7 +32,7 @@ export function DeveloperSidebar({ account, nav }: DeveloperSidebarProps) {
         <ArchMark />
         <span className="font-serif text-2xl font-bold">مَعلم</span>
         <span className="rounded-md bg-pine-mist/20 px-2 py-[3px] text-[9px] font-semibold text-pine-mist">
-          مطوّر
+          {roleBadge}
         </span>
       </Link>
 

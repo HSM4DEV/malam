@@ -47,7 +47,7 @@ export function SiteNavUserMenu({ user }: { user: NonNullable<Session["user"]> }
         <div className="absolute end-0 top-[calc(100%+8px)] w-56 overflow-hidden rounded-xl border border-foreground/10 bg-surface py-1.5 shadow-[0_20px_50px_-24px_rgba(23,24,26,.4)]">
           {canAccessDashboard ? (
             <Link
-              href="/dashboard/developer"
+              href={user.role === "BROKER" ? "/dashboard/broker" : "/dashboard/developer"}
               className="flex items-center gap-2.5 px-4 py-2.5 text-[13.5px] text-foreground hover:bg-cream"
               onClick={() => setOpen(false)}
             >
