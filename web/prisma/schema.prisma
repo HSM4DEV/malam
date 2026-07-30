@@ -434,3 +434,19 @@ model NewsletterSubscriber {
 
   createdAt DateTime @default(now())
 }
+
+// ===========================================================================
+// Rate limiting — Postgres-backed hit log for login/register/contact throttling.
+// No Redis/KV in this stack, so this table stands in as the shared counter:
+// see src/lib/rate-limit.ts.
+// ===========================================================================
+
+model RateLimitHit {
+  id  String @id @default(cuid())
+  // e.g. "login:email:x@y.com", "register:ip:1.2.3.4".
+  key String
+
+  createdAt DateTime @default(now())
+
+  @@index([key, createdAt])
+}

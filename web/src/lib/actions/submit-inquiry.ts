@@ -1,6 +1,8 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
+import { checkRateLimit, RATE_LIMIT_MESSAGE } from "@/lib/rate-limit";
+import { getClientIp } from "@/lib/request-ip";
 import { inquirySchema } from "@/lib/validation/inquiry";
 
 export interface InquiryState {
@@ -12,6 +14,16 @@ export async function submitInquiryAction(
   _prev: InquiryState,
   formData: FormData,
 ): Promise<InquiryState> {
+  const ip = await getClientIp();
+  const allowed = await checkRateLimit({
+    key: `inquiry:ip:${ip}`,
+    limit: 5,
+    windowMs: 60 * 60 * 1000,
+  });
+  if (!allowed) {
+    return { error: RATE_LIMIT_MESSAGE };
+  }
+
   const raw = Object.fromEntries(formData.entries());
   const parsed = inquirySchema.safeParse(raw);
   if (!parsed.success) {
