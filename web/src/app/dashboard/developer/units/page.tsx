@@ -18,12 +18,12 @@ export default async function DeveloperUnitsPage() {
         eyebrow="المخزون"
         title="الوحدات"
         searchPlaceholder="ابحث برقم الوحدة…"
-        action={{ label: "وحدة جديدة" }}
+        action={{ label: "وحدة جديدة", href: "/dashboard/developer/units/new" }}
       />
 
       <div className="flex flex-col gap-6 px-8 py-7">
         <StatsRow stats={stats} />
-        <UnitsTable units={units} statusFilters={statusFilters} />
+        <UnitsTable units={units} statusFilters={statusFilters} basePath="/dashboard/developer/units" />
       </div>
     </>
   );

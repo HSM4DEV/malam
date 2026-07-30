@@ -7,14 +7,16 @@ import { ProjectRow } from "@/components/dashboard/project-row";
 import { cn } from "@/lib/utils";
 import type { ProjectFilterTab, ProjectRow as ProjectRowData } from "@/types/dashboard";
 
-const COLUMN_TEMPLATE = "grid-cols-[2fr_1fr_1.3fr_1fr_1fr_40px]";
+const COLUMN_TEMPLATE = "grid-cols-[2fr_1fr_1.3fr_1fr_1fr_48px]";
 
 export function ProjectsPanel({
   projects,
   filterTabs,
+  basePath,
 }: {
   projects: ProjectRowData[];
   filterTabs: ProjectFilterTab[];
+  basePath: string;
 }) {
   const [activeFilter, setActiveFilter] = useState<ProjectFilterTab["key"]>("all");
 
@@ -50,7 +52,9 @@ export function ProjectsPanel({
           </div>
 
           {filtered.length > 0 ? (
-            filtered.map((project) => <ProjectRow key={project.id} project={project} />)
+            filtered.map((project) => (
+              <ProjectRow key={project.id} project={project} basePath={basePath} />
+            ))
           ) : (
             <div className="px-[26px] py-14 text-center text-sm text-muted">
               لا توجد مشاريع مطابقة لهذا الفلتر.

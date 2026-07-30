@@ -66,6 +66,7 @@ export interface ProjectRow {
   viewsLabel: string;
   imageSeed: string;
   imageAlt: string;
+  imageUrl: string | null;
 }
 
 export interface ProjectFilterTab {
@@ -105,6 +106,7 @@ export interface DeveloperProjectCard {
   leadsCount: number;
   imageSeed: string;
   imageAlt: string;
+  imageUrl: string | null;
   tag: string;
 }
 

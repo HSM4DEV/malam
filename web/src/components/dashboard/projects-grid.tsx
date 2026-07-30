@@ -9,9 +9,11 @@ import type { DeveloperProjectCard, ProjectFilterTab } from "@/types/dashboard";
 export function ProjectsGrid({
   projects,
   filterTabs,
+  basePath,
 }: {
   projects: DeveloperProjectCard[];
   filterTabs: ProjectFilterTab[];
+  basePath: string;
 }) {
   const [active, setActive] = useState<ProjectFilterTab["key"]>("all");
 
@@ -30,7 +32,7 @@ export function ProjectsGrid({
       {filtered.length > 0 ? (
         <div className="grid grid-cols-1 gap-5 dash-sm:grid-cols-2 min-[1180px]:grid-cols-3">
           {filtered.map((project) => (
-            <ProjectCard key={project.id} project={project} />
+            <ProjectCard key={project.id} project={project} basePath={basePath} />
           ))}
         </div>
       ) : (

@@ -32,6 +32,7 @@ export function toPublicProjectCard(project: Project & { units: Unit[] }): Publi
     tag: project.tag,
     imageSeed: project.imageSeed,
     imageAlt: project.imageAlt,
+    imageUrl: project.imageUrl,
     bedsRangeLabel: beds.length
       ? rangeLabel(Math.min(...beds), Math.max(...beds), "غرف")
       : "—",
@@ -204,6 +205,7 @@ export const getPublicProjectBySlug = cache(
       amenities: project.amenities,
       imageSeed: project.imageSeed,
       imageAlt: project.imageAlt,
+      imageUrl: project.imageUrl,
       priceFromMillions: project.priceFromMillions,
       priceLabel: formatMillions(project.priceFromMillions),
       totalUnits: project.totalUnits,
@@ -236,6 +238,7 @@ export interface SpotlightProject {
   priceLabel: string;
   imageSeed: string;
   imageAlt: string;
+  imageUrl: string | null;
 }
 
 export const getSpotlightProject = cache(async (): Promise<SpotlightProject | null> => {
@@ -255,6 +258,7 @@ export const getSpotlightProject = cache(async (): Promise<SpotlightProject | nu
     priceLabel: formatMillions(project.priceFromMillions),
     imageSeed: project.imageSeed,
     imageAlt: project.imageAlt,
+    imageUrl: project.imageUrl,
   };
 });
 

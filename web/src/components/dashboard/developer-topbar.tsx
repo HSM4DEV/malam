@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Search, Bell, Plus } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -7,8 +8,8 @@ interface DeveloperTopbarProps {
   eyebrow: string;
   title: string;
   searchPlaceholder?: string;
-  /** Optional primary CTA on the far side of the bar. */
-  action?: { label: string };
+  /** Optional primary CTA on the far side of the bar. If `href` is omitted, renders as a disabled "قريبًا" placeholder. */
+  action?: { label: string; href?: string };
 }
 
 export function DeveloperTopbar({
@@ -42,7 +43,14 @@ export function DeveloperTopbar({
           <span className="absolute end-[11px] top-[9px] size-[7px] rounded-full bg-clay" />
         </Button>
 
-        {action ? (
+        {action?.href ? (
+          <Button asChild>
+            <Link href={action.href}>
+              <Plus className="size-4" aria-hidden="true" />
+              {action.label}
+            </Link>
+          </Button>
+        ) : action ? (
           <Button type="button" aria-disabled="true" title={`${action.label} (قريبًا)`}>
             <Plus className="size-4" aria-hidden="true" />
             {action.label}

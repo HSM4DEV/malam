@@ -1,10 +1,12 @@
 import "server-only";
+import { randomBytes } from "node:crypto";
 import { cache } from "react";
 
 import { prisma } from "@/lib/prisma";
 import { formatCompactCount, formatDelta, formatMillions, toArabicDigits } from "@/lib/format";
-import { getDeveloperCompany } from "@/lib/data/company";
+import { getDeveloperCompany, getDeveloperCompanyId } from "@/lib/data/company";
 import { projectStatusToUi } from "@/lib/data/mappers";
+import { slugify } from "@/lib/utils";
 import type { DeveloperProjectsData } from "@/types/dashboard";
 
 export const getDeveloperProjects = cache(
@@ -56,8 +58,40 @@ export const getDeveloperProjects = cache(
         leadsCount: project._count.leads,
         imageSeed: project.imageSeed,
         imageAlt: project.imageAlt,
+        imageUrl: project.imageUrl,
         tag: project.tag,
       })),
     };
   },
 );
+
+/**
+ * A URL-safe, unique Project.slug from a project name. Mirrors
+ * `uniqueCompanySlug` (admin-applications.ts) — Arabic names (the common
+ * case here) transliterate to nothing, so those and any collision fall back
+ * to a random short slug rather than looping through numbered suffixes.
+ */
+export async function uniqueProjectSlug(name: string): Promise<string> {
+  const base = slugify(name);
+  if (base) {
+    const existing = await prisma.project.findUnique({ where: { slug: base } });
+    if (!existing) return base;
+  }
+  return `project-${randomBytes(4).toString("hex")}`;
+}
+
+/** A single project, scoped to the current session's company — for the edit form. */
+export async function getDeveloperProjectById(id: string) {
+  const companyId = await getDeveloperCompanyId();
+  return prisma.project.findFirst({ where: { id, companyId } });
+}
+
+/** Lightweight {id, name} list of the current company's projects — for the unit form's project picker. */
+export async function getDeveloperProjectOptions(): Promise<{ id: string; name: string }[]> {
+  const companyId = await getDeveloperCompanyId();
+  return prisma.project.findMany({
+    where: { companyId },
+    select: { id: true, name: true },
+    orderBy: { name: "asc" },
+  });
+}

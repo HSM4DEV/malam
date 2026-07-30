@@ -18,11 +18,12 @@ export default async function BrokerListingsPage() {
         eyebrow="المحفظة"
         title="قوائمي"
         searchPlaceholder="ابحث برقم الوحدة…"
+        action={{ label: "قائمة جديدة", href: "/dashboard/broker/listings/new" }}
       />
 
       <div className="flex flex-col gap-6 px-8 py-7">
         <StatsRow stats={stats} />
-        <UnitsTable units={units} statusFilters={statusFilters} />
+        <UnitsTable units={units} statusFilters={statusFilters} basePath="/dashboard/broker/listings" />
       </div>
     </>
   );

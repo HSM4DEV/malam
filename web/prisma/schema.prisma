@@ -209,6 +209,9 @@ model Project {
 
   imageSeed String
   imageAlt  String
+  // Real uploaded cover image (Supabase Storage public URL) — takes
+  // precedence over the imageSeed/picsum placeholder when set.
+  imageUrl  String?
 
   company       Company        @relation(fields: [companyId], references: [id], onDelete: Cascade)
   units         Unit[]
@@ -233,6 +236,11 @@ model Unit {
   baths         Int        @default(0)
   priceMillions Float
   status        UnitStatus @default(AVAILABLE)
+
+  // Real uploaded cover image (Supabase Storage public URL) — optional,
+  // units have no image in the original design so this is purely additive.
+  imageUrl String?
+  imageAlt String?
 
   project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
 

@@ -139,6 +139,7 @@ export const getDeveloperOverview = cache(
       viewsLabel: formatCompactCount(project.viewCount),
       imageSeed: project.imageSeed,
       imageAlt: project.imageAlt,
+      imageUrl: project.imageUrl,
     }));
 
     return {

@@ -7,6 +7,7 @@ import { SaudiRiyal } from "@/components/ui/saudi-riyal";
 import { HeroSearch } from "@/components/site/hero-search";
 import { FeaturedProjects } from "@/components/site/featured-projects";
 import { getFeaturedProjects, getPlatformStats, getSpotlightProject } from "@/lib/data/public-projects";
+import { projectImageSrc } from "@/lib/image";
 
 export const metadata: Metadata = {
   title: "مَعلم — اعثر على العنوان الذي يليق بك",
@@ -214,7 +215,7 @@ export default async function HomePage() {
             </div>
             <div className="relative min-h-[360px] md:min-h-[560px]">
               <Image
-                src={`https://picsum.photos/seed/${spotlight.imageSeed}/1000/1200.webp`}
+                src={projectImageSrc(spotlight)}
                 alt={spotlight.imageAlt}
                 fill
                 sizes="(max-width: 768px) 100vw, 50vw"

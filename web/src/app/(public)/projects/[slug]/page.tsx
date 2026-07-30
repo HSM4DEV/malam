@@ -97,7 +97,7 @@ export default async function ProjectDetailsPage({
         <div className="grid h-auto grid-cols-2 gap-3 sm:grid-cols-4 sm:[grid-template-rows:1fr_1fr] sm:h-[540px]">
           <div className="relative col-span-2 row-span-2 h-[240px] overflow-hidden rounded-2xl border border-foreground/10 sm:h-auto">
             <Image
-              src={`https://picsum.photos/seed/${project.imageSeed}-g1/1000/750.webp`}
+              src={project.imageUrl ?? `https://picsum.photos/seed/${project.imageSeed}-g1/1000/750.webp`}
               alt={project.imageAlt}
               fill
               sizes="(max-width: 640px) 100vw, 660px"

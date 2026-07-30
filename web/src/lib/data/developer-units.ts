@@ -3,7 +3,7 @@ import { cache } from "react";
 
 import { prisma } from "@/lib/prisma";
 import { formatArea, formatDelta, formatMillions, toArabicDigits } from "@/lib/format";
-import { getDeveloperCompany } from "@/lib/data/company";
+import { getDeveloperCompany, getDeveloperCompanyId } from "@/lib/data/company";
 import { unitStatusToUi } from "@/lib/data/mappers";
 import type { DeveloperUnitsData } from "@/types/dashboard";
 
@@ -58,3 +58,12 @@ export const getDeveloperUnits = cache(async (): Promise<DeveloperUnitsData> => 
     })),
   };
 });
+
+/** A single unit, scoped to the current session's company — for the edit form. */
+export async function getDeveloperUnitById(id: string) {
+  const companyId = await getDeveloperCompanyId();
+  return prisma.unit.findFirst({
+    where: { id, project: { companyId } },
+    include: { project: { select: { id: true, name: true } } },
+  });
+}

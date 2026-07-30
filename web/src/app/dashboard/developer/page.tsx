@@ -20,7 +20,7 @@ export default async function DeveloperOverviewPage() {
       <DeveloperTopbar
         eyebrow="مرحباً بعودتك 👋"
         title="نظرة عامة"
-        action={{ label: "مشروع جديد" }}
+        action={{ label: "مشروع جديد", href: "/dashboard/developer/projects/new" }}
       />
 
       <div className="flex flex-col gap-5 px-8 py-7">
@@ -31,9 +31,9 @@ export default async function DeveloperOverviewPage() {
           <LeadsList leads={leads} />
         </div>
 
-        <ProjectsPanel projects={projects} filterTabs={filterTabs} />
+        <ProjectsPanel projects={projects} filterTabs={filterTabs} basePath="/dashboard/developer/projects" />
 
-        <NextPhaseCta />
+        <NextPhaseCta newProjectHref="/dashboard/developer/projects/new" />
       </div>
     </>
   );

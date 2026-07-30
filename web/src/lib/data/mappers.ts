@@ -78,7 +78,8 @@ export const DEVELOPER_NAV = [
 /** Static broker sidebar nav (presentation, not persisted). */
 export const BROKER_NAV = [
   { key: "overview", label: "نظرة عامة", icon: "◫", href: "/dashboard/broker" },
-  { key: "listings", label: "قوائمي", icon: "▤", href: "/dashboard/broker/listings" },
+  { key: "projects", label: "مشاريعي", icon: "▤", href: "/dashboard/broker/projects" },
+  { key: "listings", label: "قوائمي", icon: "▦", href: "/dashboard/broker/listings" },
   { key: "clients", label: "العملاء", icon: "☺", href: "/dashboard/broker/clients" },
   { key: "deals", label: "الصفقات", icon: "⇄", href: "/dashboard/broker/deals" },
   { key: "commissions", label: "العمولات", icon: "◈", href: "/dashboard/broker/commissions" },

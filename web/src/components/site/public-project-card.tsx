@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 
 import { SaudiRiyal } from "@/components/ui/saudi-riyal";
+import { projectImageSrc } from "@/lib/image";
 import type { PublicProjectCard } from "@/types/public";
 
 export function PublicProjectCardView({
@@ -19,7 +20,7 @@ export function PublicProjectCardView({
       <div className="relative aspect-[4/3] overflow-hidden">
         <div className="pthumb absolute inset-0">
           <Image
-            src={`https://picsum.photos/seed/${project.imageSeed}/1000/750.webp`}
+            src={projectImageSrc(project)}
             alt={project.imageAlt}
             fill
             sizes="(max-width: 960px) 100vw, 400px"

@@ -1,10 +1,14 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Link from "next/link";
+import { Pencil } from "lucide-react";
 
+import { DeleteButton } from "@/components/dashboard/delete-button";
 import { FilterChips } from "@/components/dashboard/filter-chips";
 import { Badge } from "@/components/ui/badge";
 import { SaudiRiyal } from "@/components/ui/saudi-riyal";
+import { deleteUnitAction } from "@/lib/actions/delete-unit";
 import { toArabicDigits } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import type {
@@ -13,7 +17,7 @@ import type {
   UnitStatusFilter,
 } from "@/types/dashboard";
 
-const COLUMN_TEMPLATE = "grid-cols-[1.4fr_1.4fr_1fr_1fr_0.7fr_1fr]";
+const COLUMN_TEMPLATE = "grid-cols-[1.4fr_1.4fr_1fr_1fr_0.7fr_1fr_80px]";
 
 const STATUS: Record<UnitStatus, { label: string; variant: "published" | "review" | "draft" }> = {
   available: { label: "متاح", variant: "published" },
@@ -24,9 +28,11 @@ const STATUS: Record<UnitStatus, { label: string; variant: "published" | "review
 export function UnitsTable({
   units,
   statusFilters,
+  basePath,
 }: {
   units: UnitRow[];
   statusFilters: UnitStatusFilter[];
+  basePath: string;
 }) {
   const [active, setActive] = useState<UnitStatusFilter["key"]>("all");
 
@@ -43,7 +49,7 @@ export function UnitsTable({
       </div>
 
       <div className="overflow-x-auto">
-        <div className="min-w-[760px]">
+        <div className="min-w-[840px]">
           <div
             className={cn(
               "grid gap-4 border-b border-foreground/8 px-[26px] py-3.5 text-xs font-semibold text-muted",
@@ -56,6 +62,7 @@ export function UnitsTable({
             <span>الطابق</span>
             <span>الغرف</span>
             <span>السعر / الحالة</span>
+            <span />
           </div>
 
           {filtered.length > 0 ? (
@@ -81,6 +88,20 @@ export function UnitsTable({
                     <SaudiRiyal />
                   </span>
                   <Badge variant={STATUS[unit.status].variant}>{STATUS[unit.status].label}</Badge>
+                </div>
+                <div className="flex items-center justify-end gap-1">
+                  <Link
+                    href={`${basePath}/${unit.id}/edit`}
+                    title="تعديل"
+                    className="flex size-9 items-center justify-center rounded-[9px] text-muted-light transition-colors hover:bg-sage hover:text-pine"
+                  >
+                    <Pencil className="size-4" aria-hidden="true" />
+                  </Link>
+                  <DeleteButton
+                    id={unit.id}
+                    action={deleteUnitAction}
+                    confirmMessage={`هل تريد حذف الوحدة ${unit.code}؟ لا يمكن التراجع عن هذا الإجراء.`}
+                  />
                 </div>
               </div>
             ))

@@ -6,10 +6,10 @@ import { StatsRow } from "@/components/dashboard/stats-row";
 import { getDeveloperProjects } from "@/lib/data/developer-projects";
 
 export const metadata: Metadata = {
-  title: "مشاريعي · لوحة تحكم المطوّر · مَعلم",
+  title: "مشاريعي · لوحة تحكم الوسيط · مَعلم",
 };
 
-export default async function DeveloperProjectsPage() {
+export default async function BrokerProjectsPage() {
   const { stats, filterTabs, projects } = await getDeveloperProjects();
 
   return (
@@ -18,12 +18,12 @@ export default async function DeveloperProjectsPage() {
         eyebrow="محفظتك العقارية"
         title="مشاريعي"
         searchPlaceholder="ابحث في المشاريع…"
-        action={{ label: "مشروع جديد", href: "/dashboard/developer/projects/new" }}
+        action={{ label: "مشروع جديد", href: "/dashboard/broker/projects/new" }}
       />
 
       <div className="flex flex-col gap-6 px-8 py-7">
         <StatsRow stats={stats} />
-        <ProjectsGrid projects={projects} filterTabs={filterTabs} basePath="/dashboard/developer/projects" />
+        <ProjectsGrid projects={projects} filterTabs={filterTabs} basePath="/dashboard/broker/projects" />
       </div>
     </>
   );

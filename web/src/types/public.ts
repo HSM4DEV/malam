@@ -12,6 +12,7 @@ export interface PublicProjectCard {
   tag: string;
   imageSeed: string;
   imageAlt: string;
+  imageUrl: string | null;
   bedsRangeLabel: string;
   bathsLabel: string;
   areaRangeLabel: string;
@@ -64,6 +65,7 @@ export interface PublicProjectDetails {
   amenities: string[];
   imageSeed: string;
   imageAlt: string;
+  imageUrl: string | null;
   priceFromMillions: number;
   priceLabel: string;
   totalUnits: number;
