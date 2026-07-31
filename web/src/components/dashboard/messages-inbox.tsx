@@ -121,15 +121,15 @@ export function MessagesInbox({ conversations }: { conversations: Conversation[]
             <div className="flex items-center gap-3 border-t border-foreground/9 px-6 py-4">
               <input
                 type="text"
-                aria-disabled="true"
+                disabled
                 placeholder="اكتب رسالة… (قريبًا)"
-                className="h-11 flex-1 rounded-[11px] border border-input bg-background px-4 text-sm outline-none placeholder:text-muted focus-visible:border-ring"
+                className="h-11 flex-1 rounded-[11px] border border-input bg-background px-4 text-sm outline-none placeholder:text-muted focus-visible:border-ring disabled:cursor-not-allowed disabled:opacity-50"
               />
               <button
                 type="button"
-                aria-disabled="true"
+                disabled
                 title="إرسال (قريبًا)"
-                className="flex size-11 shrink-0 items-center justify-center rounded-[11px] bg-primary text-primary-foreground"
+                className="flex size-11 shrink-0 items-center justify-center rounded-[11px] bg-primary text-primary-foreground disabled:cursor-not-allowed disabled:opacity-50"
               >
                 <Send className="size-4" />
               </button>

@@ -35,7 +35,7 @@ export function DeveloperTopbar({
           type="button"
           variant="outline"
           size="icon"
-          aria-disabled="true"
+          disabled
           title="الإشعارات (قريبًا)"
           className="relative"
         >
@@ -51,7 +51,7 @@ export function DeveloperTopbar({
             </Link>
           </Button>
         ) : action ? (
-          <Button type="button" aria-disabled="true" title={`${action.label} (قريبًا)`}>
+          <Button type="button" disabled title={`${action.label} (قريبًا)`}>
             <Plus className="size-4" aria-hidden="true" />
             {action.label}
           </Button>

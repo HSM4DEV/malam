@@ -28,7 +28,7 @@ export default async function DeveloperOverviewPage() {
 
         <div className="grid grid-cols-1 gap-5 dash:grid-cols-[1.5fr_1fr]">
           <ViewsChart chart={chart} />
-          <LeadsList leads={leads} />
+          <LeadsList leads={leads} viewAllHref="/dashboard/developer/leads" />
         </div>
 
         <ProjectsPanel projects={projects} filterTabs={filterTabs} basePath="/dashboard/developer/projects" />

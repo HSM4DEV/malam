@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 
 import { ArchMark } from "@/components/dashboard/arch-mark";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { signOutAction } from "@/lib/actions/sign-out";
 import { cn } from "@/lib/utils";
 import type { DashboardNavItem, DeveloperAccount } from "@/types/dashboard";
 
@@ -58,14 +59,15 @@ export function DeveloperSidebar({ account, nav, roleBadge }: DeveloperSidebarPr
           </div>
           <div className="text-xs text-pine-mist">{account.roleLabel}</div>
         </div>
-        <button
-          type="button"
-          aria-disabled="true"
-          title="تسجيل الخروج (قريبًا)"
-          className="text-base text-pine-mist transition-colors hover:text-cream"
-        >
-          ⏻
-        </button>
+        <form action={signOutAction}>
+          <button
+            type="submit"
+            title="تسجيل الخروج"
+            className="text-base text-pine-mist transition-colors hover:text-cream"
+          >
+            ⏻
+          </button>
+        </form>
       </div>
     </aside>
   );

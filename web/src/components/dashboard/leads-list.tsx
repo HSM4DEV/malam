@@ -1,21 +1,16 @@
+import Link from "next/link";
+
 import { Button } from "@/components/ui/button";
 import type { LeadItem } from "@/types/dashboard";
 import { cn } from "@/lib/utils";
 
-export function LeadsList({ leads }: { leads: LeadItem[] }) {
+export function LeadsList({ leads, viewAllHref }: { leads: LeadItem[]; viewAllHref: string }) {
   return (
     <div className="animate-fade-up flex flex-col rounded-2xl border border-foreground/9 bg-surface px-[26px] py-6">
       <div className="mb-[18px] flex items-center justify-between">
         <div className="font-serif text-xl font-semibold">أحدث الطلبات</div>
-        <Button
-          type="button"
-          variant="link"
-          size="sm"
-          aria-disabled="true"
-          title="قريبًا"
-          className="h-auto p-0 text-sm"
-        >
-          عرض الكل
+        <Button asChild variant="link" size="sm" className="h-auto p-0 text-sm">
+          <Link href={viewAllHref}>عرض الكل</Link>
         </Button>
       </div>
       <div className="flex flex-1 flex-col gap-1">

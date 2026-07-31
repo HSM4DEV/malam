@@ -17,7 +17,7 @@ export function ComingSoonCard({ icon: Icon, title, description, ctaLabel }: Com
       </div>
       <div className="mb-2 font-serif text-[22px] font-semibold">{title}</div>
       <p className="mx-auto mb-5 max-w-[40ch] text-sm font-light text-muted-dark">{description}</p>
-      <Button type="button" aria-disabled="true" title={`${ctaLabel} (قريبًا)`}>
+      <Button type="button" disabled title={`${ctaLabel} (قريبًا)`}>
         {ctaLabel}
       </Button>
     </div>
