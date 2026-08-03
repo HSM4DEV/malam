@@ -6,7 +6,12 @@ import { ArchMark } from "@/components/dashboard/arch-mark";
 import { SaudiRiyal } from "@/components/ui/saudi-riyal";
 import { HeroSearch } from "@/components/site/hero-search";
 import { FeaturedProjects } from "@/components/site/featured-projects";
-import { getFeaturedProjects, getPlatformStats, getSpotlightProject } from "@/lib/data/public-projects";
+import {
+  getFeaturedProjects,
+  getPlatformStats,
+  getPublicCities,
+  getSpotlightProject,
+} from "@/lib/data/public-projects";
 import { projectImageSrc } from "@/lib/image";
 
 export const metadata: Metadata = {
@@ -52,10 +57,11 @@ const WHY = [
 ] as const;
 
 export default async function HomePage() {
-  const [featured, stats, spotlight] = await Promise.all([
+  const [featured, stats, spotlight, cities] = await Promise.all([
     getFeaturedProjects(6),
     getPlatformStats(),
     getSpotlightProject(),
+    getPublicCities(),
   ]);
 
   return (
@@ -76,7 +82,7 @@ export default async function HomePage() {
               التسليم.
             </p>
 
-            <HeroSearch />
+            <HeroSearch cities={cities} />
 
             <div className="mt-7 flex gap-7">
               <Stat value={stats.projectsLabel} label="مشروع منشور" />

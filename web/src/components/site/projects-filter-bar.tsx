@@ -4,18 +4,13 @@ import { useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Search } from "lucide-react";
 
-const TYPES = ["كل الأنواع", "فيلا", "شقة", "بنتهاوس", "دوبلكس", "تاون هاوس"];
+import { PRICES, TYPES } from "@/lib/data/project-filter-options";
+
 const BEDS = [
   { label: "كل الغرف", value: "" },
   { label: "+٣ غرف", value: "3" },
   { label: "+٤ غرف", value: "4" },
   { label: "+٥ غرف", value: "5" },
-];
-const PRICES = [
-  { label: "أي سعر", value: "" },
-  { label: "أقل من ٤ مليون", value: "4" },
-  { label: "أقل من ٧ مليون", value: "7" },
-  { label: "أقل من ١٢ مليون", value: "12" },
 ];
 const SORTS = [
   { label: "الأحدث", value: "newest" },
