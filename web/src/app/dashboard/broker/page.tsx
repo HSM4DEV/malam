@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ListChecks } from "lucide-react";
 
-import { ComingSoonCard } from "@/components/dashboard/coming-soon-card";
 import { DealPipelineBoard } from "@/components/dashboard/deal-pipeline-board";
 import { DeveloperTopbar } from "@/components/dashboard/developer-topbar";
 import { ListingsPreview } from "@/components/dashboard/listings-preview";
 import { StatsRow } from "@/components/dashboard/stats-row";
+import { TodayTasksCard } from "@/components/dashboard/today-tasks-card";
 import { getBrokerOverview } from "@/lib/data/broker-dashboard";
 
 export const metadata: Metadata = {
@@ -14,7 +13,7 @@ export const metadata: Metadata = {
 };
 
 export default async function BrokerOverviewPage() {
-  const { kpis, pipeline, listings } = await getBrokerOverview();
+  const { kpis, pipeline, listings, tasks } = await getBrokerOverview();
 
   return (
     <>
@@ -38,12 +37,7 @@ export default async function BrokerOverviewPage() {
 
         <div className="grid grid-cols-1 gap-5 dash:grid-cols-[1.4fr_1fr]">
           <ListingsPreview units={listings} />
-          <ComingSoonCard
-            icon={ListChecks}
-            title="مهام اليوم قريبًا"
-            description="سنتيح هنا قريبًا إضافة مهامّك اليومية ومتابعتها من نفس اللوحة."
-            ctaLabel="إضافة مهمة"
-          />
+          <TodayTasksCard tasks={tasks} />
         </div>
       </div>
     </>

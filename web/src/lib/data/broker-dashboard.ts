@@ -5,6 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { formatArea, formatDelta, formatMillions, formatPercent, toArabicDigits } from "@/lib/format";
 import { getDeveloperCompany } from "@/lib/data/company";
 import { getBrokerDeals } from "@/lib/data/broker-deals";
+import { getBrokerTasks } from "@/lib/data/broker-tasks";
 import { unitStatusToUi } from "@/lib/data/mappers";
 import type { BrokerOverviewData } from "@/types/dashboard";
 
@@ -15,7 +16,7 @@ export const getBrokerOverview = cache(async (): Promise<BrokerOverviewData> => 
   const company = await getDeveloperCompany();
   const companyId = company.id;
 
-  const [activeDealsCount, totalClientsCount, activeListingsCount, summary, deals, units] =
+  const [activeDealsCount, totalClientsCount, activeListingsCount, summary, deals, units, tasks] =
     await Promise.all([
       prisma.lead.count({
         where: { companyId, stage: { in: ["NEW", "CONTACTED", "VIEWING", "NEGOTIATING"] } },
@@ -30,6 +31,7 @@ export const getBrokerOverview = cache(async (): Promise<BrokerOverviewData> => 
         take: LISTINGS_PREVIEW_COUNT,
         include: { project: { select: { name: true } } },
       }),
+      getBrokerTasks(),
     ]);
 
   const kpis: BrokerOverviewData["kpis"] = [
@@ -84,5 +86,5 @@ export const getBrokerOverview = cache(async (): Promise<BrokerOverviewData> => 
     status: unitStatusToUi(unit.status),
   }));
 
-  return { kpis, pipeline, listings };
+  return { kpis, pipeline, listings, tasks };
 });

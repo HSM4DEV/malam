@@ -264,10 +264,20 @@ export interface BrokerDealsData {
   columns: DealColumn[];
 }
 
+// --- Broker tasks ("مهام اليوم" widget) -------------------------------------
+
+export interface TaskItem {
+  id: string;
+  title: string;
+  dueLabel: string;
+  completed: boolean;
+}
+
 // --- Broker overview page --------------------------------------------------
 
 export interface BrokerOverviewData {
   kpis: KpiMetric[];
   pipeline: DealColumn[];
   listings: UnitRow[];
+  tasks: TaskItem[];
 }

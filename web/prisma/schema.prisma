@@ -177,6 +177,7 @@ model Company {
   analyticsPoints  AnalyticsPoint[]
   trafficSources   TrafficSource[]
   analyticsSummary AnalyticsSummary?
+  tasks            Task[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -449,4 +450,26 @@ model RateLimitHit {
   createdAt DateTime @default(now())
 
   @@index([key, createdAt])
+}
+
+// ===========================================================================
+// Tasks — broker dashboard "مهام اليوم" checklist. Broker-only today (no
+// equivalent in the developer dashboard's original design).
+// ===========================================================================
+
+model Task {
+  id        String  @id @default(cuid())
+  companyId String
+  title     String
+  // Free-text due label ("اليوم · ٢:٠٠م" / "غداً" / "الخميس") — no
+  // structured date/time picker exists anywhere in this app yet.
+  dueLabel  String
+  completed Boolean @default(false)
+
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([companyId, completed])
 }
