@@ -15,14 +15,20 @@ const PIPELINE_PREVIEW_PER_COLUMN = 2;
 export const getBrokerOverview = cache(async (): Promise<BrokerOverviewData> => {
   const company = await getDeveloperCompany();
   const companyId = company.id;
+  const startOfMonth = new Date();
+  startOfMonth.setDate(1);
+  startOfMonth.setHours(0, 0, 0, 0);
 
-  const [activeDealsCount, totalClientsCount, activeListingsCount, summary, deals, units, tasks] =
+  const [activeDealsCount, totalClientsCount, monthlyDealValue, summary, deals, units, tasks] =
     await Promise.all([
       prisma.lead.count({
         where: { companyId, stage: { in: ["NEW", "CONTACTED", "VIEWING", "NEGOTIATING"] } },
       }),
       prisma.lead.count({ where: { companyId, stage: { not: "LOST" } } }),
-      prisma.unit.count({ where: { project: { companyId }, status: "AVAILABLE" } }),
+      prisma.lead.aggregate({
+        where: { companyId, stage: "WON", updatedAt: { gte: startOfMonth } },
+        _sum: { dealValueMillions: true },
+      }),
       prisma.analyticsSummary.findUnique({ where: { companyId } }),
       getBrokerDeals(),
       prisma.unit.findMany({
@@ -33,6 +39,8 @@ export const getBrokerOverview = cache(async (): Promise<BrokerOverviewData> => 
       }),
       getBrokerTasks(),
     ]);
+
+  const monthlyCommission = (monthlyDealValue._sum.dealValueMillions ?? 0) * (company.commissionRatePercent / 100);
 
   const kpis: BrokerOverviewData["kpis"] = [
     {
@@ -60,12 +68,12 @@ export const getBrokerOverview = cache(async (): Promise<BrokerOverviewData> => 
       icon: "◔",
     },
     {
-      id: "active-listings",
-      label: "قوائمُ نشطة",
-      value: toArabicDigits(activeListingsCount),
-      delta: "جاهزة للحجز",
+      id: "monthly-commission",
+      label: "عمولات الشهر",
+      value: formatMillions(monthlyCommission),
+      delta: "من الصفقات المُغلقة",
       deltaDirection: "up",
-      icon: "▤",
+      icon: "◈",
     },
   ];
 

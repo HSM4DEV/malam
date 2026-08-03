@@ -273,6 +273,23 @@ export interface TaskItem {
   completed: boolean;
 }
 
+// --- Broker commissions page ------------------------------------------------
+
+export interface CommissionDeal {
+  id: string;
+  buyerName: string;
+  project: string;
+  dealValueMillions: number | null;
+  dealValueLabel: string | null;
+  commissionLabel: string | null;
+}
+
+export interface BrokerCommissionsData {
+  ratePercent: number;
+  totalLabel: string;
+  deals: CommissionDeal[];
+}
+
 // --- Broker overview page --------------------------------------------------
 
 export interface BrokerOverviewData {

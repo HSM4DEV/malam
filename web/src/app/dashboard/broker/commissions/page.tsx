@@ -1,25 +1,22 @@
 import type { Metadata } from "next";
-import { Coins } from "lucide-react";
 
-import { ComingSoonCard } from "@/components/dashboard/coming-soon-card";
+import { CommissionsPanel } from "@/components/dashboard/commissions-panel";
 import { DeveloperTopbar } from "@/components/dashboard/developer-topbar";
+import { getBrokerCommissions } from "@/lib/data/broker-commissions";
 
 export const metadata: Metadata = {
   title: "العمولات · لوحة تحكم الوسيط · مَعلم",
 };
 
-export default function BrokerCommissionsPage() {
+export default async function BrokerCommissionsPage() {
+  const { ratePercent, totalLabel, deals } = await getBrokerCommissions();
+
   return (
     <>
       <DeveloperTopbar eyebrow="الأرباح" title="العمولات" searchPlaceholder="بحث…" />
 
       <div className="px-8 py-7">
-        <ComingSoonCard
-          icon={Coins}
-          title="تتبّع العمولات قريبًا"
-          description="سنعرض هنا عمولاتك المحسوبة تلقائيًا من الصفقات المُغلقة، بمجرد ربط قيمة كل صفقة."
-          ctaLabel="عرض التقرير"
-        />
+        <CommissionsPanel ratePercent={ratePercent} totalLabel={totalLabel} deals={deals} />
       </div>
     </>
   );
