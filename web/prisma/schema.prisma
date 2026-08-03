@@ -217,6 +217,12 @@ model Project {
   // precedence over the imageSeed/picsum placeholder when set.
   imageUrl  String?
 
+  // Postgres-managed generated column (see migration SQL) — weighted tsvector
+  // over name/city/district/type/tag/blurb/amenities, GIN-indexed. Raw-SQL
+  // only: Prisma's query builder can't select/filter Unsupported fields, so
+  // this can't affect any existing typed query. See getPublicProjects().
+  searchVector Unsupported("tsvector")?
+
   company       Company        @relation(fields: [companyId], references: [id], onDelete: Cascade)
   units         Unit[]
   leads         Lead[]

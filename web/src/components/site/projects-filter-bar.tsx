@@ -72,7 +72,7 @@ export function ProjectsFilterBar({ cities }: { cities: string[] }) {
               <input
                 value={q}
                 onChange={(e) => setQ(e.target.value)}
-                placeholder="ابحث بالاسم أو الحي…"
+                placeholder="ابحث في المشاريع…"
                 className="w-[220px] rounded-[10px] border border-foreground/14 bg-surface py-2.5 pe-9 ps-3.5 text-[13.5px] text-foreground outline-none focus:border-pine"
               />
             </div>

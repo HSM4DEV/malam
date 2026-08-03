@@ -105,20 +105,31 @@ export const getPublicCities = cache(async (): Promise<string[]> => {
 
 export const getPublicProjects = cache(
   async (filters: PublicProjectFilters): Promise<PublicProjectListItem[]> => {
+    // Full-text search: rank matching ids via the generated searchVector/GIN
+    // index first, then feed them into the regular Prisma filters below so
+    // city/type/price/beds narrowing stays exactly as it was.
+    let rankedIds: string[] | null = null;
+    if (filters.q) {
+      const ranked = await prisma.$queryRaw<Array<{ id: string }>>`
+        SELECT id FROM "Project"
+        WHERE status = 'PUBLISHED'
+          AND "searchVector" @@ websearch_to_tsquery('simple', ${filters.q})
+        ORDER BY ts_rank("searchVector", websearch_to_tsquery('simple', ${filters.q})) DESC
+        LIMIT 200
+      `;
+      rankedIds = ranked.map((r) => r.id);
+      if (rankedIds.length === 0) return [];
+    }
+    const useRelevanceOrder =
+      rankedIds !== null && filters.sort !== "price-asc" && filters.sort !== "price-desc";
+
     const projects = await prisma.project.findMany({
       where: {
         status: "PUBLISHED",
         ...(filters.city ? { city: filters.city } : {}),
         ...(filters.type ? { type: filters.type } : {}),
         ...(filters.maxPrice ? { priceFromMillions: { lte: filters.maxPrice } } : {}),
-        ...(filters.q
-          ? {
-              OR: [
-                { name: { contains: filters.q, mode: "insensitive" } },
-                { district: { contains: filters.q, mode: "insensitive" } },
-              ],
-            }
-          : {}),
+        ...(rankedIds ? { id: { in: rankedIds } } : {}),
         ...(filters.minBeds
           ? { units: { some: { beds: { gte: filters.minBeds } } } }
           : {}),
@@ -131,6 +142,12 @@ export const getPublicProjects = cache(
             ? { priceFromMillions: "desc" }
             : { createdAt: "desc" },
     });
+
+    // findMany({ where: { id: { in } } }) doesn't preserve the ranked order.
+    if (useRelevanceOrder && rankedIds) {
+      const order = rankedIds;
+      projects.sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id));
+    }
 
     return projects.map((project) => {
       const beds = project.units.map((u) => u.beds);
