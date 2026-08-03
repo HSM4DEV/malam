@@ -65,6 +65,11 @@ export function formatPhone(raw: string): string {
   return grouped.replace(/[0-9]/g, (d) => ARABIC_DIGITS[Number(d)]);
 }
 
+/** Reverses formatPhone()'s grouping/Arabic-digit display back to plain Latin digits for storage. */
+export function normalizePhoneDigits(value: string): string {
+  return value.replace(/[٠-٩]/g, (d) => String(ARABIC_DIGITS.indexOf(d))).replace(/\D/g, "");
+}
+
 /** Relative Arabic time, e.g. "قبل ٥ دقائق"، "أمس"، "قبل يومين"، "الاثنين". */
 export function formatRelativeArabic(date: Date, now: Date = new Date()): string {
   const diffMs = now.getTime() - date.getTime();

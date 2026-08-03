@@ -1,13 +1,15 @@
 import "server-only";
 import { cache } from "react";
 
+import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { formatPhone } from "@/lib/format";
 import { getDeveloperCompany } from "@/lib/data/company";
 import type { DeveloperSettingsData, SettingsToggle } from "@/types/dashboard";
 
 // Display copy for notification keys (data stores only the key + enabled flag).
-const NOTIFICATION_COPY: Array<Pick<SettingsToggle, "name" | "label" | "description">> = [
+// Exported so the write action upserts exactly these keys, not a duplicated list.
+export const NOTIFICATION_COPY: Array<Pick<SettingsToggle, "name" | "label" | "description">> = [
   { name: "newLeads", label: "طلبات جديدة", description: "إشعار فوري عند وصول طلب جديد من عميل." },
   { name: "messages", label: "الرسائل", description: "تنبيه عند استلام رسالة في صندوق الوارد." },
   { name: "weeklyReport", label: "التقرير الأسبوعي", description: "ملخّص أداء المحفظة كل يوم أحد." },
@@ -16,12 +18,14 @@ const NOTIFICATION_COPY: Array<Pick<SettingsToggle, "name" | "label" | "descript
 
 export const getDeveloperSettings = cache(
   async (): Promise<DeveloperSettingsData> => {
-    const company = await getDeveloperCompany();
-    const user = company.members[0];
+    const [session, company] = await Promise.all([auth(), getDeveloperCompany()]);
+    const userId = session?.user?.id;
+    if (!userId) {
+      throw new Error("No user is associated with the current session.");
+    }
+    const user = await prisma.user.findUnique({ where: { id: userId } });
 
-    const prefs = user
-      ? await prisma.notificationPreference.findMany({ where: { userId: user.id } })
-      : [];
+    const prefs = await prisma.notificationPreference.findMany({ where: { userId } });
     const enabledByKey = new Map(prefs.map((p) => [p.key, p.enabled]));
 
     return {
