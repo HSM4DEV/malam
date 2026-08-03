@@ -16,6 +16,8 @@ interface ProjectFormProps {
     name: string;
     city: string;
     district: string;
+    latitude: number | null;
+    longitude: number | null;
     type: string;
     status: "DRAFT" | "IN_REVIEW" | "PUBLISHED";
     priceFromMillions: number;
@@ -53,6 +55,37 @@ export function ProjectForm({ action, returnTo, project }: ProjectFormProps) {
         <FormField label="الحي *">
           <Input name="district" defaultValue={project?.district} placeholder="العليا" required />
         </FormField>
+      </div>
+
+      <div className="flex flex-col gap-1.5">
+        <div className="grid grid-cols-1 gap-4.5 sm:grid-cols-2">
+          <FormField label="خط العرض (Latitude)">
+            <Input
+              type="number"
+              step="any"
+              min="-90"
+              max="90"
+              name="latitude"
+              defaultValue={project?.latitude ?? ""}
+              placeholder="٢٤٫٧١٣٦"
+            />
+          </FormField>
+          <FormField label="خط الطول (Longitude)">
+            <Input
+              type="number"
+              step="any"
+              min="-180"
+              max="180"
+              name="longitude"
+              defaultValue={project?.longitude ?? ""}
+              placeholder="٤٦٫٦٧٥٣"
+            />
+          </FormField>
+        </div>
+        <p className="text-[12.5px] text-muted">
+          اختياري — يفعّل خريطةً حقيقيةً ومسافات المعالم القريبة في صفحة المشروع العامة. يمكنك نسخ
+          الإحداثيات من خرائط جوجل (اضغط مطوّلاً على الموقع).
+        </p>
       </div>
 
       <div className="grid grid-cols-1 gap-4.5 sm:grid-cols-2">

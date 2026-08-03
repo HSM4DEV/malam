@@ -59,6 +59,8 @@ export interface PublicProjectDetails {
   name: string;
   city: string;
   district: string;
+  latitude: number | null;
+  longitude: number | null;
   type: string;
   tag: string;
   blurb: string | null;

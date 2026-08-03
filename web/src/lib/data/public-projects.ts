@@ -226,6 +226,8 @@ export const getPublicProjectBySlug = cache(
       name: project.name,
       city: project.city,
       district: project.district,
+      latitude: project.latitude,
+      longitude: project.longitude,
       type: project.type,
       tag: project.tag,
       blurb: project.blurb,

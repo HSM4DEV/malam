@@ -197,6 +197,11 @@ model Project {
   slug              String        @unique
   city              String
   district          String
+  // Optional — powers the real map + computed nearby-landmark distances on
+  // the public project page. Falls back to a generic per-city placeholder
+  // when unset. Entered manually in the dashboard (no geocoding pipeline).
+  latitude          Float?
+  longitude         Float?
   // Property type, stored as its Arabic display label (بنتهاوس / فيلا / شقة …).
   type              String
   status            ProjectStatus @default(DRAFT)

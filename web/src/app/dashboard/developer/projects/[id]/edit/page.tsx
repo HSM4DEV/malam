@@ -31,6 +31,8 @@ export default async function EditDeveloperProjectPage({
             name: project.name,
             city: project.city,
             district: project.district,
+            latitude: project.latitude,
+            longitude: project.longitude,
             type: project.type,
             status: project.status,
             priceFromMillions: project.priceFromMillions,

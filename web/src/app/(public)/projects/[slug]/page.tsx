@@ -14,6 +14,7 @@ import { PublicProjectCardView } from "@/components/site/public-project-card";
 import { amenityIcon } from "@/lib/data/amenity-icons";
 import { getNearbyLandmarks, type NearbyLandmark } from "@/lib/data/nearby-landmarks";
 import { formatArea, toArabicDigits } from "@/lib/format";
+import { googleMapsUrl, osmEmbedUrl } from "@/lib/geo";
 import {
   getPublicProjectBySlug,
   getPublishedProjectSlugs,
@@ -57,7 +58,11 @@ export default async function ProjectDetailsPage({
   const { slug } = await params;
   const project = await getPublicProjectBySlug(slug);
   const related = await getRelatedProjects(project.city, project.id);
-  const landmarks = getNearbyLandmarks(project.city);
+  const hasCoordinates = project.latitude != null && project.longitude != null;
+  const landmarks = getNearbyLandmarks(
+    project.city,
+    hasCoordinates ? { lat: project.latitude!, lng: project.longitude! } : null,
+  );
 
   const beds = project.unitTypes.map((u) => u.beds);
   const baths = project.unitTypes.map((u) => u.baths);
@@ -229,7 +234,9 @@ export default async function ProjectDetailsPage({
 
             <div>
               <div className="mb-5 text-[12.5px] font-bold tracking-wide text-pine">المعالم القريبة</div>
-              <div className="grid grid-cols-1 items-stretch gap-5 md:grid-cols-[1.3fr_1fr]">
+              <div
+                className={`grid grid-cols-1 items-stretch gap-5 ${hasCoordinates ? "md:grid-cols-[1.3fr_1fr]" : ""}`}
+              >
                 <div className="flex flex-col">
                   {landmarks.map((n) => {
                     const Icon = LANDMARK_ICON[n.icon];
@@ -247,15 +254,26 @@ export default async function ProjectDetailsPage({
                     );
                   })}
                 </div>
-                <div className="relative min-h-[220px] overflow-hidden rounded-2xl border border-foreground/10">
-                  <Image
-                    src={`https://picsum.photos/seed/${project.imageSeed}-map/1000/750.webp`}
-                    alt={`خريطة موقع ${project.name}`}
-                    fill
-                    sizes="400px"
-                    className="object-cover"
-                  />
-                </div>
+                {hasCoordinates ? (
+                  <div className="flex flex-col gap-2">
+                    <div className="relative min-h-[220px] flex-1 overflow-hidden rounded-2xl border border-foreground/10">
+                      <iframe
+                        title={`خريطة موقع ${project.name}`}
+                        src={osmEmbedUrl(project.latitude!, project.longitude!)}
+                        loading="lazy"
+                        className="absolute inset-0 size-full border-0"
+                      />
+                    </div>
+                    <a
+                      href={googleMapsUrl(project.latitude!, project.longitude!)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-center text-[13px] font-semibold text-pine underline"
+                    >
+                      فتح في خرائط جوجل ←
+                    </a>
+                  </div>
+                ) : null}
               </div>
             </div>
 

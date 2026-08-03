@@ -91,13 +91,13 @@ async function main() {
 
   // --- Projects -------------------------------------------------------------
   const projectSeed = [
-    { key: "nline", name: "مساكن نلاين", slug: "nline", city: "الرياض", district: "العليا", type: "بنتهاوس", status: "PUBLISHED", price: 4.8, tag: "مميّز", total: 90, sold: 54, reserved: 4, views: 18400, imageSeed: "pl-nline", imageAlt: "واجهة برج مساكن نلاين في العليا عند الغسق", blurb: "سبعةٌ وأربعون طابقاً من الزجاج البرونزيّ تعيد رسم أفق العليا.", amenities: ["مسبح لا متناهٍ", "صالة رياضية مجهّزة", "أمن على مدار الساعة", "مواقف خاصة", "صالة استقبال فندقية", "مصعد خاص"] },
-    { key: "diriyah", name: "فلل بلاط الدرعية", slug: "diriyah", city: "الرياض", district: "الدرعية", type: "فيلا", status: "PUBLISHED", price: 9.2, tag: "إطلاق جديد", total: 40, sold: 12, reserved: 3, views: 9200, imageSeed: "pl-diriyah", imageAlt: "فلل بلاط الدرعية بعمارة نجدية معاصرة", blurb: "عمارةٌ نجديةٌ أُعيدت قراءتها بلغةٍ معاصرة حول فناءاتٍ خاصّة.", amenities: ["حديقة خاصة", "مسبح خاص", "أمن على مدار الساعة", "غرفة خادمة", "موقف لسيارتين", "فناء داخلي"] },
-    { key: "corniche", name: "شرفات الكورنيش", slug: "corniche", city: "جدة", district: "الكورنيش", type: "شقة", status: "IN_REVIEW", price: 3.6, tag: "واجهة بحرية", total: 60, sold: 0, reserved: 2, views: 1100, imageSeed: "pl-corniche", imageAlt: "شرفات الكورنيش المطلة على البحر في جدة", blurb: "شققٌ على البحر مباشرةً بشرفاتٍ ممتدّةٍ تطلّ على غروب الكورنيش.", amenities: ["إطلالة بحرية مباشرة", "شرفة واسعة", "صالة رياضية", "أمن على مدار الساعة", "موقف خاص"] },
-    { key: "khobar", name: "مرسى الخبر", slug: "khobar", city: "الخبر", district: "الكورنيش", type: "فيلا", status: "PUBLISHED", price: 6.4, tag: "على البحر", total: 24, sold: 8, reserved: 1, views: 4600, imageSeed: "pl-khobar", imageAlt: "فلل مرسى الخبر على واجهة الخليج", blurb: "فللٌ على المرسى بمظلّاتٍ خاصّةٍ لليخوت وهدوءٍ يليق بالخليج.", amenities: ["مظلة يخت خاصة", "مسبح خاص", "إطلالة بحرية", "أمن على مدار الساعة", "حديقة خاصة"] },
-    { key: "kafd", name: "بنتهاوس المركز المالي", slug: "kafd", city: "الرياض", district: "المركز المالي", type: "بنتهاوس", status: "PUBLISHED", price: 7.9, tag: "بنتهاوس", total: 18, sold: 10, reserved: 2, views: 6800, imageSeed: "pl-kafd", imageAlt: "بنتهاوس المركز المالي في الرياض", blurb: "مساكن علويةٌ في قلب المركز الماليّ بخدمات فندقيةٍ على مدار الساعة.", amenities: ["خدمات فندقية", "صالة رياضية", "مسبح على السطح", "أمن على مدار الساعة", "موقف خاص", "مصعد خاص"] },
-    { key: "malqa", name: "واحة الملقا", slug: "malqa", city: "الرياض", district: "الملقا", type: "دوبلكس", status: "DRAFT", price: 4.2, tag: "مسوّدة", total: 0, sold: 0, reserved: 0, views: 0, imageSeed: "pl-malqa", imageAlt: "مخطط واحة الملقا السكنية في الرياض", blurb: null, amenities: ["مسبح مشترك", "حديقة", "أمن على مدار الساعة"] },
-    { key: "obhur", name: "خليج أبحر", slug: "obhur", city: "جدة", district: "أبحر", type: "فيلا", status: "DRAFT", price: 5.1, tag: "مسوّدة", total: 0, sold: 0, reserved: 0, views: 0, imageSeed: "pl-obhur", imageAlt: "فلل خليج أبحر الشاطئية في جدة", blurb: null, amenities: ["وصول مباشر للشاطئ", "مسبح خاص", "حديقة خاصة"] },
+    { key: "nline", name: "مساكن نلاين", slug: "nline", city: "الرياض", district: "العليا", lat: 24.6944, lng: 46.6853, type: "بنتهاوس", status: "PUBLISHED", price: 4.8, tag: "مميّز", total: 90, sold: 54, reserved: 4, views: 18400, imageSeed: "pl-nline", imageAlt: "واجهة برج مساكن نلاين في العليا عند الغسق", blurb: "سبعةٌ وأربعون طابقاً من الزجاج البرونزيّ تعيد رسم أفق العليا.", amenities: ["مسبح لا متناهٍ", "صالة رياضية مجهّزة", "أمن على مدار الساعة", "مواقف خاصة", "صالة استقبال فندقية", "مصعد خاص"] },
+    { key: "diriyah", name: "فلل بلاط الدرعية", slug: "diriyah", city: "الرياض", district: "الدرعية", lat: 24.7477, lng: 46.5719, type: "فيلا", status: "PUBLISHED", price: 9.2, tag: "إطلاق جديد", total: 40, sold: 12, reserved: 3, views: 9200, imageSeed: "pl-diriyah", imageAlt: "فلل بلاط الدرعية بعمارة نجدية معاصرة", blurb: "عمارةٌ نجديةٌ أُعيدت قراءتها بلغةٍ معاصرة حول فناءاتٍ خاصّة.", amenities: ["حديقة خاصة", "مسبح خاص", "أمن على مدار الساعة", "غرفة خادمة", "موقف لسيارتين", "فناء داخلي"] },
+    { key: "corniche", name: "شرفات الكورنيش", slug: "corniche", city: "جدة", district: "الكورنيش", lat: 21.5500, lng: 39.1600, type: "شقة", status: "IN_REVIEW", price: 3.6, tag: "واجهة بحرية", total: 60, sold: 0, reserved: 2, views: 1100, imageSeed: "pl-corniche", imageAlt: "شرفات الكورنيش المطلة على البحر في جدة", blurb: "شققٌ على البحر مباشرةً بشرفاتٍ ممتدّةٍ تطلّ على غروب الكورنيش.", amenities: ["إطلالة بحرية مباشرة", "شرفة واسعة", "صالة رياضية", "أمن على مدار الساعة", "موقف خاص"] },
+    { key: "khobar", name: "مرسى الخبر", slug: "khobar", city: "الخبر", district: "الكورنيش", lat: 26.2896, lng: 50.2083, type: "فيلا", status: "PUBLISHED", price: 6.4, tag: "على البحر", total: 24, sold: 8, reserved: 1, views: 4600, imageSeed: "pl-khobar", imageAlt: "فلل مرسى الخبر على واجهة الخليج", blurb: "فللٌ على المرسى بمظلّاتٍ خاصّةٍ لليخوت وهدوءٍ يليق بالخليج.", amenities: ["مظلة يخت خاصة", "مسبح خاص", "إطلالة بحرية", "أمن على مدار الساعة", "حديقة خاصة"] },
+    { key: "kafd", name: "بنتهاوس المركز المالي", slug: "kafd", city: "الرياض", district: "المركز المالي", lat: 24.7635, lng: 46.6412, type: "بنتهاوس", status: "PUBLISHED", price: 7.9, tag: "بنتهاوس", total: 18, sold: 10, reserved: 2, views: 6800, imageSeed: "pl-kafd", imageAlt: "بنتهاوس المركز المالي في الرياض", blurb: "مساكن علويةٌ في قلب المركز الماليّ بخدمات فندقيةٍ على مدار الساعة.", amenities: ["خدمات فندقية", "صالة رياضية", "مسبح على السطح", "أمن على مدار الساعة", "موقف خاص", "مصعد خاص"] },
+    { key: "malqa", name: "واحة الملقا", slug: "malqa", city: "الرياض", district: "الملقا", lat: 24.8236, lng: 46.6103, type: "دوبلكس", status: "DRAFT", price: 4.2, tag: "مسوّدة", total: 0, sold: 0, reserved: 0, views: 0, imageSeed: "pl-malqa", imageAlt: "مخطط واحة الملقا السكنية في الرياض", blurb: null, amenities: ["مسبح مشترك", "حديقة", "أمن على مدار الساعة"] },
+    { key: "obhur", name: "خليج أبحر", slug: "obhur", city: "جدة", district: "أبحر", lat: 21.7386, lng: 39.1044, type: "فيلا", status: "DRAFT", price: 5.1, tag: "مسوّدة", total: 0, sold: 0, reserved: 0, views: 0, imageSeed: "pl-obhur", imageAlt: "فلل خليج أبحر الشاطئية في جدة", blurb: null, amenities: ["وصول مباشر للشاطئ", "مسبح خاص", "حديقة خاصة"] },
   ] as const;
 
   const projectIds = new Map<string, string>();
@@ -109,6 +109,8 @@ async function main() {
         slug: p.slug,
         city: p.city,
         district: p.district,
+        latitude: p.lat,
+        longitude: p.lng,
         type: p.type,
         status: p.status,
         priceFromMillions: p.price,
@@ -387,8 +389,8 @@ async function main() {
   });
 
   const brokerProjectSeed = [
-    { key: "yasmin", name: "فلل الياسمين", slug: "yasmin-villas", city: "الرياض", district: "الياسمين", type: "فيلا", status: "PUBLISHED" as const, price: 4.8, tag: "حصري", total: 12, sold: 3, reserved: 2, views: 5200, imageSeed: "bd-yasmin", imageAlt: "فلل الياسمين في حي الياسمين بالرياض", blurb: "فللٌ عائليةٌ حديثة في حيٍّ هادئ شمال الرياض.", amenities: ["حديقة خاصة", "مسبح خاص", "أمن على مدار الساعة", "موقف لسيارتين"] },
-    { key: "nakheel", name: "شقق النخيل", slug: "nakheel-apartments", city: "جدة", district: "النخيل", type: "شقة", status: "PUBLISHED" as const, price: 2.4, tag: "نشط", total: 20, sold: 6, reserved: 3, views: 3100, imageSeed: "bd-nakheel", imageAlt: "شقق النخيل السكنية في جدة", blurb: "شققٌ عصريةٌ قريبة من الخدمات في حيّ النخيل بجدة.", amenities: ["صالة رياضية", "أمن على مدار الساعة", "مواقف مظللة"] },
+    { key: "yasmin", name: "فلل الياسمين", slug: "yasmin-villas", city: "الرياض", district: "الياسمين", lat: 24.8358, lng: 46.6289, type: "فيلا", status: "PUBLISHED" as const, price: 4.8, tag: "حصري", total: 12, sold: 3, reserved: 2, views: 5200, imageSeed: "bd-yasmin", imageAlt: "فلل الياسمين في حي الياسمين بالرياض", blurb: "فللٌ عائليةٌ حديثة في حيٍّ هادئ شمال الرياض.", amenities: ["حديقة خاصة", "مسبح خاص", "أمن على مدار الساعة", "موقف لسيارتين"] },
+    { key: "nakheel", name: "شقق النخيل", slug: "nakheel-apartments", city: "جدة", district: "النخيل", lat: 21.5940, lng: 39.1728, type: "شقة", status: "PUBLISHED" as const, price: 2.4, tag: "نشط", total: 20, sold: 6, reserved: 3, views: 3100, imageSeed: "bd-nakheel", imageAlt: "شقق النخيل السكنية في جدة", blurb: "شققٌ عصريةٌ قريبة من الخدمات في حيّ النخيل بجدة.", amenities: ["صالة رياضية", "أمن على مدار الساعة", "مواقف مظللة"] },
   ];
 
   const brokerProjectIds = new Map<string, string>();
@@ -400,6 +402,8 @@ async function main() {
         slug: p.slug,
         city: p.city,
         district: p.district,
+        latitude: p.lat,
+        longitude: p.lng,
         type: p.type,
         status: p.status,
         priceFromMillions: p.price,
