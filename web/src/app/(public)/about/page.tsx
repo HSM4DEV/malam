@@ -7,8 +7,10 @@ import { getAboutStats } from "@/lib/data/public-projects";
 
 export const metadata: Metadata = { title: "عن مَعلم" };
 
-// Stats read live Postgres counts — never prerender.
-export const dynamic = "force-dynamic";
+// Stats read live Postgres counts — cache the rendered page for 5 minutes;
+// create/update/delete-project revalidate this path immediately on a
+// mutation, so edits don't wait out the window.
+export const revalidate = 300;
 
 const VALUES = [
   { title: "الثقة أولاً", body: "كل مسكنٍ موثّق الملكية ومُدقّق. نقول الحقيقة كاملةً، حتى حين لا تكون في مصلحة الصفقة." },

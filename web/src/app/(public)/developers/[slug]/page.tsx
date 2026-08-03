@@ -3,11 +3,19 @@ import type { Metadata } from "next";
 import { Building2, MapPin } from "lucide-react";
 
 import { PublicProjectCardView } from "@/components/site/public-project-card";
-import { getPublicCompanyProfile } from "@/lib/data/public-company";
+import { getPublicCompanyProfile, getPublicCompanySlugs } from "@/lib/data/public-company";
 import { toArabicDigits } from "@/lib/format";
 
-// Reads live Postgres data per-slug — never prerender.
-export const dynamic = "force-dynamic";
+// Statically generate every company's profile at build time; any slug not
+// yet generated renders on-demand and is then cached — see revalidate below.
+// Mutations revalidate this path immediately via revalidatePath in the
+// project Server Actions.
+export const revalidate = 300;
+
+export async function generateStaticParams() {
+  const slugs = await getPublicCompanySlugs();
+  return slugs.map((slug) => ({ slug }));
+}
 
 export async function generateMetadata({
   params,

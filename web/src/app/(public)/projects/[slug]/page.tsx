@@ -16,11 +16,20 @@ import { getNearbyLandmarks, type NearbyLandmark } from "@/lib/data/nearby-landm
 import { formatArea, toArabicDigits } from "@/lib/format";
 import {
   getPublicProjectBySlug,
+  getPublishedProjectSlugs,
   getRelatedProjects,
 } from "@/lib/data/public-projects";
 
-// Reads live Postgres data per-slug — never prerender.
-export const dynamic = "force-dynamic";
+// Statically generate every published project's page at build time; any slug
+// not yet generated (e.g. published after the last build) renders on-demand
+// and is then cached — see revalidate below. Mutations revalidate this path
+// immediately via revalidatePath in the project Server Actions.
+export const revalidate = 300;
+
+export async function generateStaticParams() {
+  const slugs = await getPublishedProjectSlugs();
+  return slugs.map((slug) => ({ slug }));
+}
 
 const LANDMARK_ICON: Record<NearbyLandmark["icon"], typeof Landmark> = {
   finance: Landmark,

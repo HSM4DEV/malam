@@ -12,6 +12,14 @@ export async function deleteProjectAction(formData: FormData): Promise<void> {
   }
 
   const companyId = await getDeveloperCompanyId();
+  const project = await prisma.project.findFirst({
+    where: { id, companyId },
+    select: { slug: true, company: { select: { slug: true } } },
+  });
+  if (!project) {
+    throw new Error("تعذّر العثور على هذا المشروع.");
+  }
+
   const { count } = await prisma.project.deleteMany({ where: { id, companyId } });
   if (count === 0) {
     throw new Error("تعذّر العثور على هذا المشروع.");
@@ -19,4 +27,10 @@ export async function deleteProjectAction(formData: FormData): Promise<void> {
 
   revalidatePath("/dashboard/developer/projects");
   revalidatePath("/dashboard/broker/projects");
+  // Public pages: cached (revalidate = 300) — refresh immediately so the
+  // deletion doesn't wait out the window on the pages that surfaced it.
+  revalidatePath("/");
+  revalidatePath("/about");
+  revalidatePath(`/projects/${project.slug}`);
+  revalidatePath(`/developers/${project.company.slug}`);
 }

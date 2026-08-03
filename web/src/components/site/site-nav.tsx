@@ -1,8 +1,7 @@
 import Link from "next/link";
-import type { Session } from "next-auth";
 
 import { ArchMark } from "@/components/dashboard/arch-mark";
-import { SiteNavUserMenu } from "@/components/site/site-nav-user-menu";
+import { SiteNavAuthArea } from "@/components/site/site-nav-auth-area";
 
 const LINKS = [
   { key: "projects", label: "المساكن", href: "/projects" },
@@ -14,7 +13,7 @@ const LINKS = [
   { key: "contact", label: "تواصل", href: "/contact" },
 ] as const;
 
-export function SiteNav({ session }: { session: Session | null }) {
+export function SiteNav() {
   return (
     <nav
       dir="rtl"
@@ -44,24 +43,7 @@ export function SiteNav({ session }: { session: Session | null }) {
         </div>
 
         <div className="flex items-center gap-4">
-          {session?.user ? (
-            <SiteNavUserMenu user={session.user} />
-          ) : (
-            <>
-              <Link
-                href="/login"
-                className="hidden text-[13.5px] font-medium text-muted-strong transition-colors hover:text-pine sm:inline"
-              >
-                تسجيل الدخول
-              </Link>
-              <Link
-                href="/contact"
-                className="rounded-[10px] bg-pine px-5 py-2.5 text-[13.5px] font-semibold text-cream transition-colors hover:bg-pine-dark"
-              >
-                احجز استشارة
-              </Link>
-            </>
-          )}
+          <SiteNavAuthArea />
         </div>
       </div>
     </nav>

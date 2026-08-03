@@ -14,8 +14,10 @@ export const metadata: Metadata = {
   description: "منصّة العقار الفاخر في المملكة العربية السعودية.",
 };
 
-// Reads live Postgres data (featured projects, platform stats) — never prerender.
-export const dynamic = "force-dynamic";
+// Reads live Postgres data (featured projects, platform stats) — cache the
+// rendered page for 5 minutes; create/update/delete-project revalidate this
+// path immediately on a mutation, so edits don't wait out the window.
+export const revalidate = 300;
 
 const TRUSTED_DEVELOPERS = ["فيجن العقارية", "دار الأركان", "روشن", "الدرعية", "البحر الأحمر"];
 

@@ -65,6 +65,18 @@ export async function updateProjectAction(
 
   revalidatePath("/dashboard/developer/projects");
   revalidatePath("/dashboard/broker/projects");
+  // Public pages: cached (revalidate = 300) — refresh immediately so an edit
+  // doesn't wait out the window on the pages that surface this project.
+  revalidatePath("/");
+  revalidatePath("/about");
+  const project = await prisma.project.findUnique({
+    where: { id },
+    select: { slug: true, company: { select: { slug: true } } },
+  });
+  if (project) {
+    revalidatePath(`/projects/${project.slug}`);
+    revalidatePath(`/developers/${project.company.slug}`);
+  }
 
   const returnTo = formData.get("returnTo");
   redirect(typeof returnTo === "string" && returnTo ? returnTo : "/dashboard/developer/projects");

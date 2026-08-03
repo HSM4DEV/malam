@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 
 import { prisma } from "@/lib/prisma";
-import { getDeveloperCompanyId } from "@/lib/data/company";
+import { getDeveloperCompany } from "@/lib/data/company";
 import { uniqueProjectSlug } from "@/lib/data/developer-projects";
 import { uploadProjectImage } from "@/lib/actions/upload-image";
 import { projectSchema, type ProjectFormState } from "@/lib/validation/project";
@@ -28,7 +28,7 @@ export async function createProjectAction(
     return { error: parsed.error.issues[0]?.message ?? "تحقّق من البيانات المدخلة" };
   }
 
-  const companyId = await getDeveloperCompanyId();
+  const company = await getDeveloperCompany();
   const slug = await uniqueProjectSlug(parsed.data.name);
 
   let imageUrl: string | null = null;
@@ -43,7 +43,7 @@ export async function createProjectAction(
 
   await prisma.project.create({
     data: {
-      companyId,
+      companyId: company.id,
       slug,
       name: parsed.data.name,
       city: parsed.data.city,
@@ -62,6 +62,11 @@ export async function createProjectAction(
 
   revalidatePath("/dashboard/developer/projects");
   revalidatePath("/dashboard/broker/projects");
+  // Public pages: cached (revalidate = 300) — refresh immediately so the new
+  // project doesn't wait out the window on the pages that list/count it.
+  revalidatePath("/");
+  revalidatePath("/about");
+  revalidatePath(`/developers/${company.slug}`);
 
   const returnTo = formData.get("returnTo");
   redirect(typeof returnTo === "string" && returnTo ? returnTo : "/dashboard/developer/projects");

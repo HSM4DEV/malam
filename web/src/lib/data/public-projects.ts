@@ -94,6 +94,16 @@ export const getAboutStats = cache(async (): Promise<AboutStats> => {
   };
 });
 
+// Build-time param generation for /projects/[slug]'s static generation +
+// ISR — not per-request, so not React-cache()-wrapped like the rest of this file.
+export async function getPublishedProjectSlugs(): Promise<string[]> {
+  const projects = await prisma.project.findMany({
+    where: { status: "PUBLISHED" },
+    select: { slug: true },
+  });
+  return projects.map((p) => p.slug);
+}
+
 export const getPublicCities = cache(async (): Promise<string[]> => {
   const rows = await prisma.project.findMany({
     where: { status: "PUBLISHED" },

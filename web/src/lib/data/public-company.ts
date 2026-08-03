@@ -6,6 +6,13 @@ import { prisma } from "@/lib/prisma";
 import { toPublicProjectCard } from "@/lib/data/public-projects";
 import type { DeveloperProfile } from "@/types/public";
 
+// Build-time param generation for /developers/[slug]'s static generation +
+// ISR — not per-request, so not React-cache()-wrapped like the function below.
+export async function getPublicCompanySlugs(): Promise<string[]> {
+  const companies = await prisma.company.findMany({ select: { slug: true } });
+  return companies.map((c) => c.slug);
+}
+
 export const getPublicCompanyProfile = cache(
   async (slug: string): Promise<DeveloperProfile> => {
     const company = await prisma.company.findUnique({
