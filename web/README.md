@@ -5,7 +5,7 @@ developer/broker company profiles, a developer dashboard (projects, units,
 leads, conversations, analytics), and an admin application-approval flow —
 built with Next.js, Prisma, and Supabase Postgres.
 
-**Live:** https://web-gamma-eight-15.vercel.app
+**Live:** https://malam-sa.com
 
 ## Stack
 
@@ -106,18 +106,20 @@ dev — set the same variables from `.env` (§2 above) plus:
 | Variable | Purpose |
 |---|---|
 | `RESEND_API_KEY` | Enables real email delivery (password reset, account invites). Without it, links are logged server-side instead of sent |
-| `RESEND_FROM_EMAIL` | Sender address — defaults to Resend's sandbox `onboarding@resend.dev` |
-| `NEXT_PUBLIC_APP_URL` | Must be the deployed URL — used to build absolute links in emails |
+| `RESEND_FROM_EMAIL` | `no-reply@malam-sa.com` — verified in Resend |
+| `NEXT_PUBLIC_APP_URL` | Must be the deployed URL — used to build absolute links in emails. Currently `https://malam-sa.com` |
 
-**Pending:** `malam.sa` is the intended sending domain, but it's still mid
-ownership-transfer and DNS isn't accessible yet. Until it's verified in
-Resend, `RESEND_FROM_EMAIL` must stay on the sandbox sender — Resend only
-delivers sandbox-sender emails to the account owner's own address, so
-password-reset/invite emails to anyone else currently just log the link
-server-side instead of sending. Once DNS access exists: add `malam.sa` at
-resend.com/domains, add the SPF/DKIM records it generates, wait for
-verification, then switch `RESEND_FROM_EMAIL` to an address on that domain
-(both locally and on Vercel) and redeploy.
+**Custom domain:** `malam-sa.com` is registered via GoDaddy and pointed at
+Vercel with an `A` record (`@` → `76.76.21.21`); `www.malam-sa.com` is a
+separate domain on the same Vercel project, redirected to the apex via
+`next.config.ts`'s host-matched `redirects()` (not a `vercel.json` rule,
+so it's testable locally with a `Host` header — see that file). Resend's
+sending domain is verified the same way: added at resend.com/domains,
+then its SPF/DKIM records added at GoDaddy alongside the `A` record.
+`NEXT_PUBLIC_APP_URL`/`RESEND_FROM_EMAIL` both need a redeploy to take
+effect after changing — `NEXT_PUBLIC_*` vars are inlined at build time,
+not read at runtime, so a plain Vercel "redeploy" of an old build won't
+pick up a change; trigger a fresh build instead.
 
 The repo root is one level up from this app (`web/`), so the Vercel
 project's **Root Directory** setting must be `web` — otherwise git-triggered
